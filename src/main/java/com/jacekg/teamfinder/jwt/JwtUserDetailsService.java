@@ -13,9 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.jacekg.homefinances.role.Role;
-import com.jacekg.homefinances.user.User;
-import com.jacekg.homefinances.user.UserRepository;
+import com.jacekg.teamfinder.user.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
