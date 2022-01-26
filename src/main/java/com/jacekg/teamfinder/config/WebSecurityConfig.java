@@ -3,6 +3,7 @@ package com.jacekg.teamfinder.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,7 +23,7 @@ import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -31,16 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
-
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-	}
-
+	
+	@Lazy
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+//		auth.userDetailsService(jwtUserDetailsService);
+	}
+
+	
 
 	@Bean
 	@Override
@@ -59,5 +64,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-
 }

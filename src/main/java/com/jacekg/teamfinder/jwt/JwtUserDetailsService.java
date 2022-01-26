@@ -3,8 +3,6 @@ package com.jacekg.teamfinder.jwt;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,8 +17,7 @@ import com.jacekg.teamfinder.user.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-	
-	@Autowired
+
 	private UserRepository userRepository;
 
 	@Autowired
@@ -54,3 +51,4 @@ public class JwtUserDetailsService implements UserDetailsService {
 				.collect(Collectors.toList());
 	}
 }
+
