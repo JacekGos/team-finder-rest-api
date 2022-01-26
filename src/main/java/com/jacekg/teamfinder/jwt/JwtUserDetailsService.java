@@ -19,7 +19,8 @@ import com.jacekg.teamfinder.user.UserRepository;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
-
+	
+	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
