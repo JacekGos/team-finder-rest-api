@@ -24,23 +24,23 @@ public class UserRequest {
 	
 	private Long id;
 
-	@NotNull(message = "wymagane")
+	@NotNull(message = "required")
 	@Size(min = 1, max = 50, message = "za długa nazwa użytkownika")
 	private String username;
 
-	@NotNull(message = "wymagane")
-	@Size(max = 30, message = "za długie hasło (max 30 znaków)")
-	@Size(min = 5, message = "za krótkie hasło (min 5 znaków)")
+	@NotNull(message = "required")
+	@Size(max = 30, message = "password too long (max. 30 characters)")
+	@Size(min = 5, message = "password too short (min 5 characters)")
 	private String password;
 	
-	@NotNull(message = "wymagane")
-	@Size(max = 30, message = "za długie hasło (max 30 znaków)")
-	@Size(min = 5, message = "za krótkie hasło (min 5 znaków)")
+	@NotNull(message = "required")
+	@Size(max = 30, message = "password too long (max. 30 characters)")
+	@Size(min = 5, message = "password too short (min 5 characters)")
 	private String matchingPassword;
 
 	@ValidEmail
-	@NotNull(message = "wymagane")
-	@Size(min = 1, max = 50, message = "za długi email")
+	@NotNull(message = "required")
+	@Size(min = 1, max = 50, message = "too long email address")
 	private String email;
 
 	private String role;
