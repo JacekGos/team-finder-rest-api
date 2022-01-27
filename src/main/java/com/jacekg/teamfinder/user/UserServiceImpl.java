@@ -9,8 +9,6 @@ import org.modelmapper.PropertyMap;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.jacekg.homefinances.user.User;
-import com.jacekg.homefinances.user.UserDTO;
 import com.jacekg.teamfinder.exceptions.UserNotValidException;
 import com.jacekg.teamfinder.role.RoleRepository;
 
@@ -27,6 +25,16 @@ public class UserServiceImpl implements UserService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	private ModelMapper modelMapper;
+	
+	@PostConstruct
+	public void postConstruct() {
+		
+		modelMapper.addMappings(new PropertyMap<User, UserResponse>() {
+			protected void configure() {
+				map().setRole(source.getRoleName());
+			}
+		});
+	}
 
 	@Override
 	public UserResponse save(UserRequest userRequest) {

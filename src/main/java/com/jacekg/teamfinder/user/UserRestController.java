@@ -1,4 +1,4 @@
-package com.jacekg.teamfinder.account;
+package com.jacekg.teamfinder.user;
 
 import javax.validation.Valid;
 
@@ -10,19 +10,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacekg.teamfinder.user.UserRequest;
-import com.jacekg.teamfinder.user.UserService;
-
 import lombok.AllArgsConstructor;
 
 @RestController("/v1")
 @AllArgsConstructor
-public class AccountRestController {
+public class UserRestController {
 	
 	private UserService userService;
 	
 	@PostMapping("/v1/signup")
-	public ResponseEntity<UserRequest> createUser(@Valid @RequestBody UserRequest userRequest) {
+	public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
 		return status(HttpStatus.CREATED).body(userService.save(userRequest));
 	}
 	
