@@ -7,9 +7,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.jacekg.homefinances.config.ErrorResponse;
-import com.jacekg.homefinances.user.UserNotValidException;
-
 @ControllerAdvice
 public class RestExceptionHandler {
 	
