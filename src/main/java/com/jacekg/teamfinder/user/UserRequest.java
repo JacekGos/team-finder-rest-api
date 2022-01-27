@@ -18,7 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @FieldMatch.List({
-	@FieldMatch(first = "password", second = "matchingPassword", message = "podane hasła muszą się zgadzać")
+	@FieldMatch(first = "password", second = "matchingPassword", message = "passwords must match")
 })
 public class UserRequest {
 	

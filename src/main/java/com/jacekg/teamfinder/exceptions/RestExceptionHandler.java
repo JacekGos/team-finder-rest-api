@@ -3,12 +3,25 @@ package com.jacekg.teamfinder.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+
+		ErrorResponse error = new ErrorResponse();
+
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exc.getMessage());
+		error.setErrorCode(0);
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(HttpMessageNotReadableException exception) {
@@ -42,6 +55,30 @@ public class RestExceptionHandler {
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
 		error.setMessage(exception.getMessage());
 		error.setErrorCode(3);
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(HttpRequestMethodNotSupportedException exception) {
+
+		ErrorResponse error = new ErrorResponse();
+
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exception.getMessage());
+		error.setErrorCode(4);
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(InvalidCredentialsException exc) {
+
+		ErrorResponse error = new ErrorResponse();
+
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exc.getMessage());
+		error.setErrorCode(5);
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
