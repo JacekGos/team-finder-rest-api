@@ -38,14 +38,6 @@ public class UserRequest {
 	@Size(min = 5, message = "za krótkie hasło (min 5 znaków)")
 	private String matchingPassword;
 
-	@NotNull(message = "wymagane")
-	@Size(min = 1, max = 50, message = "za długie imię")
-	private String firstName;
-
-	@NotNull(message = "wymagane")
-	@Size(min = 1, max = 50, message = "za długie nazwisko")
-	private String lastName;
-
 	@ValidEmail
 	@NotNull(message = "wymagane")
 	@Size(min = 1, max = 50, message = "za długi email")
