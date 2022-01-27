@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.user;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
@@ -43,6 +44,16 @@ class UserRepositoryTest {
 		assertEquals("user", returnedUser.getUsername());
 		assertEquals("ROLE_ADMIN", returnedUser.getRoleName());
 	}
+	
+	@Test
+	void findByUsername_ShouldReturn_Null() {
+		
+		String username = "user";
+		
+		User returnedUser = userRepository.findByUsername(username);
+		
+		assertThat(returnedUser).isNull();
+	}
 
 	@Test
 	void findByUserId_ShouldReturn_Valid_User() {
@@ -66,5 +77,15 @@ class UserRepositoryTest {
 		
 		assertEquals(1L, returnedUser.getId());
 		assertEquals("ROLE_ADMIN", returnedUser.getRoleName());
+	}
+	
+	@Test
+	void findByUserId_ShouldReturn_Null() {
+		
+		Long userID = 1L;
+		
+		User returnedUser = userRepository.findByUserId(userID);
+		
+		assertThat(returnedUser).isNull();
 	}
 }
