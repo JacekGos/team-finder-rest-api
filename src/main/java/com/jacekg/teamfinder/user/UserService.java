@@ -3,7 +3,7 @@ package com.jacekg.teamfinder.user;
 
 public interface UserService {
 	
-	public UserRequest save(UserRequest user);
+	public UserResponse save(UserRequest user);
 	
 	public User findByUsername(String username);
 	

@@ -1,9 +1,17 @@
 package com.jacekg.teamfinder.user;
 
+import java.util.Arrays;
+
+import javax.annotation.PostConstruct;
+
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jacekg.homefinances.user.User;
+import com.jacekg.homefinances.user.UserDTO;
+import com.jacekg.teamfinder.exceptions.UserNotValidException;
 import com.jacekg.teamfinder.role.RoleRepository;
 
 import lombok.AllArgsConstructor;
@@ -11,18 +19,27 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-	
+
 	private UserRepository userRepository;
-	
+
 	private RoleRepository roleRepository;
-	
+
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	private ModelMapper modelMapper;
 
 	@Override
-	public UserRequest save(UserRequest user) {
-		return null;
+	public UserResponse save(UserRequest userRequest) {
+
+		if (userRepository.findByUsername(userRequest.getUsername()) != null) {
+			throw new UserNotValidException("Username already exists!");
+		}
+
+		userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+		User user = mapUser(userRequest);
+		
+		return modelMapper.map(userRepository.save(user), UserResponse.class);
 	}
 
 	@Override
@@ -33,6 +50,26 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findByUserId(Long userId) {
 		return null;
+	}
+
+	private User mapUser(UserRequest userRequest) {
+
+		User user = modelMapper.map(userRequest, User.class);
+		user.setEnabled(true);
+		user.setNonExpired(true);
+		user.setCredentialsNonExpired(true);
+		user.setNonLocked(true);
+
+		if (userRequest.getRole().equals("USER")) {
+			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+		} else if (userRequest.getRole().equals("ADMIN")) {
+			user.setRoles(
+					Arrays.asList(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_ADMIN")));
+		} else {
+			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+		}
+
+		return user;
 	}
 
 }

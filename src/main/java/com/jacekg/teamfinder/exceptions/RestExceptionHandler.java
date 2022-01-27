@@ -11,25 +11,37 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class RestExceptionHandler {
 	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(HttpMessageNotReadableException exc) {
+	public ResponseEntity<ErrorResponse> handleException(HttpMessageNotReadableException exception) {
 
 		ErrorResponse error = new ErrorResponse();
 
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(exc.getMessage());
+		error.setMessage(exception.getMessage());
 		error.setErrorCode(1);
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(MethodArgumentNotValidException exc) {
+	public ResponseEntity<ErrorResponse> handleException(MethodArgumentNotValidException exception) {
 
 		ErrorResponse error = new ErrorResponse();
 
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(exc.getMessage());
+		error.setMessage(exception.getMessage());
 		error.setErrorCode(2);
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(UserNotValidException exception) {
+
+		ErrorResponse error = new ErrorResponse();
+
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exception.getMessage());
+		error.setErrorCode(3);
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}

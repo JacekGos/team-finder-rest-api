@@ -44,12 +44,4 @@ public class UserRequest {
 	private String email;
 
 	private String role;
-
-	private boolean isEnabled;
-
-	private boolean isNonExpired;
-
-	private boolean isCredentialsNonExpired;
-
-	private boolean isNonLocked;
 }
