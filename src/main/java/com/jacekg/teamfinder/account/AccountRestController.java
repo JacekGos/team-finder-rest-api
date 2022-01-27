@@ -19,7 +19,7 @@ public class AccountRestController {
 	
 	@PostMapping("/v1/signup")
 	public ResponseEntity<UserRequest> createUser(@Valid @RequestBody UserRequest userRequest) {
-		return Status(HttpStatus.CREATED).body(userService.save(userRequest));
+		return status(HttpStatus.CREATED).body(userService.save(userRequest));
 	}
 	
 }
