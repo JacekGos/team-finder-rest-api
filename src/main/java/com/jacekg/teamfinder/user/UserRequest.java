@@ -3,7 +3,7 @@ package com.jacekg.teamfinder.user;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.jacekg.homefinances.validation.FieldMatch;
+import com.jacekg.teamfinder.validation.FieldMatch;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
