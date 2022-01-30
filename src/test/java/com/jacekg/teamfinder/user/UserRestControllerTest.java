@@ -87,15 +87,19 @@ class UserRestControllerTest {
 		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);
 		
 		assertThat(userResponse).isNotNull();
-		assertThat(userResponse.getRole()).isEqualTo("ROLE_ADMIN");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
 	}
 	
 	@Test
 	void createUser_ShouldReturn_StatusCreated_And_UserWithUserRole() throws Exception {
 		
-		userRequest.setRole("USER");
+		userResponse.setRole("ROLE_USER");
+		
 		String jsonBody = objectMapper.writeValueAsString(userRequest);
-		System.out.println("json: " + jsonBody);
+
 		when(userService.save(any(UserRequest.class))).thenReturn(userResponse);
 		
 		String url = "/v1/signup";
