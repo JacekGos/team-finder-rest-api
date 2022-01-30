@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.jacekg.teamfinder.exceptions.UserNotValidException;
 import com.jacekg.teamfinder.role.Role;
 import com.jacekg.teamfinder.role.RoleRepository;
 
@@ -107,6 +108,16 @@ class UserServiceImplTest {
 		
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getRole()).isEqualTo("ROLE_USER");
+	}
+	
+	@Test
+	void save_WhenUsernameExists_ShouldThrow_UserNotValidException() {
+		
+		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(user);
+		
+		assertThrows(UserNotValidException.class, () -> {
+			serviceUnderTest.save(userRequest);
+		});
 	}
 
 	@Test
