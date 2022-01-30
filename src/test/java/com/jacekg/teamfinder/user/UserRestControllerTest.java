@@ -89,5 +89,32 @@ class UserRestControllerTest {
 		assertThat(userResponse).isNotNull();
 		assertThat(userResponse.getRole()).isEqualTo("ROLE_ADMIN");
 	}
+	
+	@Test
+	void createUser_ShouldReturn_StatusCreated_And_UserWithUserRole() throws Exception {
+		
+		userRequest.setRole("USER");
+		String jsonBody = objectMapper.writeValueAsString(userRequest);
+		System.out.println("json: " + jsonBody);
+		when(userService.save(any(UserRequest.class))).thenReturn(userResponse);
+		
+		String url = "/v1/signup";
+		
+		MvcResult mvcResult = mockMvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+				.andExpect(status().isCreated()).andReturn();
+		
+		
+		String returnedUser = mvcResult.getResponse().getContentAsString();
+		
+		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);
+		
+		assertThat(userResponse).isNotNull();
+		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
+	}
 
 }
