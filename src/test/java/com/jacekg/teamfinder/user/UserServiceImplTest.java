@@ -41,11 +41,11 @@ class UserServiceImplTest {
 	@Mock
 	private ModelMapper modelMapper;
 	
-	User user;
+	private User user;
 	
-	UserRequest userRequest;
+	private UserRequest userRequest;
 	
-	UserResponse userResponse;
+	private UserResponse userResponse;
 	
 	@BeforeEach
 	void setUp() throws Exception {
