@@ -8,6 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class UserResponse {
 	
 	private Long id;

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,6 +44,8 @@ class UserServiceImplTest {
 	
 	UserRequest userRequest;
 	
+	UserResponse userResponse;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		
@@ -61,14 +64,21 @@ class UserServiceImplTest {
 				"password",
 				"password",
 				"email",
-				"ROLE_ADMIN");  
+				"ROLE_ADMIN"); 
+		
+		userResponse = new UserResponse(
+				10L,
+				"username",
+				"email",
+				"ROLE_ADMIN");
 	}
 
 	@Test
 	void save_ShouldReturn_User() {
 		
-		when(modelMapper.map(user, UserRequest.class)).thenReturn(userRequest);
-		when(userRepository.findByUsername("username")).thenReturn(Mockito.any(User.class));
+		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
+		when(modelMapper.map(userRequest, User.class)).thenReturn(user);
+		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(Mockito.any(User.class));
 		when(userRepository.save(new User())).thenReturn(user);
 		
 		UserResponse savedUser = serviceUnderTest.save(userRequest);
