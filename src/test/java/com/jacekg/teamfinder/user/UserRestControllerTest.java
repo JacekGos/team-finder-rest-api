@@ -1,5 +1,6 @@
 package com.jacekg.teamfinder.user;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
@@ -66,7 +68,7 @@ class UserRestControllerTest {
 	}
 
 	@Test
-	void createUser_ShouldReturn_StatusCreated() throws Exception {
+	void createUser_ShouldReturn_StatusCreated_And_UserWithAdminRole() throws Exception {
 	
 		String jsonBody = objectMapper.writeValueAsString(userRequest);
 
@@ -74,10 +76,18 @@ class UserRestControllerTest {
 		
 		String url = "/v1/signup";
 		
-		mockMvc.perform(post(url)
+		MvcResult mvcResult = mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
-				.andExpect(status().isCreated());
+				.andExpect(status().isCreated()).andReturn();
+		
+		
+		String returnedUser = mvcResult.getResponse().getContentAsString();
+		
+		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);
+		
+		assertThat(userResponse).isNotNull();
+		assertThat(userResponse.getRole()).isEqualTo("ROLE_ADMIN");
 	}
 
 }
