@@ -158,7 +158,7 @@ class UserRestControllerTest {
 		
 		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
 		
-		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "Validation failed for argument");
+		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "Validation failed");
 	}
 
 }

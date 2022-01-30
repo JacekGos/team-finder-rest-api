@@ -41,7 +41,7 @@ public class RestExceptionHandler {
 		ErrorResponse error = new ErrorResponse();
 
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(exception.getMessage());
+		error.setMessage("Validation failed");
 		error.setErrorCode(2);
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
