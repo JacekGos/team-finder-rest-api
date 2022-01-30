@@ -1,8 +1,12 @@
 package com.jacekg.teamfinder.exceptions;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +50,17 @@ public class RestExceptionHandler {
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+//	@ExceptionHandler
+//	public ResponseEntity<List<ErrorResponse>> handleException(MethodArgumentNotValidException exception) {
+//
+//		 BindingResult result = exception.getBindingResult();
+//	     List<FieldError> fieldErrors = result.getFieldErrors();
+//
+//	     return processFieldErrors(fieldErrors);
+//	}
+//	
+//	
 	
 	@ExceptionHandler
 	public ResponseEntity<ErrorResponse> handleException(UserNotValidException exception) {
