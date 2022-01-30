@@ -74,7 +74,7 @@ class UserServiceImplTest {
 	}
 
 	@Test
-	void save_ShouldReturn_User() {
+	void save_ShouldReturn_UserWithAdminRole() {
 		
 		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
 		when(modelMapper.map(userRequest, User.class)).thenReturn(user);
@@ -86,6 +86,27 @@ class UserServiceImplTest {
 		verify(userRepository).save(Mockito.any(User.class));
 		
 		assertThat(savedUser).isNotNull();
+		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");
+	}
+	
+	@Test
+	void save_ShouldReturn_UserWithUserRole() {
+		
+		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+		userRequest.setRole("ROLE_USER");
+		userResponse.setRole("ROLE_USER");
+		
+		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
+		when(modelMapper.map(userRequest, User.class)).thenReturn(user);
+		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(Mockito.any(User.class));
+		when(userRepository.save(new User())).thenReturn(user);
+		
+		UserResponse savedUser = serviceUnderTest.save(userRequest);
+		
+		verify(userRepository).save(Mockito.any(User.class));
+		
+		assertThat(savedUser).isNotNull();
+		assertThat(savedUser.getRole()).isEqualTo("ROLE_USER");
 	}
 
 	@Test
