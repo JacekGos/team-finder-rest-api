@@ -63,13 +63,14 @@ public class User {
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", 
-	joinColumns = @JoinColumn(name = "user_id"), 
-	inverseJoinColumns = @JoinColumn(name = "role_id"))
+		joinColumns = @JoinColumn(name = "user_id"), 
+		inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Collection<Role> roles;
 	
 	@OneToMany(fetch = FetchType.LAZY,
 			mappedBy = "organizer",
-			cascade = CascadeType.ALL)
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	private Game createdGame;
 	
 	public String getRoleName() {
