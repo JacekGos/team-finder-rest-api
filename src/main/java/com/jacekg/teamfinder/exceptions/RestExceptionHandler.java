@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class RestExceptionHandler {
 	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
+	public ResponseEntity<ErrorResponse> handleException(Exception exception) {
 
 		ErrorResponse error = new ErrorResponse();
 
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(exc.getMessage());
+		error.setMessage(exception.getMessage());
 		error.setErrorCode(0);
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
@@ -43,18 +43,6 @@ public class RestExceptionHandler {
 	}
 	
 	//Forms validation error
-//	@ExceptionHandler
-//	public ResponseEntity<ErrorResponse> handleException(MethodArgumentNotValidException exception) {
-//
-//		ErrorResponse error = new ErrorResponse();
-//
-//		error.setStatus(HttpStatus.BAD_REQUEST.value());
-//		error.setMessage(exception.getMessage());
-//		error.setErrorCode(2);
-//		
-//		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-//	}
-	
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -71,7 +59,6 @@ public class RestExceptionHandler {
 				(HttpStatus.BAD_REQUEST.value(), "validation error", 2);
 		
 		for (FieldError fieldError : fieldErrors) {
-			
 			error.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 		
