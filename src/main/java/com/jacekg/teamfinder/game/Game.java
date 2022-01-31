@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.jacekg.teamfinder.user.User;
+import com.jacekg.teamfinder.venue.Venue;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,7 +63,7 @@ public class Game {
 	private List<User> players;
 	
 	//many to one
-	private Localization localization;
+	private Venue venue;
 	
 	
 }
