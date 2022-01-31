@@ -56,7 +56,7 @@ public class Game {
 	
 	//many to one
 //	@Column(name = "organizer_id", nullable = false)
-	private Discipline discipline;
+	private SportDiscipline sportDiscipline;
 	
 	//many to many
 	private List<User> players;
