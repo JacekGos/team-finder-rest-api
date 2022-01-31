@@ -14,8 +14,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.jacekg.teamfinder.game.Game;
 import com.jacekg.teamfinder.role.Role;
 
 import lombok.AllArgsConstructor;
@@ -64,6 +66,11 @@ public class User {
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Collection<Role> roles;
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			mappedBy = "organizer",
+			cascade = CascadeType.ALL)
+	private Game createdGame;
 	
 	public String getRoleName() {
 		

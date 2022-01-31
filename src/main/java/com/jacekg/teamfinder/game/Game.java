@@ -62,8 +62,10 @@ public class Game {
 	@JoinColumn(name = "user_id")
 	private User organizer;
 	
-	//many to one
-//	@Column(name = "organizer_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "sport_discipline_id")
 	private SportDiscipline sportDiscipline;
 	
 	//many to many
