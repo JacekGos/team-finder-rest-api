@@ -68,7 +68,7 @@ public class RestExceptionHandler {
 	private ValidationErrorResponse processFieldErrors(List<FieldError> fieldErrors) {
 		
 		ValidationErrorResponse error = new ValidationErrorResponse
-				(HttpStatus.BAD_REQUEST.value(), "validation error");
+				(HttpStatus.BAD_REQUEST.value(), "validation error", 2);
 		
 		for (FieldError fieldError : fieldErrors) {
 			
