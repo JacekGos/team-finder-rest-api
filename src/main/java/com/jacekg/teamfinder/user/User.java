@@ -35,28 +35,28 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@Column(name = "username")
+	@Column(name = "username", nullable = false )
 	private String username;
 
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "email")
+	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(name = "is_enabled")
+	@Column(name = "is_enabled", nullable = false)
 	private boolean isEnabled;
 
-	@Column(name = "is_non_expired")
+	@Column(name = "is_non_expired", nullable = false)
 	private boolean isNonExpired;
 
-	@Column(name = "is_credentials_non_expired")
+	@Column(name = "is_credentials_non_expired", nullable = false)
 	private boolean isCredentialsNonExpired;
 
-	@Column(name = "is_non_locked")
+	@Column(name = "is_non_locked", nullable = false)
 	private boolean isNonLocked;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
