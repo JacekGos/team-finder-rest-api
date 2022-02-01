@@ -38,9 +38,9 @@ class UserRepositoryTest {
 	}
 	
 	@Test
-	void findByUsername_ShouldReturn_Valid_User() {
+	void findByUsername_ShouldReturn_User() {
 		
-		String username = "user";
+		String username = "username";
 		
 //		User user = new User(
 //				1L,
@@ -55,11 +55,13 @@ class UserRepositoryTest {
 //				null,
 //				null);
 		
+		System.out.println("log user: " + user);
+		
 		userRepository.save(user);
 		
 		User returnedUser = userRepository.findByUsername(username);
 		
-		assertEquals("user", returnedUser.getUsername());
+		assertEquals("username", returnedUser.getUsername());
 		assertEquals("ROLE_ADMIN", returnedUser.getRoleName());
 	}
 	
