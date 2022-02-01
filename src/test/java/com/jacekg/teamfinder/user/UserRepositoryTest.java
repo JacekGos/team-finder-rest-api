@@ -42,21 +42,6 @@ class UserRepositoryTest {
 		
 		String username = "username";
 		
-//		User user = new User(
-//				1L,
-//				"user",
-//				"password",	
-//				"email@com",
-//				true,
-//				true,
-//				true,
-//				true, 
-//				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")),
-//				null,
-//				null);
-		
-		System.out.println("log user: " + user);
-		
 		userRepository.save(user);
 		
 		User returnedUser = userRepository.findByUsername(username);
@@ -79,17 +64,6 @@ class UserRepositoryTest {
 	void findByUserId_ShouldReturn_Valid_User() {
 		
 		Long userID = 1L;
-		
-//		User user = new User(
-//				1L,
-//				"user",
-//				"password",
-//				"email@com",
-//				true,
-//				true,
-//				true,
-//				true, 
-//				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")));
 		
 		userRepository.save(user);
 		
