@@ -37,7 +37,6 @@ class UserRestControllerTest {
 	@MockBean
 	private UserService userService;
 	
-	
 	@MockBean
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
@@ -68,9 +67,6 @@ class UserRestControllerTest {
 				"email",
 				"ROLE_ADMIN");
 	}
-	
-	@Autowired
-    private WebApplicationContext webApplicationContext;
 	
 	@Test
 	void createUser_ShouldReturn_StatusCreated_And_UserWithAdminRole() throws Exception {
