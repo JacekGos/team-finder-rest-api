@@ -73,7 +73,7 @@ public class User {
 			mappedBy = "creator",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Game createdGame;
+	private Set<Game> createdGames = new HashSet<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
