@@ -1,7 +1,9 @@
 package com.jacekg.teamfinder.game;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,16 +64,16 @@ public class Game {
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
 					CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "user_id")
-	private User organizer;
+	private User creator;
 
-	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.DETACH, CascadeType.MERGE,
-					CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinTable(
-			name = "game_user",
-			joinColumns = @JoinColumn(name = "game_id"),
-			inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<User> players;
+//	@ManyToMany(fetch = FetchType.LAZY,
+//			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+//					CascadeType.PERSIST, CascadeType.REFRESH})
+//	@JoinTable(name = "game_user",
+//			joinColumns = @JoinColumn(name = "game_id"),
+//			inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@ManyToMany(mappedBy = "participatedGames")
+	private Set<User> players = new HashSet<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -79,8 +81,10 @@ public class Game {
 	@JoinColumn(name = "sport_discipline_id")
 	private SportDiscipline sportDiscipline;
 	
-	
-	//many to one
+	@ManyToOne(fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "venue_id")
 	private Venue venue;
 	
 	

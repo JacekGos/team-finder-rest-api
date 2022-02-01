@@ -1,9 +1,13 @@
 package com.jacekg.teamfinder.venue;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.jacekg.teamfinder.discipline.SportDiscipline;
 
@@ -20,7 +24,10 @@ public class Venue {
 	@Column(name = "address", nullable = false)
 	private String address;
 	
-	//many to one
+	@ManyToOne(fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinColumn(name = "sport_discipline_id")
 	private SportDiscipline sportDiscipline;
 	
 	//variable or list for store busy terms of venue

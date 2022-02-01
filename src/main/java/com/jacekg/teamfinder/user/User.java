@@ -2,7 +2,9 @@ package com.jacekg.teamfinder.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,10 +70,18 @@ public class User {
 	private Collection<Role> roles;
 	
 	@OneToMany(fetch = FetchType.LAZY,
-			mappedBy = "organizer",
+			mappedBy = "creator",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Game createdGame;
+	
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	@JoinTable(name = "game_user",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "game_id"))
+	private Set<Game> participatedGames = new HashSet<>();
 	
 	public String getRoleName() {
 		
