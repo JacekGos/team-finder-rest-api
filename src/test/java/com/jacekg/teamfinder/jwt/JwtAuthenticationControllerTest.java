@@ -2,11 +2,16 @@ package com.jacekg.teamfinder.jwt;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +23,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
@@ -58,6 +65,9 @@ class JwtAuthenticationControllerTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		
+		List<GrantedAuthority> roles = new ArrayList<>();
+		roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+		
 		jwtRequest = new JwtRequest("admin", "password");
 		
 		userDetails = new org.springframework.security.core.userdetails.User(
@@ -67,7 +77,7 @@ class JwtAuthenticationControllerTest {
 				true, 
 				true, 
 				true, 
-				null);
+				roles);
 	}
 
 	@Test
@@ -91,6 +101,8 @@ class JwtAuthenticationControllerTest {
 		JwtResponse jwtResponse = objectMapper.readValue(returnedResponse, JwtResponse.class);
 		
 		System.out.println("response " + returnedResponse);
+		
+		verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class)).equals(1);
 	}
 
 }
