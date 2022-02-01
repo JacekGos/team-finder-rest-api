@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,7 +57,9 @@ class UserServiceImplTest {
 				"password",
 				"email",
 				true, true, true, true,
-				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")));
+				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")),
+				null,
+				null);
 		
 
 		userRequest = new UserRequest(
@@ -119,12 +122,14 @@ class UserServiceImplTest {
 			serviceUnderTest.save(userRequest);
 		});
 	}
-
+	
+	@Disabled
 	@Test
 	void testFindByUsername() {
 		fail("Not yet implemented");
 	}
-
+	
+	@Disabled
 	@Test
 	void testFindByUserId() {
 		fail("Not yet implemented");

@@ -1,6 +1,5 @@
 package com.jacekg.teamfinder.discipline;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.jacekg.teamfinder.game.Game;
-import com.jacekg.teamfinder.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,21 +21,39 @@ class UserRepositoryTest {
 	@Autowired
 	private UserRepository userRepository;
 	
+	private User user;
+	
+	@BeforeEach
+	void setUp() throws Exception {
+		
+		user = new User(
+				10L,
+				"username",
+				"password",
+				"email",
+				true, true, true, true,
+				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")),
+				null,
+				null);
+	}
+	
 	@Test
 	void findByUsername_ShouldReturn_Valid_User() {
 		
 		String username = "user";
 		
-		User user = new User(
-				1L,
-				"user",
-				"password",	
-				"email@com",
-				true,
-				true,
-				true,
-				true, 
-				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")));
+//		User user = new User(
+//				1L,
+//				"user",
+//				"password",	
+//				"email@com",
+//				true,
+//				true,
+//				true,
+//				true, 
+//				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")),
+//				null,
+//				null);
 		
 		userRepository.save(user);
 		
@@ -59,16 +78,16 @@ class UserRepositoryTest {
 		
 		Long userID = 1L;
 		
-		User user = new User(
-				1L,
-				"user",
-				"password",
-				"email@com",
-				true,
-				true,
-				true,
-				true, 
-				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")));
+//		User user = new User(
+//				1L,
+//				"user",
+//				"password",
+//				"email@com",
+//				true,
+//				true,
+//				true,
+//				true, 
+//				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")));
 		
 		userRepository.save(user);
 		

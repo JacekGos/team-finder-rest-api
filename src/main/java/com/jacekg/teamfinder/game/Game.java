@@ -66,12 +66,6 @@ public class Game {
 	@JoinColumn(name = "user_id")
 	private User creator;
 
-//	@ManyToMany(fetch = FetchType.LAZY,
-//			cascade = {CascadeType.DETACH, CascadeType.MERGE,
-//					CascadeType.PERSIST, CascadeType.REFRESH})
-//	@JoinTable(name = "game_user",
-//			joinColumns = @JoinColumn(name = "game_id"),
-//			inverseJoinColumns = @JoinColumn(name = "user_id"))
 	@ManyToMany(mappedBy = "participatedGames")
 	private Set<User> players = new HashSet<>();
 	

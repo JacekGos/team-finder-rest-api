@@ -1,20 +1,13 @@
 package com.jacekg.teamfinder.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.swing.text.AbstractDocument.Content;
-
-import org.h2.api.ErrorCode;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,13 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.ErrorResponse;
-import com.jacekg.teamfinder.exceptions.RestExceptionHandler;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 
@@ -157,8 +147,9 @@ class UserRestControllerTest {
 		String responseContent = mvcResult.getResponse().getContentAsString();
 		
 		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
+		System.out.println("error response: " + errorResponse.getMessage());
 		
-		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "Validation failed");
+		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
 	}
 
 }
