@@ -1,6 +1,8 @@
 package com.jacekg.teamfinder.venue;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.jacekg.teamfinder.discipline.SportDiscipline;
@@ -48,6 +51,8 @@ public class Venue {
 					CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "sport_discipline_id")
 	private SportDiscipline sportDiscipline;
-	
-	//variable or list for store busy terms of venue
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "term_id")
+	private List<Term> busyTerms = new ArrayList<>();
 }

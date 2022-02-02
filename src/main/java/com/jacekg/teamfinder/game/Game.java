@@ -80,8 +80,6 @@ public class Game {
 					CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "venue_id")
 	private Venue venue;
-	
-	
 }
 
 
