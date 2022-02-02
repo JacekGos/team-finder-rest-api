@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -85,7 +86,6 @@ class JwtAuthenticationControllerTest {
 		
 		String jsonBody = objectMapper.writeValueAsString(jwtRequest);
 		
-		doNothing().when(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
 		when(userDetailsService.loadUserByUsername(any(String.class))).thenReturn(userDetails);
 		when(jwtTokenUtil.generateToken(userDetails)).thenReturn("abc123");
 		
@@ -94,15 +94,13 @@ class JwtAuthenticationControllerTest {
 		MvcResult mvcResult = mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
-				.andExpect(status().isCreated()).andReturn();
+				.andExpect(status().isOk()).andReturn();
 		
 		String returnedResponse = mvcResult.getResponse().getContentAsString();
 		
 		JwtResponse jwtResponse = objectMapper.readValue(returnedResponse, JwtResponse.class);
 		
-		System.out.println("response " + returnedResponse);
-		
-		verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class)).equals(1);
+		assertThat(jwtResponse).hasFieldOrPropertyWithValue("jwttoken", "abc123");
 	}
 
 }
