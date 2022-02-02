@@ -142,7 +142,6 @@ class UserRestControllerTest {
 		String responseContent = mvcResult.getResponse().getContentAsString();
 		
 		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
-		System.out.println("error response: " + errorResponse.getMessage());
 		
 		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
 	}

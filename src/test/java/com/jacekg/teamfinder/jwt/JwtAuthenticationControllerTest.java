@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +34,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jacekg.teamfinder.exceptions.ErrorResponse;
 
 @WebMvcTest(JwtAuthenticationController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -101,6 +103,28 @@ class JwtAuthenticationControllerTest {
 		JwtResponse jwtResponse = objectMapper.readValue(returnedResponse, JwtResponse.class);
 		
 		assertThat(jwtResponse).hasFieldOrPropertyWithValue("jwttoken", "abc123");
+	}
+	
+	@Test
+	void createAuthenticationToken_ShouldReturn_InvalidCredentialsException() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(jwtRequest);
+		
+		when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
+			.thenThrow(BadCredentialsException.class);
+		
+		String url = "/v1/signin";
+		
+		MvcResult mvcResult = mockMvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+				.andExpect(status().isBadRequest()).andReturn();
+		
+		String responseContent = mvcResult.getResponse().getContentAsString();
+		
+		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
+		
+		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "INVALID_CREDENTIALS");
 	}
 
 }
