@@ -7,6 +7,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,14 +35,23 @@ public class GameRequest {
 	@Max(value = 30, message = "max 30 players")
 	private int amountOfPlayers;
 	
+	@NotNull(message = "required")
 	@ValidDuration
 	private int duration;
 	
+	@NotNull(message = "required")
+	@Min(value = 0)
+	@Max(value = 10000, message = "max 10000")
 	private int price;
 	
+	@NotNull(message = "required")
 	private long venueId;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "required")
 	private LocalDate date;
 	
+	@Min(value = 0, message = "not allowed")
+	@Max(value = 23, message = "not allowed")
 	private int hour;
 }
