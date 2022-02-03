@@ -25,7 +25,7 @@ public class UserRequest {
 	private Long id;
 
 	@NotNull(message = "required")
-	@Size(min = 1, max = 50, message = "za długa nazwa użytkownika")
+	@Size(min = 1, max = 50, message = "too long username")
 	private String username;
 
 	@NotNull(message = "required")

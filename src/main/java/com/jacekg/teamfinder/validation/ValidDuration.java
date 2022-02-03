@@ -9,15 +9,15 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Constraint(validatedBy = EmailValidator.class)
-@Target({ElementType.TYPE, ElementType.FIELD, ElementType.ANNOTATION_TYPE})
+@Constraint(validatedBy = GameDurationValidator.class)
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ValidEmail {
+public @interface ValidDuration {
 	
-	String message() default "invalid email address";
-
-	Class<?>[] groups() default {};
-
+	String message() default "duration time must be 60 or 120";
+	
+	Class<?>[] groups() default{};
+	
 	Class<? extends Payload>[] payload() default{};
 }

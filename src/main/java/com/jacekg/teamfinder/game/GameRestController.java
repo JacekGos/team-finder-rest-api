@@ -27,3 +27,7 @@ public class GameRestController {
 		return status(HttpStatus.CREATED).body(gameService.save(gameRequest));
 	}
 }
+
+
+
+
