@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/v1/")
+@RequestMapping("/v1")
 @AllArgsConstructor
 public class VenueRestController {
 	

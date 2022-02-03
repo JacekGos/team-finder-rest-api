@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.jacekg.teamfinder.discipline.SportDiscipline;
+import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

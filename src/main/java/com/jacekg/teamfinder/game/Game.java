@@ -18,7 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.jacekg.teamfinder.discipline.SportDiscipline;
+import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 import com.jacekg.teamfinder.user.User;
 import com.jacekg.teamfinder.venue.Venue;
 

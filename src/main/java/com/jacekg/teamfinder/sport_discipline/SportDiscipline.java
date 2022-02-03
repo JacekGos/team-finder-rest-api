@@ -1,4 +1,4 @@
-package com.jacekg.teamfinder.discipline;
+package com.jacekg.teamfinder.sport_discipline;
 
 import java.util.List;
 
