@@ -18,11 +18,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class VenueRestController {
 	
+	private VenueService venueService;
+	
 	@PostMapping("/venues")
 	public ResponseEntity<VenueResponse> createVenue
 		(@Valid @RequestBody VenueRequest venueRequest) {
 		
-		return status(HttpStatus.CREATED).body(null);
+		return status(HttpStatus.CREATED).body(venueService(venueRequest));
 	}
 
 }
