@@ -24,7 +24,7 @@ public class VenueRestController {
 	public ResponseEntity<VenueResponse> createVenue
 		(@Valid @RequestBody VenueRequest venueRequest) {
 		
-		return status(HttpStatus.CREATED).body(venueService(venueRequest));
+		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
 
 }
