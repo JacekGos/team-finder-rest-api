@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.status;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,12 @@ import lombok.AllArgsConstructor;
 public class GameRestController {
 	
 	@PostMapping("/games")
-	public ResponseEntity<GameResponse> createGame(@Valid @RequestBody GameRequest gameRequest) {
+	public ResponseEntity<GameRequest> createGame
+		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
 		
-		return status(HttpStatus.CREATED).body(gameService.save(gameRequest));
+//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
+		return status(HttpStatus.CREATED).body(gameRequest);
+
 	}
 }
 

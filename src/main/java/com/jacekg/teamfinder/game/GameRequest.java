@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,10 +26,12 @@ import com.jacekg.teamfinder.validation.ValidDuration;
 public class GameRequest {
 	
 	@NotNull(message = "required")
-	@Size(min = 1, max = 50, message = "too long name")
+	@NotBlank(message = "name cannot be empty")
+	@Size(max = 50, message = "too long name")
 	private String name;
 	
 	@NotNull(message = "required")
+	@NotBlank(message = "discipline cannot be empty")
 	private String sportDisciplineName;
 	
 	@Min(value = 2, message = "at least two players")
@@ -40,18 +43,19 @@ public class GameRequest {
 	private int duration;
 	
 	@NotNull(message = "required")
-	@Min(value = 0)
-	@Max(value = 10000, message = "max 10000")
+	@Min(value = 0, message = "min value 0")
+	@Max(value = 10000, message = "max value 10000")
 	private int price;
 	
 	@NotNull(message = "required")
+	@Min(value = 0, message = "min value 0")
 	private long venueId;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "required")
 	private LocalDate date;
 	
-	@Min(value = 0, message = "not allowed")
-	@Max(value = 23, message = "not allowed")
+	@Min(value = 0, message = "must be in range 5-22")
+	@Max(value = 23, message = "must be in range 5-22")
 	private int hour;
 }
