@@ -37,6 +37,7 @@ public class VenueServiceImpl implements VenueService {
 		Venue venue = modelMapper.map(venueRequest, Venue.class);
 		
 		System.out.println("venue: " + venue);
+		System.out.println("sport disc: " + venue.getSportDiscipline());
 		
 		return null;
 	}
