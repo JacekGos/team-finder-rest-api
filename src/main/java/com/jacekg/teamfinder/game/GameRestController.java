@@ -23,6 +23,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GameRestController {
 	
+	private GameService gameService;
+	
 	@PostMapping("/games")
 	public ResponseEntity<GameResponse> createGame
 		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
