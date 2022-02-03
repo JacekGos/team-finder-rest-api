@@ -24,13 +24,20 @@ import lombok.AllArgsConstructor;
 public class GameRestController {
 	
 	@PostMapping("/games")
-	public ResponseEntity<GameRequest> createGame
+	public ResponseEntity<GameResponse> createGame
 		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
 		
-//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
-		return status(HttpStatus.CREATED).body(gameRequest);
-
+		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
 	}
+	
+//	@PostMapping("/games")
+//	public ResponseEntity<GameRequest> createGame
+//		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
+//		
+////		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
+//		return status(HttpStatus.CREATED).body(gameRequest);
+//
+//	}
 }
 
 
