@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.locationtech.jts.geom.Point;
+
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 import com.jacekg.teamfinder.user.User;
 
@@ -46,11 +48,14 @@ public class Venue {
 	@Column(name = "address", nullable = false)
 	private String address;
 	
-	@Column(name = "longitude", nullable = false)
-	private Double longitude;
+//	@Column(name = "longitude", nullable = false)
+//	private Double longitude;
+//	
+//	@Column(name = "lattitude", nullable = false)
+//	private Double lattitude;
 	
-	@Column(name = "lattitude", nullable = false)
-	private Double lattitude;
+	@Column(columnDefinition = "geometry")
+	private Point location;
 	
 	@ManyToOne(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
