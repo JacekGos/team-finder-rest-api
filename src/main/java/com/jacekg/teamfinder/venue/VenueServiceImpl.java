@@ -35,7 +35,8 @@ public class VenueServiceImpl implements VenueService {
 		//Create  Venue object
 //		Venue venue = mapVenue(venueRequest);
 
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
+//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
+		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(10.0, 0));
 		
 		SportDiscipline sportDiscipline = new SportDiscipline(1L, "football", null);
 		
