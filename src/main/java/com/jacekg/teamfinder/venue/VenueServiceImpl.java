@@ -39,14 +39,15 @@ public class VenueServiceImpl implements VenueService {
 		//Create  Venue object
 //		Venue venue = mapVenue(venueRequest);
 
-//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(51.41955305918177, 21.143201932437));
+//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.88387349946455, 52.19534977700785));
+		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.980332604713254, 52.232282077952625));
+//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(52.22629611891915, 20.93406243991821));
 		
 		SportDiscipline sportDiscipline = new SportDiscipline(1L, "football", null);
 		
 		Venue venue = new Venue();
-		venue.setName("Kielce stadium");
-		venue.setAddress("Kielce, Warszawska 1");
+		venue.setName("ursus stadium");
+		venue.setAddress("Warszawa, Warszawska 1");
 //		venue.setSportDiscipline(sportDiscipline);
 		venue.setLocation(venueCoordinates);
 		
@@ -69,12 +70,13 @@ public class VenueServiceImpl implements VenueService {
 //	@Transactional
 	public List<Venue> findVenues() {
 		
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
+		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.980332604713254, 52.232282077952625));
 //		return venueRepository.findNearWithinDistance(venueCoordinates, 80000);
 		
 //		List<Venue> venues = venueRepository.findAll();
-		List<Venue> venues = venueRepository.findNearWithinDistance(venueCoordinates, 100000);
+		List<Venue> venues = venueRepository.findNearWithinDistance(venueCoordinates, 7750);
 		logger.info("venues: " + venues);
+		logger.info("venues number: " + venues.size());
 		
 		return null;
 		
