@@ -1,5 +1,7 @@
 package com.jacekg.teamfinder;
 
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,5 +20,10 @@ public class TeamFinderApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+	
+	@Bean
+	public GeometryFactory geometryFactory() {
+		return new GeometryFactory(new PrecisionModel(), 4326);
 	}
 }

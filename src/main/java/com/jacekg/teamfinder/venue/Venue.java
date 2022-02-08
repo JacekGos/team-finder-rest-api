@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import org.locationtech.jts.geom.Point;
 
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
-import com.jacekg.teamfinder.user.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,12 +47,6 @@ public class Venue {
 	@Column(name = "address", nullable = false)
 	private String address;
 	
-//	@Column(name = "longitude", nullable = false)
-//	private Double longitude;
-//	
-//	@Column(name = "lattitude", nullable = false)
-//	private Double lattitude;
-//	
 	@Column(columnDefinition = "geometry")
 	private Point location;
 	
