@@ -1,5 +1,9 @@
 package com.jacekg.teamfinder.venue;
 
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -36,7 +40,7 @@ public class VenueServiceImpl implements VenueService {
 //		Venue venue = mapVenue(venueRequest);
 
 //		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(10.0, 0));
+		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(51.41955305918177, 21.143201932437));
 		
 		SportDiscipline sportDiscipline = new SportDiscipline(1L, "football", null);
 		
@@ -59,11 +63,21 @@ public class VenueServiceImpl implements VenueService {
 //		return venueRepository.save(venue);
 //		return null;
 	}
-
-	private Venue mapVenue(VenueRequest venueRequest) {
+	
+	//TODO remove- test purposes
+	@Override
+//	@Transactional
+	public List<Venue> findVenues() {
 		
-		Venue venue = modelMapper.map(venueRequest, Venue.class);
+		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(50.8660773, 20.6285676));
+//		return venueRepository.findNearWithinDistance(venueCoordinates, 80000);
+		
+//		List<Venue> venues = venueRepository.findAll();
+		List<Venue> venues = venueRepository.findNearWithinDistance(venueCoordinates, 100000);
+		logger.info("venues: " + venues);
+		
 		return null;
+		
 	}
 
 }

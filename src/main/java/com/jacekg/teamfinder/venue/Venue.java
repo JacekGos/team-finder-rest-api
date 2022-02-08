@@ -19,6 +19,8 @@ import javax.persistence.Table;
 
 import org.locationtech.jts.geom.Point;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 
 import lombok.AllArgsConstructor;
