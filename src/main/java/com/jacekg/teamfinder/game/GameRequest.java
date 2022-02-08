@@ -55,7 +55,7 @@ public class GameRequest {
 	@NotNull(message = "required")
 	private LocalDate date;
 	
-	@Min(value = 0, message = "must be in range 5-22")
-	@Max(value = 23, message = "must be in range 5-22")
+	@Min(value = 5, message = "must be in range 5-22")
+	@Max(value = 22, message = "must be in range 5-22")
 	private int hour;
 }

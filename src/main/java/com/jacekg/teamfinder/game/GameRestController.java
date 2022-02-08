@@ -12,6 +12,8 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import com.jacekg.teamfinder.user.UserResponse;
@@ -22,26 +24,20 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/v1/")
 @AllArgsConstructor
 public class GameRestController {
-	
+
 	private GameService gameService;
-	
-	@PostMapping("/games")
-	public ResponseEntity<GameResponse> createGame
-		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
-		
-		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
-	}
-	
+
 //	@PostMapping("/games")
-//	public ResponseEntity<GameRequest> createGame
+//	public ResponseEntity<GameResponse> createGame
 //		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
 //		
-////		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
-//		return status(HttpStatus.CREATED).body(gameRequest);
-//
+//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
 //	}
+
+	@PostMapping("/games")
+	public ResponseEntity<GameRequest> createGame(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
+//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
+		return status(HttpStatus.CREATED).body(gameRequest);
+
+	}
 }
-
-
-
-

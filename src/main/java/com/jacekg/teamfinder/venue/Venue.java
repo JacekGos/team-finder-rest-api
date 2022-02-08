@@ -48,14 +48,14 @@ public class Venue {
 	@Column(name = "address", nullable = false)
 	private String address;
 	
-//	@Column(name = "longitude", nullable = false)
-//	private Double longitude;
-//	
-//	@Column(name = "lattitude", nullable = false)
-//	private Double lattitude;
+	@Column(name = "longitude", nullable = false)
+	private Double longitude;
 	
-	@Column(columnDefinition = "geometry")
-	private Point location;
+	@Column(name = "lattitude", nullable = false)
+	private Double lattitude;
+	
+//	@Column(columnDefinition = "geometry")
+//	private Point location;
 	
 	@ManyToOne(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
