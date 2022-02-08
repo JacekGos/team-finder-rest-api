@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 @PropertySource({"classpath:application.properties", "classpath:secret.properties"})
@@ -25,5 +26,10 @@ public class TeamFinderApplication {
 	@Bean
 	public GeometryFactory geometryFactory() {
 		return new GeometryFactory(new PrecisionModel(), 4326);
+	}
+	
+	@Bean
+	public WebClient.Builder getWebClient() {
+		return WebClient.builder();
 	}
 }

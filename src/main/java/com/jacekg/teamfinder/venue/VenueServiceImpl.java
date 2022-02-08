@@ -11,7 +11,11 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jacekg.teamfinder.game.GameServiceImpl;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
@@ -29,6 +33,18 @@ public class VenueServiceImpl implements VenueService {
 	private GeometryFactory geometryFactory;
 	
 	private static final Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
+	
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Autowired
+	private WebClient.Builder webClientBuilder;
+	
+	@Value("${geocoding.api.key}")
+	private final String API_KEY;
+	
+	@Value("${geocoding.api.url}")
+	private final String GEOCODING_API_URL;
 	
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
@@ -71,7 +87,6 @@ public class VenueServiceImpl implements VenueService {
 	public List<Venue> findVenues() {
 		
 		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.980332604713254, 52.232282077952625));
-//		return venueRepository.findNearWithinDistance(venueCoordinates, 80000);
 		
 //		List<Venue> venues = venueRepository.findAll();
 		List<Venue> venues = venueRepository.findNearWithinDistance(venueCoordinates, 7750);
