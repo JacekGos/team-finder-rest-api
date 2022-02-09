@@ -24,11 +24,8 @@ public class GeocodingServiceImpl implements GeocodingService {
 
 	private final WebClient.Builder webClientBuilder;
 	
-	
-//	@Value("${geocoding.api.key}")
 	private String GEOCODING_API_KEY;
 	
-//	@Value("${geocoding.api.url}")
 	private String GEOCODING_API_URL;
 	
 	@Autowired
@@ -42,13 +39,6 @@ public class GeocodingServiceImpl implements GeocodingService {
 		GEOCODING_API_URL = gEOCODING_API_URL;
 	}
 
-
-
-//	@Autowired
-//	public GeocodingServiceImpl(WebClient.Builder webClientBuilder) {
-//		this.webClientBuilder = webClientBuilder;
-//	}
-	
 	@Override
 	public Location findLocationByAddress(String address) {
 
@@ -67,9 +57,7 @@ public class GeocodingServiceImpl implements GeocodingService {
 			.bodyToMono(Geocode.class)
 			.block();
 		
-		logger.info("geocode " + geocode.status);
-		
-		return geocode.getResults().get(0).getGeometry().getLocation();
+		return geocode.status.equals("OK") ? geocode.getResults().get(0).getGeometry().getLocation() : null;
 	}
 
 }
