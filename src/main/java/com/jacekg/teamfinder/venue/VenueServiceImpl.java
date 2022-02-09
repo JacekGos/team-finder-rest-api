@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.jacekg.teamfinder.geocode.GeocodingService;
-import com.jacekg.teamfinder.geocode.Location;
+import com.jacekg.teamfinder.geocoding.GeocodingService;
+import com.jacekg.teamfinder.geocoding.Location;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 
 import lombok.AllArgsConstructor;

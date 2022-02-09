@@ -1,4 +1,4 @@
-package com.jacekg.teamfinder.geocode;
+package com.jacekg.teamfinder.geocoding;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

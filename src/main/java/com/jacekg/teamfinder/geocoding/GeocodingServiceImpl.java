@@ -1,4 +1,4 @@
-package com.jacekg.teamfinder.geocode;
+package com.jacekg.teamfinder.geocoding;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class GeocodingServiceImpl implements GeocodingService {
 			.bodyToMono(Geocode.class)
 			.block();
 		
-		
+		logger.info("geocode " + geocode.status);
 		
 		return geocode.getResults().get(0).getGeometry().getLocation();
 	}

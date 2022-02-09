@@ -1,4 +1,4 @@
-package com.jacekg.teamfinder.geocode;
+package com.jacekg.teamfinder.geocoding;
 
 import java.util.ArrayList;
 
