@@ -46,8 +46,10 @@ public class VenueServiceImpl implements VenueService {
 				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getName());
+		logger.info("venue type: " + venueType);
 		
 		Venue venue = mapVenue(venueRequest, venueCoordinates, venueType);
+		logger.info("mapped venue: " + venue);
 		
 		//check if venue on this address exists
 		//throw exception if exists
