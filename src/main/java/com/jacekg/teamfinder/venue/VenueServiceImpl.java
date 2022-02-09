@@ -69,8 +69,7 @@ public class VenueServiceImpl implements VenueService {
 		VenueResponse venueResponse = modelMapper.map(venueRepository.save(venue), VenueResponse.class);
 		logger.info("venueResposne: " + venueResponse);
 		
-//		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
-		return venueResponse;
+		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
 	}
 	
 	private Venue mapVenue(VenueRequest venueRequest, Point venueCoordinates, VenueType venueType) {
