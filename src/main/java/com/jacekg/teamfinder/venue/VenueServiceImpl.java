@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.jacekg.teamfinder.geocode.GeocodingService;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +22,8 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class VenueServiceImpl implements VenueService {
+	
+	private GeocodingService geocodingService;
 	
 	private VenueRepository venueRepository;
 	
@@ -33,6 +36,8 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
 		
+		
+		
 		//check if venue on this address exists
 		//throw exception if exists
 		
@@ -40,16 +45,12 @@ public class VenueServiceImpl implements VenueService {
 //		Venue venue = mapVenue(venueRequest);
 
 //		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.88387349946455, 52.19534977700785));
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.980332604713254, 52.232282077952625));
-//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(52.22629611891915, 20.93406243991821));
 		
-		SportDiscipline sportDiscipline = new SportDiscipline(1L, "football", null);
-		
-		Venue venue = new Venue();
-		venue.setName("ursus stadium");
-		venue.setAddress("Warszawa, Warszawska 1");
+//		Venue venue = new Venue();
+//		venue.setName("ursus stadium");
+//		venue.setAddress("Warszawa, Warszawska 1");
 //		venue.setSportDiscipline(sportDiscipline);
-		venue.setLocation(venueCoordinates);
+//		venue.setLocation(venueCoordinates);
 		
 		//Get sportDiscipline by name
 		
@@ -57,12 +58,11 @@ public class VenueServiceImpl implements VenueService {
 		
 		//save venue
 		
-		Venue savedVenue = venueRepository.save(venue);
-		logger.info("venue: " + savedVenue);
+//		Venue savedVenue = venueRepository.save(venue);
+//		logger.info("venue: " + savedVenue);
 		
-		return new VenueResponse();
 //		return venueRepository.save(venue);
-//		return null;
+		return null;
 	}
 	
 	//TODO remove- test purposes
