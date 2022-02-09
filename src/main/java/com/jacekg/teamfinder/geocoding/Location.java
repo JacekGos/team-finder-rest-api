@@ -2,7 +2,14 @@ package com.jacekg.teamfinder.geocoding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.ToString;
+
+@ToString
 public class Location {
+	
+	private double lat;
+	
+	private double lng;
 	
 	@JsonProperty("lat")
 	public double getLat() {
@@ -13,8 +20,6 @@ public class Location {
 		this.lat = lat;
 	}
 
-	double lat;
-
 	@JsonProperty("lng")
 	public double getLng() {
 		return this.lng;
@@ -22,12 +27,5 @@ public class Location {
 
 	public void setLng(double lng) {
 		this.lng = lng;
-	}
-
-	double lng;
-
-	@Override
-	public String toString() {
-		return "Location [lat=" + lat + ", lng=" + lng + "]";
 	}
 }

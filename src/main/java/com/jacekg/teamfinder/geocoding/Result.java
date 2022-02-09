@@ -2,7 +2,12 @@ package com.jacekg.teamfinder.geocoding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.ToString;
+
+@ToString
 public class Result {
+
+	private Geometry geometry;
 
 	@JsonProperty("geometry")
 	public Geometry getGeometry() {
@@ -11,12 +16,5 @@ public class Result {
 
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
-	}
-
-	Geometry geometry;
-
-	@Override
-	public String toString() {
-		return "Result [geometry=" + geometry + "]";
 	}
 }
