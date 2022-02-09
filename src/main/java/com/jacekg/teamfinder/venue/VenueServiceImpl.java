@@ -28,6 +28,8 @@ public class VenueServiceImpl implements VenueService {
 	
 	private VenueRepository venueRepository;
 	
+	private VenueTypeRepository venueTypeRepository;
+	
 	private ModelMapper modelMapper;
 	
 	private GeometryFactory geometryFactory;
@@ -40,13 +42,18 @@ public class VenueServiceImpl implements VenueService {
 		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
 		logger.info("Location: " + location);
 		
+		Point venueCoordinates = 
+				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
+		
+		VenueType venueType = venueTypeRepository.findByName(venueRequest.getName());
+		
+		Venue venue = mapVenue(venueRequest, venueCoordinates, venueType);
+		
 		//check if venue on this address exists
 		//throw exception if exists
 		
 		//Create  Venue object
 //		Venue venue = mapVenue(venueRequest);
-
-//		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.88387349946455, 52.19534977700785));
 		
 //		Venue venue = new Venue();
 //		venue.setName("ursus stadium");
@@ -63,23 +70,16 @@ public class VenueServiceImpl implements VenueService {
 //		Venue savedVenue = venueRepository.save(venue);
 //		logger.info("venue: " + savedVenue);
 		
-//		return venueRepository.save(venue);
-		return null;
+		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
 	}
 	
-	//TODO remove- test purposes
-	@Override
-	public List<Venue> findVenues() {
+	private Venue mapVenue(VenueRequest venueRequest, Point venueCoordinates, VenueType venueType) {
 		
-		Point venueCoordinates = geometryFactory.createPoint(new Coordinate(20.980332604713254, 52.232282077952625));
+		Venue venue = modelMapper.map(venueRequest, Venue.class);
+		venue.setLocation(venueCoordinates);
+		venue.setVenueType(venueType);
 		
-//		List<Venue> venues = venueRepository.findAll();
-		List<Venue> venues = venueRepository.findNearWithinDistance(venueCoordinates, 7750);
-		logger.info("venues: " + venues);
-		logger.info("venues number: " + venues.size());
-		
-		return null;
-		
+		return venue;
 	}
 
 }

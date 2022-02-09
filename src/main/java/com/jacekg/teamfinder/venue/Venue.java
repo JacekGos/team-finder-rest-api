@@ -55,8 +55,8 @@ public class Venue {
 	@ManyToOne(fetch = FetchType.LAZY,
 			cascade = {CascadeType.DETACH, CascadeType.MERGE,
 					CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name = "sport_discipline_id")
-	private SportDiscipline sportDiscipline;
+	@JoinColumn(name = "venue_type_id")
+	private VenueType venueType;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "term_id")

@@ -29,11 +29,4 @@ public class VenueRestController {
 		
 		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
-	
-	@GetMapping("/venues")
-	public ResponseEntity<List<Venue>> getVenues() {
-
-		return status(HttpStatus.CREATED).body(venueService.findVenues());
-	}
-
 }

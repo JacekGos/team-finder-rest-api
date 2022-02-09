@@ -25,6 +25,6 @@ public class VenueRequest {
 	private String address;
 	
 	@NotNull(message = "required")
-	@Size(min = 1, max = 200, message = "too long discipline name")
-	private String sportDisciplineName;
+	@Size(min = 1, max = 200, message = "too long venue type name")
+	private String venueType;
 }
