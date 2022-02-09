@@ -2,10 +2,13 @@ package com.jacekg.teamfinder.venue;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
 import com.jacekg.teamfinder.geocoding.Location;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
+import com.jacekg.teamfinder.user.User;
+import com.jacekg.teamfinder.user.UserResponse;
 
 import lombok.AllArgsConstructor;
 
@@ -35,6 +40,16 @@ public class VenueServiceImpl implements VenueService {
 	private GeometryFactory geometryFactory;
 	
 	private static final Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
+	
+	@PostConstruct
+	public void postConstruct() {
+		
+		modelMapper.addMappings(new PropertyMap<Venue, VenueResponse>() {
+			protected void configure() {
+				map().setVenueTypeName(source.getVenueType().getName());
+			}
+		});
+	}
 	
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {

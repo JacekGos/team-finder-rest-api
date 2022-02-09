@@ -17,5 +17,5 @@ public class VenueResponse {
 	
 	private String address;
 	
-	private String venueType;
+	private String venueTypeName;
 }
