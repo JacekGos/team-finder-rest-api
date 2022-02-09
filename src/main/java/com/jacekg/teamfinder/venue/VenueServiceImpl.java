@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jacekg.teamfinder.geocode.GeocodingService;
+import com.jacekg.teamfinder.geocode.Location;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 
 import lombok.AllArgsConstructor;
@@ -36,7 +37,8 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
 		
-		
+		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		logger.info("Location: " + location);
 		
 		//check if venue on this address exists
 		//throw exception if exists

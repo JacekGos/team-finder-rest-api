@@ -4,30 +4,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Location {
 	
-	private double lattitude;
-	
-	private double longitude;
-	
 	@JsonProperty("lat")
-	public double getLattitude() {
-		return this.lattitude;
+	public double getLat() {
+		return this.lat;
 	}
 
-	public void setLattitude(double lattitude) {
-		this.lattitude = lattitude;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
+
+	double lat;
 
 	@JsonProperty("lng")
-	public double getLongitude() {
-		return this.longitude;
+	public double getLng() {
+		return this.lng;
 	}
 
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public void setLng(double lng) {
+		this.lng = lng;
 	}
+
+	double lng;
 
 	@Override
 	public String toString() {
-		return "Location [latitude=" + lattitude + ", longitude=" + longitude + "]";
+		return "Location [lat=" + lat + ", lng=" + lng + "]";
 	}
 }
