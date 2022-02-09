@@ -30,14 +30,6 @@ public class VenueServiceImpl implements VenueService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
 	
-	private WebClient.Builder webClientBuilder;
-	
-	@Value("${geocoding.api.key}")
-	private final String API_KEY;
-	
-	@Value("${geocoding.api.url}")
-	private final String GEOCODING_API_URL;
-	
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
 		
