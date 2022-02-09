@@ -45,34 +45,17 @@ public class VenueServiceImpl implements VenueService {
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
 		
-		VenueType venueType = venueTypeRepository.findByName(venueRequest.getName());
+		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
 		logger.info("venue type: " + venueType);
 		
 		Venue venue = mapVenue(venueRequest, venueCoordinates, venueType);
 		logger.info("mapped venue: " + venue);
 		
-		//check if venue on this address exists
-		//throw exception if exists
+		VenueResponse venueResponse = modelMapper.map(venueRepository.save(venue), VenueResponse.class);
+		logger.info("venueResposne: " + venueResponse);
 		
-		//Create  Venue object
-//		Venue venue = mapVenue(venueRequest);
-		
-//		Venue venue = new Venue();
-//		venue.setName("ursus stadium");
-//		venue.setAddress("Warszawa, Warszawska 1");
-//		venue.setSportDiscipline(sportDiscipline);
-//		venue.setLocation(venueCoordinates);
-		
-		//Get sportDiscipline by name
-		
-		//set discipline to venue
-		
-		//save venue
-		
-//		Venue savedVenue = venueRepository.save(venue);
-//		logger.info("venue: " + savedVenue);
-		
-		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
+//		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
+		return venueResponse;
 	}
 	
 	private Venue mapVenue(VenueRequest venueRequest, Point venueCoordinates, VenueType venueType) {

@@ -26,5 +26,5 @@ public class VenueRequest {
 	
 	@NotNull(message = "required")
 	@Size(min = 1, max = 200, message = "too long venue type name")
-	private String venueType;
+	private String venueTypeName;
 }
