@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.jacekg.teamfinder.exceptions.AddressAlreadyTaken;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
 import com.jacekg.teamfinder.geocoding.Location;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
@@ -62,6 +63,11 @@ public class VenueServiceImpl implements VenueService {
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
 		logger.info("venue type: " + venueType);
+		
+		if (venueRepository.findByLocationAndVenueType(venueCoordinates, venueType) != null) {
+			throw new AddressAlreadyTaken
+				(venueRequest.getVenueTypeName() + " on this address is already registered");
+		}
 		
 		Venue venue = mapVenue(venueRequest, venueCoordinates, venueType);
 		logger.info("mapped venue: " + venue);

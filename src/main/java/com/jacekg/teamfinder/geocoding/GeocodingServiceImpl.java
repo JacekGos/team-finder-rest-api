@@ -57,6 +57,9 @@ public class GeocodingServiceImpl implements GeocodingService {
 			.bodyToMono(Geocode.class)
 			.block();
 		
+		logger.info("uri: " + uriString);
+		logger.info("geocode result: " + geocode.getResults().get(0).getGeometry().getLocation());
+		
 		return geocode.getStatus().equals("OK") ? geocode.getResults().get(0).getGeometry().getLocation() : null;
 	}
 
