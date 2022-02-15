@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.venue;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -55,14 +56,15 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
 		
-		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
-		logger.info("Location: " + location);
+//		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		
+		Optional<Location> location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		location.isPresent()
 		
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
-		logger.info("venue type: " + venueType);
 		
 		if (venueRepository.findByLocationAndVenueType(venueCoordinates, venueType) != null) {
 			throw new AddressAlreadyTaken

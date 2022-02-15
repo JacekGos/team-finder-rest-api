@@ -1,5 +1,7 @@
 package com.jacekg.teamfinder.geocoding;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,31 @@ public class GeocodingServiceImpl implements GeocodingService {
 		GEOCODING_API_URL = gEOCODING_API_URL;
 	}
 
+//	@Override
+//	public Location findLocationByAddress(String address) {
+//
+//		String uriString = UriComponentsBuilder
+//				.fromUriString(GEOCODING_API_URL)
+//				.queryParam("address", address)
+//				.queryParam("key", GEOCODING_API_KEY)
+//				.build()
+//				.encode()
+//				.toUriString();
+//		
+//		Geocode geocode = webClientBuilder.build()
+//			.get()
+//			.uri(uriString)
+//			.retrieve()
+//			.bodyToMono(Geocode.class)
+//			.block();
+//		
+//		logger.info("uri: " + uriString);
+//		
+//		return geocode.getResults().size() > 0 ? geocode.getResults().get(0).getGeometry().getLocation() : null;
+//	}
+	
 	@Override
-	public Location findLocationByAddress(String address) {
+	public Optional<Location> findLocationByAddress(String address) {
 
 		String uriString = UriComponentsBuilder
 				.fromUriString(GEOCODING_API_URL)
@@ -58,9 +83,9 @@ public class GeocodingServiceImpl implements GeocodingService {
 			.block();
 		
 		logger.info("uri: " + uriString);
-		logger.info("geocode result: " + geocode.getResults().get(0).getGeometry().getLocation());
 		
-		return geocode.getStatus().equals("OK") ? geocode.getResults().get(0).getGeometry().getLocation() : null;
+		return geocode.getResults().size() > 0 ? Optional.of(geocode.getResults().get(0).getGeometry().getLocation()) : null;
 	}
+
 
 }
