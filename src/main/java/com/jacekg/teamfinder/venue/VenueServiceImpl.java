@@ -55,6 +55,13 @@ public class VenueServiceImpl implements VenueService {
 	
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
+
+		Venue venue = checkNewVenueValidation(venueRequest);
+		
+		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
+	}
+	
+	private Venue checkNewVenueValidation(VenueRequest venueRequest) {
 		
 		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
 		logger.info("location: " + location);
@@ -68,21 +75,12 @@ public class VenueServiceImpl implements VenueService {
 			throw new SaveVenueException("no such venue type exists");
 		}
 		
-		Venue foundVenue = venueRepository.findByLocationAndVenueType(venueCoordinates, venueType);
-		logger.info("foundVenue " + foundVenue);
-		
 		if (venueRepository.findByLocationAndVenueType(venueCoordinates, venueType) != null) {
 			throw new SaveVenueException
 				(venueRequest.getVenueTypeName() + " on this address is already registered");
 		}
 		
-		Venue venue = mapVenue(venueRequest, venueCoordinates, venueType);
-		logger.info("mapped venue: " + venue);
-		
-		VenueResponse venueResponse = modelMapper.map(venueRepository.save(venue), VenueResponse.class);
-		logger.info("venueResposne: " + venueResponse);
-		
-		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
+		return mapVenue(venueRequest, venueCoordinates, venueType);
 	}
 	
 	private Venue mapVenue(VenueRequest venueRequest, Point venueCoordinates, VenueType venueType) {
