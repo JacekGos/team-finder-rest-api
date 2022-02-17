@@ -4,5 +4,5 @@ import java.util.Optional;
 
 public interface GeocodingService {
 				
-	public Optional<Location> findLocationByAddress(String address);
+	public Location findLocationByAddress(String address);
 }

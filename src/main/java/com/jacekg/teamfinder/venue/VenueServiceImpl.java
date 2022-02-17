@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.jacekg.teamfinder.exceptions.AddressAlreadyTaken;
+import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
 import com.jacekg.teamfinder.geocoding.Location;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
@@ -56,18 +56,19 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) {
 		
-//		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
-		
-		Optional<Location> location = geocodingService.findLocationByAddress(venueRequest.getAddress());
-		location.isPresent()
+		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		logger.info("location: " + location);
 		
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
 		
+		Venue foundVenue = venueRepository.findByLocationAndVenueType(venueCoordinates, venueType);
+		logger.info("foundVenue " + foundVenue);
+		
 		if (venueRepository.findByLocationAndVenueType(venueCoordinates, venueType) != null) {
-			throw new AddressAlreadyTaken
+			throw new SaveVenueException
 				(venueRequest.getVenueTypeName() + " on this address is already registered");
 		}
 		

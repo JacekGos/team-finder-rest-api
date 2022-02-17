@@ -103,7 +103,7 @@ public class RestExceptionHandler {
 	}
 	
 	@ExceptionHandler
-	public ResponseEntity<ErrorResponse> handleException(AddressAlreadyTaken exc) {
+	public ResponseEntity<ErrorResponse> handleException(SaveVenueException exc) {
 
 		ErrorResponse error = new ErrorResponse();
 

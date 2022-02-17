@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.venue.VenueServiceImpl;
 
 import lombok.AllArgsConstructor;
@@ -40,32 +41,9 @@ public class GeocodingServiceImpl implements GeocodingService {
 		GEOCODING_API_KEY = gEOCODING_API_KEY;
 		GEOCODING_API_URL = gEOCODING_API_URL;
 	}
-
-//	@Override
-//	public Location findLocationByAddress(String address) {
-//
-//		String uriString = UriComponentsBuilder
-//				.fromUriString(GEOCODING_API_URL)
-//				.queryParam("address", address)
-//				.queryParam("key", GEOCODING_API_KEY)
-//				.build()
-//				.encode()
-//				.toUriString();
-//		
-//		Geocode geocode = webClientBuilder.build()
-//			.get()
-//			.uri(uriString)
-//			.retrieve()
-//			.bodyToMono(Geocode.class)
-//			.block();
-//		
-//		logger.info("uri: " + uriString);
-//		
-//		return geocode.getResults().size() > 0 ? geocode.getResults().get(0).getGeometry().getLocation() : null;
-//	}
 	
 	@Override
-	public Optional<Location> findLocationByAddress(String address) {
+	public Location findLocationByAddress(String address) {
 
 		String uriString = UriComponentsBuilder
 				.fromUriString(GEOCODING_API_URL)
@@ -84,8 +62,10 @@ public class GeocodingServiceImpl implements GeocodingService {
 		
 		logger.info("uri: " + uriString);
 		
-		return geocode.getResults().size() > 0 ? Optional.of(geocode.getResults().get(0).getGeometry().getLocation()) : null;
+		if (geocode.getResults().size() < 1 && !geocode.getStatus().equals("ok")) {
+			throw new SaveVenueException("no location found");
+		} else {
+			return geocode.getResults().get(0).getGeometry().getLocation();
+		}
 	}
-
-
 }
