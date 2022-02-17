@@ -1,5 +1,8 @@
 package com.jacekg.teamfinder.geocoding;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -11,12 +14,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.Builder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.SaveVenueException;
+import com.jacekg.teamfinder.geocoding.model.GeocodeLocation;
+import com.jacekg.teamfinder.geocoding.model.GeocodeResult;
 import com.jacekg.teamfinder.venue.VenueServiceImpl;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 //@AllArgsConstructor
 //@RequiredArgsConstructor
@@ -24,48 +33,48 @@ import lombok.RequiredArgsConstructor;
 public class GeocodingServiceImpl implements GeocodingService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GeocodingServiceImpl.class);
-
-	private final WebClient.Builder webClientBuilder;
 	
 	private String GEOCODING_API_KEY;
 	
 	private String GEOCODING_API_URL;
 	
+	private ObjectMapper objectMapper;
+	
 	@Autowired
 	public GeocodingServiceImpl(
-			Builder webClientBuilder,
-			@Value("${geocoding.api.key}") String gEOCODING_API_KEY, 
-			@Value("${geocoding.api.url}") String gEOCODING_API_URL) {
-	
-		this.webClientBuilder = webClientBuilder;
-		GEOCODING_API_KEY = gEOCODING_API_KEY;
-		GEOCODING_API_URL = gEOCODING_API_URL;
+			ObjectMapper objectMapper,
+			@Value("${geocoding.api.key}") String GEOCODING_API_KEY, 
+			@Value("${geocoding.api.url}") String GEOCODING_API_URL) {
+		
+		this.objectMapper = objectMapper;
+		this.GEOCODING_API_KEY = GEOCODING_API_KEY;
+		this.GEOCODING_API_URL = GEOCODING_API_URL;
+		
 	}
 	
 	@Override
-	public Location findLocationByAddress(String address) {
+	public GeocodeLocation findLocationByAddress(String address) throws IOException {
+		
+		OkHttpClient client = new OkHttpClient();
 
-		String uriString = UriComponentsBuilder
-				.fromUriString(GEOCODING_API_URL)
-				.queryParam("address", address)
-				.queryParam("key", GEOCODING_API_KEY)
-				.build()
-				.encode()
-				.toUriString();
+		String encodedAddress = URLEncoder.encode(address, "UTF-8");
+
+		Request request = new Request.Builder()
+				.url(GEOCODING_API_URL
+						+ encodedAddress
+						+ "&key=" + GEOCODING_API_KEY)
+				.get().build();
+
+		System.out.println("uri: " + request.url());
+
+		ResponseBody responseBody = client.newCall(request).execute().body();
+
+		GeocodeResult result = objectMapper.readValue(responseBody.string(), GeocodeResult.class);
 		
-		Geocode geocode = webClientBuilder.build()
-			.get()
-			.uri(uriString)
-			.retrieve()
-			.bodyToMono(Geocode.class)
-			.block();
-		
-		logger.info("uri: " + uriString);
-		
-		if (geocode.getResults().size() < 1 && !geocode.getStatus().equals("ok")) {
+		if (result.getResults().size() < 1 && !result.getStatus().equals("ok")) {
 			throw new SaveVenueException("no location found");
 		} else {
-			return geocode.getResults().get(0).getGeometry().getLocation();
+			return result.getResults().get(0).getGeometry().getGeocodeLocation();
 		}
 	}
 }

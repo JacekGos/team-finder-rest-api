@@ -1,5 +1,6 @@
 package com.jacekg.teamfinder.venue;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,18 +13,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
-import com.jacekg.teamfinder.geocoding.Location;
-import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
-import com.jacekg.teamfinder.user.User;
-import com.jacekg.teamfinder.user.UserResponse;
+import com.jacekg.teamfinder.geocoding.model.GeocodeLocation;
 
 import lombok.AllArgsConstructor;
 
@@ -54,20 +48,20 @@ public class VenueServiceImpl implements VenueService {
 	}
 	
 	@Override
-	public VenueResponse save(VenueRequest venueRequest) {
+	public VenueResponse save(VenueRequest venueRequest) throws IOException {
 
 		Venue venue = checkNewVenueValidation(venueRequest);
 		
 		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
 	}
 	
-	private Venue checkNewVenueValidation(VenueRequest venueRequest) {
+	private Venue checkNewVenueValidation(VenueRequest venueRequest) throws IOException {
 		
-		Location location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		GeocodeLocation location = geocodingService.findLocationByAddress(venueRequest.getAddress());
 		logger.info("location: " + location);
 		
 		Point venueCoordinates = 
-				geometryFactory.createPoint(new Coordinate(location.getLng(), location.getLat()));
+				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
 		

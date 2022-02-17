@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.ResponseEntity.status;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class VenueRestController {
 	
 	@PostMapping("/venues")
 	public ResponseEntity<VenueResponse> createVenue
-		(@Valid @RequestBody VenueRequest venueRequest) {
+		(@Valid @RequestBody VenueRequest venueRequest) throws IOException {
 		
 		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
