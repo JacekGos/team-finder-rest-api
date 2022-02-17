@@ -64,6 +64,10 @@ public class VenueServiceImpl implements VenueService {
 		
 		VenueType venueType = venueTypeRepository.findByName(venueRequest.getVenueTypeName());
 		
+		if (venueType == null) {
+			throw new SaveVenueException("no such venue type exists");
+		}
+		
 		Venue foundVenue = venueRepository.findByLocationAndVenueType(venueCoordinates, venueType);
 		logger.info("foundVenue " + foundVenue);
 		
