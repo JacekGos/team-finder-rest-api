@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.model.GeocodeLocation;
+import com.jacekg.teamfinder.geocoding.model.GeocodeObject;
 import com.jacekg.teamfinder.geocoding.model.GeocodeResult;
 import com.jacekg.teamfinder.venue.VenueServiceImpl;
 
@@ -53,7 +54,7 @@ public class GeocodingServiceImpl implements GeocodingService {
 	}
 	
 	@Override
-	public GeocodeLocation findLocationByAddress(String address) throws IOException {
+	public GeocodeObject findLocationByAddress(String address) throws IOException {
 		
 		OkHttpClient client = new OkHttpClient();
 
@@ -74,7 +75,8 @@ public class GeocodingServiceImpl implements GeocodingService {
 		if (result.getResults().size() < 1 && !result.getStatus().equals("ok")) {
 			throw new SaveVenueException("no location found");
 		} else {
-			return result.getResults().get(0).getGeometry().getGeocodeLocation();
+//			return result.getResults().get(0).getGeometry().getGeocodeLocation();
+			return result.getResults().get(0);
 		}
 	}
 }

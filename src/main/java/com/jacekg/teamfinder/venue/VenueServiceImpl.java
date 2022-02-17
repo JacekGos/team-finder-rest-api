@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
 import com.jacekg.teamfinder.geocoding.model.GeocodeLocation;
+import com.jacekg.teamfinder.geocoding.model.GeocodeObject;
 
 import lombok.AllArgsConstructor;
 
@@ -57,7 +58,9 @@ public class VenueServiceImpl implements VenueService {
 	
 	private Venue checkNewVenueValidation(VenueRequest venueRequest) throws IOException {
 		
-		GeocodeLocation location = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(venueRequest.getAddress());
+		
+		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
 		logger.info("location: " + location);
 		
 		Point venueCoordinates = 
@@ -73,6 +76,8 @@ public class VenueServiceImpl implements VenueService {
 			throw new SaveVenueException
 				(venueRequest.getVenueTypeName() + " on this address is already registered");
 		}
+		
+		venueRequest.setAddress(geocodeObject.getFormattedAddress());
 		
 		return mapVenue(venueRequest, venueCoordinates, venueType);
 	}
