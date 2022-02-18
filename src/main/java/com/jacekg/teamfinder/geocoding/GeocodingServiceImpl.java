@@ -62,11 +62,9 @@ public class GeocodingServiceImpl implements GeocodingService {
 
 		Request request = new Request.Builder()
 				.url(GEOCODING_API_URL
-						+ encodedAddress
-						+ "&key=" + GEOCODING_API_KEY)
+					+ encodedAddress
+					+ "&key=" + GEOCODING_API_KEY)
 				.get().build();
-
-		System.out.println("uri: " + request.url());
 
 		ResponseBody responseBody = client.newCall(request).execute().body();
 
@@ -75,7 +73,6 @@ public class GeocodingServiceImpl implements GeocodingService {
 		if (result.getResults().size() < 1 && !result.getStatus().equals("ok")) {
 			throw new SaveVenueException("no location found");
 		} else {
-//			return result.getResults().get(0).getGeometry().getGeocodeLocation();
 			return result.getResults().get(0);
 		}
 	}
