@@ -113,6 +113,18 @@ public class RestExceptionHandler {
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorResponse> handleException(SaveGameException exc) {
+
+		ErrorResponse error = new ErrorResponse();
+
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(exc.getMessage());
+		error.setErrorCode(7);
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 }
 
 
