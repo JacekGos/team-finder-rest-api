@@ -83,7 +83,6 @@ public class Game {
 	public void addCreator(User user) {
 		
 		this.creator = user;
-		
 		user.addCreatedGame(this);
 	}
 }

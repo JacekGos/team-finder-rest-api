@@ -59,7 +59,7 @@ public class Venue {
 	private VenueType venueType;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "term_id")
+	@JoinColumn(name = "venue_id")
 	private List<Term> busyTerms = new ArrayList<>();
 	
 	public void addTerm(Term gameTerm) {
