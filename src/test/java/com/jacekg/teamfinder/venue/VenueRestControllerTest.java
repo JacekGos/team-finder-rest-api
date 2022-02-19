@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jacekg.teamfinder.exceptions.ErrorResponse;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 
@@ -76,6 +77,29 @@ class VenueRestControllerTest {
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("name", "sport venue");
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("address", "address 1");
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("venueTypeName", "sports hall");
+	}
+	
+	@Test
+	void createVenue_ShouldThrow_MethodArgumentNotValidException() throws Exception {
+		
+		venueRequest.setAddress(null);
+		
+		String jsonBody = objectMapper.writeValueAsString(venueRequest);
+		
+		when(venueService.save(any(VenueRequest.class))).thenReturn(venueResponse);
+		
+		String url = "/v1/venues";
+		
+		MvcResult mvcResult = mockMvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+				.andExpect(status().isBadRequest()).andReturn();
+		
+		String responseContent = mvcResult.getResponse().getContentAsString();
+		
+		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
+		
+		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
 	}
 
 }
