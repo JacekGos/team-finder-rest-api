@@ -100,7 +100,7 @@ class VenueServiceImplTest {
 	}
 	
 	@Test
-	void save_ShouldReturn_ShouldThrow_SaveVenueException_WithMessage_NoSuchVenueTypeExists() throws IOException {
+	void save_ShouldThrow_SaveVenueException_WithMessage_NoSuchVenueTypeExists() throws IOException {
 		
 		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
 		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
@@ -111,6 +111,21 @@ class VenueServiceImplTest {
 		});
 		
 		assertTrue(exception.getMessage().contains("no such venue type exists"));
+	}
+	
+	@Test
+	void save_ShouldThrow_SaveVenueException_WithMessage_ThisAddressIsAlreadyRegistered() throws IOException {
+		
+		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
+		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
+		when(venueTypeRepository.findByName(Mockito.anyString())).thenReturn(venueType);
+		when(venueRepository.findByLocationAndVenueType(venueCoordinates, venueType)).thenReturn(venue);
+		
+		SaveVenueException exception = assertThrows(SaveVenueException.class, () -> {
+			serviceUnderTest.save(venueRequest);
+		});
+		
+		assertTrue(exception.getMessage().contains("on this address is already registered"));
 	}
 }
 
