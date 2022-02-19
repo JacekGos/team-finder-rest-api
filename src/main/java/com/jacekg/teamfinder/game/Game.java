@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.game;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class Game {
 	private String name;
 	
 	@Column(name = "date", nullable = false)
-	private LocalDate date;
+	private LocalDateTime date;
 	
 	@Column(name = "price", nullable = false)
 	private int price;
@@ -78,6 +79,13 @@ public class Game {
 					CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "venue_id")
 	private Venue venue;
+	
+	public void addCreator(User user) {
+		
+		this.creator = user;
+		
+		user.addCreatedGame(this);
+	}
 }
 
 

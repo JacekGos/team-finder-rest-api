@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.jacekg.teamfinder.exceptions.SaveGameException;
+import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
+import com.jacekg.teamfinder.user.User;
+import com.jacekg.teamfinder.user.UserRepository;
 import com.jacekg.teamfinder.venue.Term;
 import com.jacekg.teamfinder.venue.Venue;
 import com.jacekg.teamfinder.venue.VenueRepository;
@@ -26,6 +29,8 @@ public class GameServiceImpl implements GameService {
 	
 	private VenueRepository venueRepository;
 	
+	private UserRepository userRepository;
+	
 	private ModelMapper modelMapper;
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
@@ -38,7 +43,7 @@ public class GameServiceImpl implements GameService {
 		return modelMapper.map(gameRepository.save(game), GameResponse.class);
 	}
 
-	private Game createGameToSave(GameRequest gameRequest) {
+	private Game createGameToSave(GameRequest gameRequest, Principal principal) {
 		
 		Venue venue = venueRepository.getById(gameRequest.getVenueId());
 		
@@ -46,14 +51,34 @@ public class GameServiceImpl implements GameService {
 			throw new SaveGameException("no venue with such id exists");
 		}
 		
+		User creator = userRepository.findByUsername(principal.getName());
+		
+		if (creator == null) {
+			throw new SaveGameException("no user with such id exists");
+		}
+		
 		LocalDateTime gameDate 
 			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
 		
 		Term gameTerm = new Term(1L, gameDate);
 		
-		venue.setBusyTerms(Arrays.asList(gameTerm));
+		venue.addTerm(gameTerm);
+		
+		Game game = mapGame(gameRequest);
+		
 		
 		return null;
 	}
 	
+	private Game mapGame(GameRequest gameRequest, User creator, SportDiscipline sportDiscipline, Venue venue) {
+		
+		Game game = modelMapper.map(gameRequest, Game.class);
+		
+		return game;
+	}
 }
+
+
+
+
+

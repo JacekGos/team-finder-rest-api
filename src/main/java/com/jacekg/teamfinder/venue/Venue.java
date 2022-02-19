@@ -61,4 +61,8 @@ public class Venue {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "term_id")
 	private List<Term> busyTerms = new ArrayList<>();
+	
+	public void addTerm(Term gameTerm) {
+		this.busyTerms.add(gameTerm);
+	}
 }

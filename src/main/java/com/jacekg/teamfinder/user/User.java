@@ -91,4 +91,9 @@ public class User {
 		
 		return roles.get(roleIndex).getName();
 	}
+	
+	public void addCreatedGame(Game game) {
+		
+		this.createdGames.add(game);
+	}
 }
