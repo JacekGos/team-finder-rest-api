@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.jacekg.teamfinder.venue.Venue;
+import com.jacekg.teamfinder.venue.VenueRepository;
+
 import lombok.AllArgsConstructor;
 
 @Service
@@ -15,6 +18,8 @@ public class GameServiceImpl implements GameService {
 	
 	private GameRepository gameRepository;
 	
+	private VenueRepository venueRepository;
+	
 	private ModelMapper modelMapper;
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
@@ -22,9 +27,16 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public GameResponse save(GameRequest gameRequest, Principal principal) {
 		
-//		return modelMapper.map(gameRepository.save(game), GameResponse.class);
-		logger.info("gameRequest: " + gameRequest);
-		return new GameResponse();
+		Game game = createGameToSave(gameRequest);
+		
+		return modelMapper.map(gameRepository.save(game), GameResponse.class);
+	}
+
+	private Game createGameToSave(GameRequest gameRequest) {
+		
+		Venue venue = venueRepository.getById(gameRequest.getVenueId());
+		
+		return null;
 	}
 	
 }

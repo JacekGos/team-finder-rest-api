@@ -27,17 +27,10 @@ public class GameRestController {
 
 	private GameService gameService;
 
-//	@PostMapping("/games")
-//	public ResponseEntity<GameResponse> createGame
-//		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
-//		
-//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
-//	}
-
 	@PostMapping("/games")
-	public ResponseEntity<GameRequest> createGame(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
-//		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
-		return status(HttpStatus.CREATED).body(gameRequest);
-
+	public ResponseEntity<GameResponse> createGame
+		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
+		
+		return status(HttpStatus.CREATED).body(gameService.save(gameRequest, principal));
 	}
 }

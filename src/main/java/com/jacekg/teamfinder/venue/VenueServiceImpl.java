@@ -51,12 +51,12 @@ public class VenueServiceImpl implements VenueService {
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) throws IOException {
 
-		Venue venue = checkNewVenueValidation(venueRequest);
+		Venue venue = createVenueToSave(venueRequest);
 		
 		return modelMapper.map(venueRepository.save(venue), VenueResponse.class);
 	}
 	
-	private Venue checkNewVenueValidation(VenueRequest venueRequest) throws IOException {
+	private Venue createVenueToSave(VenueRequest venueRequest) throws IOException {
 		
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(venueRequest.getAddress());
 		
