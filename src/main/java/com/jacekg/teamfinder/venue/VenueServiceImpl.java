@@ -59,7 +59,6 @@ public class VenueServiceImpl implements VenueService {
 	private Venue checkNewVenueValidation(VenueRequest venueRequest) throws IOException {
 		
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(venueRequest.getAddress());
-		logger.info("geocode object: " + geocodeObject);
 		
 		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
 		logger.info("location: " + location);

@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
 import com.jacekg.teamfinder.geocoding.model.GeocodeGeometry;
 import com.jacekg.teamfinder.geocoding.model.GeocodeLocation;
@@ -96,6 +97,20 @@ class VenueServiceImplTest {
 		assertThat(savedVenue).hasFieldOrPropertyWithValue("name", "sport venue");
 		assertThat(savedVenue).hasFieldOrPropertyWithValue("address", "address 1");
 		assertThat(savedVenue).hasFieldOrPropertyWithValue("venueTypeName", "sports hall");
+	}
+	
+	@Test
+	void save_ShouldReturn_ShouldThrow_SaveVenueException_WithMessage_NoSuchVenueTypeExists() throws IOException {
+		
+		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
+		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
+		when(venueTypeRepository.findByName(Mockito.anyString())).thenReturn(null);
+		
+		SaveVenueException exception = assertThrows(SaveVenueException.class, () -> {
+			serviceUnderTest.save(venueRequest);
+		});
+		
+		assertTrue(exception.getMessage().contains("no such venue type exists"));
 	}
 }
 
