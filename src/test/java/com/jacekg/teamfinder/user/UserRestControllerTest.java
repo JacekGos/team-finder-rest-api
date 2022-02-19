@@ -81,7 +81,6 @@ class UserRestControllerTest {
                 .content(jsonBody))
 				.andExpect(status().isCreated()).andReturn();
 		
-		
 		String returnedUser = mvcResult.getResponse().getContentAsString();
 		
 		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);

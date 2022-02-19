@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.geocoding.GeocodingService;
@@ -82,17 +81,17 @@ class VenueServiceImplTest {
 	@Test
 	void save_ShouldReturn_Venue() throws IOException {
 		
-		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
-		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
-		when(venueTypeRepository.findByName(Mockito.anyString())).thenReturn(venueType);
+		when(geocodingService.findLocationByAddress(anyString())).thenReturn(geocodeObject);
+		when(geometryFactory.createPoint(any(Coordinate.class))).thenReturn(null);
+		when(venueTypeRepository.findByName(anyString())).thenReturn(venueType);
 		when(venueRepository.findByLocationAndVenueType(venueCoordinates, venueType)).thenReturn(null);
-		when(venueRepository.save(Mockito.any(Venue.class))).thenReturn(venue);
+		when(venueRepository.save(any(Venue.class))).thenReturn(venue);
 		when(modelMapper.map(venueRequest, Venue.class)).thenReturn(venue);
 		when(modelMapper.map(venue, VenueResponse.class)).thenReturn(venueResponse);
 		
 		VenueResponse savedVenue = serviceUnderTest.save(venueRequest);
 		
-		verify(venueRepository).save(Mockito.any(Venue.class));
+		verify(venueRepository).save(any(Venue.class));
 		
 		assertThat(savedVenue).hasFieldOrPropertyWithValue("name", "sport venue");
 		assertThat(savedVenue).hasFieldOrPropertyWithValue("address", "address 1");
@@ -102,9 +101,9 @@ class VenueServiceImplTest {
 	@Test
 	void save_ShouldThrow_SaveVenueException_WithMessage_NoSuchVenueTypeExists() throws IOException {
 		
-		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
-		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
-		when(venueTypeRepository.findByName(Mockito.anyString())).thenReturn(null);
+		when(geocodingService.findLocationByAddress(anyString())).thenReturn(geocodeObject);
+		when(geometryFactory.createPoint(any(Coordinate.class))).thenReturn(null);
+		when(venueTypeRepository.findByName(anyString())).thenReturn(null);
 		
 		SaveVenueException exception = assertThrows(SaveVenueException.class, () -> {
 			serviceUnderTest.save(venueRequest);
@@ -116,9 +115,9 @@ class VenueServiceImplTest {
 	@Test
 	void save_ShouldThrow_SaveVenueException_WithMessage_ThisAddressIsAlreadyRegistered() throws IOException {
 		
-		when(geocodingService.findLocationByAddress(Mockito.anyString())).thenReturn(geocodeObject);
-		when(geometryFactory.createPoint(Mockito.any(Coordinate.class))).thenReturn(null);
-		when(venueTypeRepository.findByName(Mockito.anyString())).thenReturn(venueType);
+		when(geocodingService.findLocationByAddress(anyString())).thenReturn(geocodeObject);
+		when(geometryFactory.createPoint(any(Coordinate.class))).thenReturn(null);
+		when(venueTypeRepository.findByName(anyString())).thenReturn(venueType);
 		when(venueRepository.findByLocationAndVenueType(venueCoordinates, venueType)).thenReturn(venue);
 		
 		SaveVenueException exception = assertThrows(SaveVenueException.class, () -> {
