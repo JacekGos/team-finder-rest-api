@@ -42,4 +42,9 @@ public class SportDiscipline {
 			cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private List<Game> games;
+	
+	public void addGame(Game game) {
+		
+		this.games.add(game);
+	}
 }

@@ -7,9 +7,11 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import com.jacekg.teamfinder.user.UserRepository;
 import com.jacekg.teamfinder.venue.Term;
 import com.jacekg.teamfinder.venue.Venue;
 import com.jacekg.teamfinder.venue.VenueRepository;
+import com.jacekg.teamfinder.venue.VenueResponse;
 
 import lombok.AllArgsConstructor;
 
@@ -41,12 +44,24 @@ public class GameServiceImpl implements GameService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 	
+//	@PostConstruct
+//	public void postConstruct() {
+//		
+//		modelMapper.addMappings(new PropertyMap<GameRequest, Game>() {
+//			protected void configure() {
+//				map().setVenueTypeName(source.getVenueType().getName());
+//			}
+//		});
+//	}
+	
 	@Transactional
 	@Override
 	public GameResponse save(GameRequest gameRequest, Principal principal) {
 		
 		Game game = createGameToSave(gameRequest, principal);
 		logger.info("after createGameToSave");
+		logger.info("game data: " + game.getId() + " " + game.getName() + " " + game.getDate() + " " + game.getDuration() 
+		+ " " + game.getAmountOfPlayers() + " " + game.getDescription());
 		return modelMapper.map(gameRepository.save(game), GameResponse.class);
 	}
 	
@@ -69,7 +84,7 @@ public class GameServiceImpl implements GameService {
 			throw new SaveGameException("no user with such id exists");
 		}
 		
-//		SportDiscipline sportDiscipline = sportDisciplineRepository.getByName();
+		SportDiscipline sportDiscipline = sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName());
 		
 		LocalDateTime gameDate 
 			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
@@ -81,14 +96,16 @@ public class GameServiceImpl implements GameService {
 		venue.addTerm(gameTerm);
 		logger.info("after addTerm");
 		
+		venueRepository.save(venue);
+		
 		logger.info("before mapGame");
-		Game game = mapGame(gameRequest, creator, venue);
+		Game game = mapGame(gameRequest, creator, venue, gameDate, sportDiscipline);
 		logger.info("after mapGame");
 		
 		return game;
 	}
 	
-	private Game mapGame(GameRequest gameRequest, User creator, Venue venue) {
+	private Game mapGame(GameRequest gameRequest, User creator, Venue venue, LocalDateTime gameDate, SportDiscipline sportDiscipline) {
 		
 		logger.info("before map");
 		Game game = modelMapper.map(gameRequest, Game.class);
@@ -99,6 +116,9 @@ public class GameServiceImpl implements GameService {
 		logger.info("before setVenue");
 		game.setVenue(venue);
 		logger.info("after setVenue");
+		game.setDate(gameDate);
+		game.setId(null);
+		game.addSportDiscipline(sportDiscipline);
 		
 		return game;
 	}

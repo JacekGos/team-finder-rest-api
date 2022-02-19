@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -48,6 +49,7 @@ public class VenueServiceImpl implements VenueService {
 		});
 	}
 	
+	@Transactional
 	@Override
 	public VenueResponse save(VenueRequest venueRequest) throws IOException {
 

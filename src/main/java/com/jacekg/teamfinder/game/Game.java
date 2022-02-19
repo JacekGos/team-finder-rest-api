@@ -85,6 +85,12 @@ public class Game {
 		this.creator = user;
 		user.addCreatedGame(this);
 	}
+	
+	public void addSportDiscipline(SportDiscipline sportDiscipline) {
+		
+		this.sportDiscipline = sportDiscipline;
+		sportDiscipline.addGame(this);
+	}
 }
 
 
