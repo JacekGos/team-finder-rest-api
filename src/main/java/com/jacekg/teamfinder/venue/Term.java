@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.venue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -33,5 +34,5 @@ public class Term {
 	private Long id;
 	
 	@Column(name = "busy_term", nullable = false)
-	private LocalDate busyTerm;
+	private LocalDateTime busyTerm;
 }
