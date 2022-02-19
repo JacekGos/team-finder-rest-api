@@ -18,9 +18,6 @@ public class GeocodeObject {
 	@JsonProperty("place_id")
 	String placeId;
 	
-	@JsonProperty("address_components")
-	List<AddressComponent> addressComponents;
-	
 	@JsonProperty("formatted_address")
 	String formattedAddress;
 	
