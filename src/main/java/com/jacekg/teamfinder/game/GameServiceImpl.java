@@ -44,15 +44,21 @@ public class GameServiceImpl implements GameService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 	
-//	@PostConstruct
-//	public void postConstruct() {
-//		
+	@PostConstruct
+	public void postConstruct() {
+		
 //		modelMapper.addMappings(new PropertyMap<GameRequest, Game>() {
 //			protected void configure() {
 //				map().setVenueTypeName(source.getVenueType().getName());
 //			}
 //		});
-//	}
+		
+		modelMapper.addMappings(new PropertyMap<GameRequest, Game>() {
+			protected void configure() {
+				skip(destination.getId());
+			}
+		});
+	}
 	
 	@Transactional
 	@Override
@@ -84,7 +90,7 @@ public class GameServiceImpl implements GameService {
 		
 		LocalDateTime gameDate 
 			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
-		
+
 		Term gameTerm = new Term(1L, gameDate);
 		
 		venue.addTerm(gameTerm);
@@ -99,11 +105,11 @@ public class GameServiceImpl implements GameService {
 	private Game mapGame(GameRequest gameRequest, User creator, Venue venue, LocalDateTime gameDate, SportDiscipline sportDiscipline) {
 		
 		Game game = modelMapper.map(gameRequest, Game.class);
-		logger.info("after map and game id: " + game.getId());
+		logger.info("game data: " + game.getId() + " " + game.getName() + " " + game.getDate() + " " + game.getDuration() 
+		+ " " + game.getAmountOfPlayers() + " " + game.getDescription());
 		game.addCreator(creator);
 		game.setVenue(venue);
 		game.setDate(gameDate);
-		game.setId(null);
 		game.addSportDiscipline(sportDiscipline);
 		
 		return game;
