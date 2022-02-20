@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.game;
 
 import java.security.Principal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -79,16 +80,26 @@ public class GameServiceImpl implements GameService {
 			.get()
 			.orElseThrow(() -> {throw new SaveGameException("no venue with such id exists");});
 		
-		User creator = userRepository.findByUsername(principal.getName());
+		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
+		User creator = Optional.ofNullable(foundUser)
+				.get()
+				.orElseThrow(() -> {throw new SaveGameException("no user with such id exists");});
 		
-		if (creator == null) {
-			throw new SaveGameException("no user with such id exists");
-		}
+		Optional<SportDiscipline> foundSportDiscipline 
+			= Optional.ofNullable(sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName()));
 		
-		SportDiscipline sportDiscipline = sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName());
-
-		LocalDateTime gameDate 
+		SportDiscipline sportDiscipline = Optional.ofNullable(foundSportDiscipline)
+				.get()
+				.orElseThrow(() -> {throw new SaveGameException("no such sport discipline exists");});
+		
+		LocalDateTime gameDate;
+		
+		try {
+			gameDate 
 			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
+		} catch (DateTimeException exc) {
+			throw new SaveGameException("incorrect date or time");
+		}
 		
 		venue = updateVenueToSave(venue, gameDate);
 		
