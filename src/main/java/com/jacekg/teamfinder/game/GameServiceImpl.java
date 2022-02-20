@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -74,11 +75,9 @@ public class GameServiceImpl implements GameService {
 	private Game createGameToSave(GameRequest gameRequest, Principal principal) {
 		
 		Optional<Venue> foundVenue = venueRepository.findById(gameRequest.getVenueId());
-		Venue venue = foundVenue.get();
-		
-		if (venue == null) {
-			throw new SaveGameException("no venue with such id exists");
-		}
+		Venue venue = Optional.ofNullable(foundVenue)
+			.get()
+			.orElseThrow(() -> {throw new SaveGameException("no venue with such id exists");});
 		
 		User creator = userRepository.findByUsername(principal.getName());
 		
@@ -87,32 +86,37 @@ public class GameServiceImpl implements GameService {
 		}
 		
 		SportDiscipline sportDiscipline = sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName());
-		
+
 		LocalDateTime gameDate 
 			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
-
-		Term gameTerm = new Term(1L, gameDate);
 		
-		venue.addTerm(gameTerm);
+		venue = updateVenueToSave(venue, gameDate);
 		
-		venueRepository.save(venue);
-		
-		Game game = mapGame(gameRequest, creator, venue, gameDate, sportDiscipline);
-		
-		return game;
-	}
-	
-	private Game mapGame(GameRequest gameRequest, User creator, Venue venue, LocalDateTime gameDate, SportDiscipline sportDiscipline) {
-		
-		Game game = modelMapper.map(gameRequest, Game.class);
-		logger.info("game data: " + game.getId() + " " + game.getName() + " " + game.getDate() + " " + game.getDuration() 
-		+ " " + game.getAmountOfPlayers() + " " + game.getDescription());
+		Game game = mapGame(gameRequest);
 		game.addCreator(creator);
 		game.setVenue(venue);
 		game.setDate(gameDate);
 		game.addSportDiscipline(sportDiscipline);
 		
 		return game;
+	}
+	
+	private Game mapGame(GameRequest gameRequest) {
+		
+		Game game = modelMapper.map(gameRequest, Game.class);
+		
+		return game;
+	}
+	
+	private Venue updateVenueToSave(Venue venue, LocalDateTime gameDate) {
+		
+		Term gameTerm = new Term(1L, gameDate);
+		
+		venue.addTerm(gameTerm);
+		
+		venueRepository.save(venue);
+		
+		return venue;
 	}
 }
 
