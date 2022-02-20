@@ -49,11 +49,13 @@ public class GameServiceImpl implements GameService {
 	@PostConstruct
 	public void postConstruct() {
 		
-//		modelMapper.addMappings(new PropertyMap<GameRequest, Game>() {
-//			protected void configure() {
-//				map().setVenueTypeName(source.getVenueType().getName());
-//			}
-//		});
+		modelMapper.addMappings(new PropertyMap<Game, GameResponse>() {
+			protected void configure() {
+				map().setSportDisciplineName(source.getSportDiscipline().getName());
+				map().setVenueName(source.getVenue().getName());
+				map().setVenueAddress(source.getVenue().getAddress());
+			}
+		});
 		
 		modelMapper.addMappings(new PropertyMap<GameRequest, Game>() {
 			protected void configure() {
@@ -67,8 +69,6 @@ public class GameServiceImpl implements GameService {
 	public GameResponse save(GameRequest gameRequest, Principal principal) {
 		
 		Game game = createGameToSave(gameRequest, principal);
-		logger.info("game data: " + game.getId() + " " + game.getName() + " " + game.getDate() + " " + game.getDuration() 
-		+ " " + game.getAmountOfPlayers() + " " + game.getDescription());
 		
 		return modelMapper.map(gameRepository.save(game), GameResponse.class);
 	}
@@ -87,7 +87,6 @@ public class GameServiceImpl implements GameService {
 		
 		Optional<SportDiscipline> foundSportDiscipline 
 			= Optional.ofNullable(sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName()));
-		
 		SportDiscipline sportDiscipline = Optional.ofNullable(foundSportDiscipline)
 				.get()
 				.orElseThrow(() -> {throw new SaveGameException("no such sport discipline exists");});
@@ -96,7 +95,7 @@ public class GameServiceImpl implements GameService {
 		
 		try {
 			gameDate 
-			= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
+				= LocalDateTime.of(gameRequest.getDate(), LocalTime.of(gameRequest.getHour(), 0));
 		} catch (DateTimeException exc) {
 			throw new SaveGameException("incorrect date or time");
 		}

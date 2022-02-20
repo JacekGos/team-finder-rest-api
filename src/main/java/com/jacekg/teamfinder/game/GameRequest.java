@@ -58,8 +58,6 @@ public class GameRequest {
 	@Min(value = 5, message = "must be in range 5-22")
 	@Max(value = 22, message = "must be in range 5-22")
 	private int hour;
-	
-//	@NotNull(message = "required")
-//	@NotBlank(message = "discipline cannot be empty")
+
 	private String description;
 }
