@@ -5,7 +5,9 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -24,6 +26,7 @@ import com.jacekg.teamfinder.sport_discipline.SportDisciplineRepository;
 import com.jacekg.teamfinder.user.User;
 import com.jacekg.teamfinder.user.UserRepository;
 import com.jacekg.teamfinder.venue.Term;
+import com.jacekg.teamfinder.venue.TermRepository;
 import com.jacekg.teamfinder.venue.Venue;
 import com.jacekg.teamfinder.venue.VenueRepository;
 import com.jacekg.teamfinder.venue.VenueResponse;
@@ -39,6 +42,8 @@ public class GameServiceImpl implements GameService {
 	private VenueRepository venueRepository;
 	
 	private UserRepository userRepository;
+	
+	private TermRepository termRepository;
 	
 	private SportDisciplineRepository sportDisciplineRepository;
 	
@@ -100,7 +105,7 @@ public class GameServiceImpl implements GameService {
 			throw new SaveGameException("incorrect date or time");
 		}
 		
-		venue = updateVenueToSave(venue, gameDate);
+		venue = updateVenueToSave(venue, gameDate, gameRequest.getDuration());
 		
 		Game game = mapGame(gameRequest);
 		game.addCreator(creator);
@@ -118,11 +123,30 @@ public class GameServiceImpl implements GameService {
 		return game;
 	}
 	
-	private Venue updateVenueToSave(Venue venue, LocalDateTime gameDate) {
+	private Venue updateVenueToSave(Venue venue, LocalDateTime gameDate, int duration) {
 		
-		Term gameTerm = new Term(1L, gameDate);
+		List<Term> gameTerms = new ArrayList<>();
+		gameTerms.add(new Term(1L, gameDate));
 		
-		venue.addTerm(gameTerm);
+		if (duration == 120) {
+			gameTerms.add(new Term(1L, gameDate.plusHours(1L)));
+		}
+		
+		List<Term> busyTerms = termRepository.findByVenueId(venue.getId());
+		
+
+		for (Term gameTerm : gameTerms) {
+			
+			if (busyTerms.stream()
+					.filter(term -> gameTerm.getBusyTerm().equals(term.getBusyTerm()))
+					.findAny()
+					.orElse(null) != null) {
+
+				throw new SaveGameException("venue is not available on that date");
+			}
+		}
+		
+		venue.addTerms(gameTerms);
 		
 		venueRepository.save(venue);
 		

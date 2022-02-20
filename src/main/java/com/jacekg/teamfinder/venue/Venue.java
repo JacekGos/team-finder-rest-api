@@ -2,6 +2,7 @@ package com.jacekg.teamfinder.venue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -62,7 +63,17 @@ public class Venue {
 	@JoinColumn(name = "venue_id")
 	private List<Term> busyTerms = new ArrayList<>();
 	
-	public void addTerm(Term gameTerm) {
-		this.busyTerms.add(gameTerm);
+//	public void addTerm(Term gameTerm) {
+//		this.busyTerms.add(gameTerm);
+//	}
+	
+	public void addTerms(List<Term> gameTerms) {
+		
+//		gameTerms.stream()
+//			.map(term -> this.busyTerms.add(term));
+		
+		gameTerms.stream()
+			.forEach(term -> this.busyTerms.add(term));
+		
 	}
 }
