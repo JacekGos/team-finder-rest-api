@@ -169,7 +169,18 @@ class GameServiceImplTest {
 		
 		assertTrue(exception.getMessage().contains("no venue with such id exists"));
 	}
-
+	
+	@Test
+	void save_ShouldThrow_SaveGameException_WithMessage_NoSuchUserExists() {
+		
+		when(venueRepository.findById(any(Long.class))).thenReturn(venue);
+		
+		SaveGameException exception = assertThrows(SaveGameException.class, () -> {
+			serviceUnderTest.save(gameRequest, principal);
+		});
+		
+		assertTrue(exception.getMessage().contains("no such user exists"));
+	}
 }
 
 

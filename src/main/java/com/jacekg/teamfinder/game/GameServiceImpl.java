@@ -88,7 +88,7 @@ public class GameServiceImpl implements GameService {
 		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
 		User creator = Optional.ofNullable(foundUser)
 				.get()
-				.orElseThrow(() -> {throw new SaveGameException("no user with such id exists");});
+				.orElseThrow(() -> {throw new SaveGameException("no such user exists");});
 		
 		Optional<SportDiscipline> foundSportDiscipline 
 			= Optional.ofNullable(sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName()));
