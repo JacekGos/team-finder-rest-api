@@ -28,6 +28,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import com.jacekg.teamfinder.exceptions.SaveGameException;
+import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.role.Role;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 import com.jacekg.teamfinder.sport_discipline.SportDisciplineRepository;
@@ -87,7 +89,6 @@ class GameServiceImplTest {
 			
 			@Override
 			public String getName() {
-				// TODO Auto-generated method stub
 				return "admin";
 			}
 		};
@@ -157,9 +158,16 @@ class GameServiceImplTest {
 		assertThat(savedGame).hasFieldOrPropertyWithValue("venueAddress", "address");
 		assertThat(savedGame).hasFieldOrPropertyWithValue("date", LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
 		assertThat(savedGame).hasFieldOrPropertyWithValue("description", "game description");
-
-
+	}
+	
+	@Test
+	void save_ShouldThrow_SaveGameException_WithMessage_NoVenueWithSuchIdExists() {
 		
+		SaveGameException exception = assertThrows(SaveGameException.class, () -> {
+			serviceUnderTest.save(gameRequest, principal);
+		});
+		
+		assertTrue(exception.getMessage().contains("no venue with such id exists"));
 	}
 
 }
