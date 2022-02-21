@@ -181,6 +181,19 @@ class GameServiceImplTest {
 		
 		assertTrue(exception.getMessage().contains("no such user exists"));
 	}
+	
+	@Test
+	void save_ShouldThrow_SaveGameException_WithMessage_NoSuchSportDisciplineExists() {
+		
+		when(venueRepository.findById(any(Long.class))).thenReturn(venue);
+		when(userRepository.findByUsername(anyString())).thenReturn(user);
+		
+		SaveGameException exception = assertThrows(SaveGameException.class, () -> {
+			serviceUnderTest.save(gameRequest, principal);
+		});
+		
+		assertTrue(exception.getMessage().contains("no such sport discipline exists"));
+	}
 }
 
 
