@@ -63,14 +63,7 @@ public class Venue {
 	@JoinColumn(name = "venue_id")
 	private List<Term> busyTerms = new ArrayList<>();
 	
-//	public void addTerm(Term gameTerm) {
-//		this.busyTerms.add(gameTerm);
-//	}
-	
 	public void addTerms(List<Term> gameTerms) {
-		
-//		gameTerms.stream()
-//			.map(term -> this.busyTerms.add(term));
 		
 		gameTerms.stream()
 			.forEach(term -> this.busyTerms.add(term));
