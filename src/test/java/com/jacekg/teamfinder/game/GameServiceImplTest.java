@@ -1,12 +1,14 @@
 package com.jacekg.teamfinder.game;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,6 +17,8 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,6 +64,8 @@ class GameServiceImplTest {
 	
 	private GameRequest gameRequest;
 	
+	private GameResponse gameResponse;
+	
 	private Game game;
 	
 	private Optional<Venue> venue;
@@ -73,18 +79,7 @@ class GameServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		
-		gameRequest = new GameRequest(
-				"gameName",
-				"sportDisciplineName",
-				10, 60, 25, 1,
-				LocalDate.now(),
-				10,
-				"game description"
-				);
-		
-		
 		List<Term> busyTerms = new ArrayList<>();
-//		busyTerms.add(new Term(1L, LocalDateTime.of(LocalDate.now(), LocalTime.now())));
 		
 		venue = Optional.ofNullable(new Venue(1L, "sport venue", "address 1", null, null, new ArrayList<Term>()));
 		
@@ -107,12 +102,31 @@ class GameServiceImplTest {
 				new HashSet<Game>(), null);
 		
 		sportDiscipline = new SportDiscipline(1L, "football", new ArrayList<Game>()); 
-
+		
+		gameRequest = new GameRequest(
+				"gameName",
+				"football",
+				10, 60, 25, 1,
+				LocalDate.now(),
+				10,
+				"game description"
+				);
+		
+		gameResponse = new GameResponse(
+				"gameName",
+				"football",
+				10, 60, 25,
+				"sport hall",
+				"address",
+				LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)),
+				"game description"
+				);
+		
 		game = new Game(
 				1L,
 				"gameName",
 				LocalDateTime.of(LocalDate.now(), LocalTime.now()),
-				10, 60, 10, 
+				25, 60, 10, 
 				"description",
 				user,
 				null,
@@ -126,9 +140,26 @@ class GameServiceImplTest {
 		when(venueRepository.findById(any(Long.class))).thenReturn(venue);
 		when(userRepository.findByUsername(anyString())).thenReturn(user);
 		when(sportDisciplineRepository.findByName(anyString())).thenReturn(sportDiscipline);
+		when(gameRepository.save(any(Game.class))).thenReturn(game);
 		when(modelMapper.map(gameRequest, Game.class)).thenReturn(game);
+		when(modelMapper.map(game, GameResponse.class)).thenReturn(gameResponse);
+		
+		GameResponse savedGame = serviceUnderTest.save(gameRequest, principal);
+		
+		verify(gameRepository).save(any(Game.class));
+		
+		assertThat(savedGame).hasFieldOrPropertyWithValue("name", "gameName");
+		assertThat(savedGame).hasFieldOrPropertyWithValue("sportDisciplineName", "football");
+		assertThat(savedGame).hasFieldOrPropertyWithValue("amountOfPlayers", 10);
+		assertThat(savedGame).hasFieldOrPropertyWithValue("duration", 60);
+		assertThat(savedGame).hasFieldOrPropertyWithValue("price", 25);
+		assertThat(savedGame).hasFieldOrPropertyWithValue("venueName", "sport hall");
+		assertThat(savedGame).hasFieldOrPropertyWithValue("venueAddress", "address");
+		assertThat(savedGame).hasFieldOrPropertyWithValue("date", LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
+		assertThat(savedGame).hasFieldOrPropertyWithValue("description", "game description");
 
-		GameResponse game = serviceUnderTest.save(gameRequest, principal);
+
+		
 	}
 
 }
