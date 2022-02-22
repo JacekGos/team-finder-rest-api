@@ -60,4 +60,16 @@ public class GameRequest {
 	private int hour;
 
 	private String description;
+
+	public void setName(String name) {
+		this.name = name.trim();
+	}
+
+	public void setSportDisciplineName(String sportDisciplineName) {
+		this.sportDisciplineName = sportDisciplineName.trim();
+	}
+
+	public void setDescription(String description) {
+		this.description = description.trim();
+	}
 }

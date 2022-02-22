@@ -27,4 +27,14 @@ public class VenueRequest {
 	@NotNull(message = "required")
 	@Size(min = 1, max = 200, message = "too long venue type name")
 	private String venueTypeName;
+	
+	public void setName(String name) {
+		
+		this.name = name.trim();
+	}
+	
+	public void setVenueTypeName(String venueTypeName) {
+		
+		this.venueTypeName = venueTypeName.trim();
+	}
 }
