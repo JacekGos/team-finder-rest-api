@@ -19,16 +19,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
-import com.jacekg.teamfinder.venue.VenueRequest;
-import com.jacekg.teamfinder.venue.VenueResponse;
+import com.jacekg.teamfinder.user.User;
 
 @WebMvcTest(GameRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -56,7 +55,7 @@ class GameRestControllerTest {
 	
 	private GameResponse gameResponse;
 	
-	private Principal principal;
+	private User user;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -78,17 +77,14 @@ class GameRestControllerTest {
 				LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)),
 				"game description");
 		
-		principal = new Principal() {
-			
-			@Override
-			public String getName() {
-				return "admin";
-			}
-		};
+		user = new User();
+		user.setId(1L);
 	}
 
 	@Test
 	void createGame_ShouldReturn_StatusCreated_AndGame() throws Exception {
+		
+		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		
 		String jsonBody = objectMapper.writeValueAsString(gameRequest);
 		
@@ -98,16 +94,24 @@ class GameRestControllerTest {
 		
 		MvcResult mvcResult = mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
+				.principal(testingAuthenticationToken)
                 .content(jsonBody))
 				.andExpect(status().isCreated()).andReturn();
 		
 		String returnedGame = mvcResult.getResponse().getContentAsString();
+		System.out.println("returnedGame: " + mvcResult.getResponse().getContentLength());
 		
-		VenueResponse venueResponse = objectMapper.readValue(returnedGame, VenueResponse.class);
+		GameResponse gameResponse = objectMapper.readValue(returnedGame, GameResponse.class);
 		
-		assertThat(venueResponse).hasFieldOrPropertyWithValue("name", "sport venue");
-		assertThat(venueResponse).hasFieldOrPropertyWithValue("address", "address 1");
-		assertThat(venueResponse).hasFieldOrPropertyWithValue("venueTypeName", "sports hall");
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("name", "gameName");
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("sportDisciplineName", "football");
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("amountOfPlayers", 10);
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("duration", 60);
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("price", 25);
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("venueName", "sport hall");
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("venueAddress", "address");
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("date", LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("description", "game description");
 	}
 
 }

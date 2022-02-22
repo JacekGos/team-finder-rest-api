@@ -76,6 +76,7 @@ public class GameServiceImpl implements GameService {
 		Game game = createGameToSave(gameRequest, principal);
 		
 		return modelMapper.map(gameRepository.save(game), GameResponse.class);
+//		return new GameResponse();
 	}
 	
 	private Game createGameToSave(GameRequest gameRequest, Principal principal) {
