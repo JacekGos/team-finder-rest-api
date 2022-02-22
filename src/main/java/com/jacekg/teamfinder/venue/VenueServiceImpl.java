@@ -41,6 +41,16 @@ public class VenueServiceImpl implements VenueService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VenueServiceImpl.class);
 	
+	private final String SPORTS_HALL = "sports hall";
+	
+	private final String OUTDOOR_PITCH = "outdoor pitch";
+	
+	private final String BASKETBALL_PITCH = "basketball pitch";
+	
+	private final String TENNIS_COURT = "tennis court";
+	
+	private final String JOGGING_STARTING_POINT = "jogging starting point";
+	
 	@PostConstruct
 	public void postConstruct() {
 		
@@ -123,25 +133,25 @@ public class VenueServiceImpl implements VenueService {
 		switch (sportDisciplineName) {
 		
 		case "football":
-			venueTypeNames.add("sports hall");
-			venueTypeNames.add("outdoor pitch");
+			venueTypeNames.add(SPORTS_HALL);
+			venueTypeNames.add(OUTDOOR_PITCH);
 			break;
 		
 		case "volleyball":
-			venueTypeNames.add("sports hall");
+			venueTypeNames.add(SPORTS_HALL);
 			break;
 			
 		case "basketball":
-			venueTypeNames.add("sports hall");
-			venueTypeNames.add("basketball pitch");
+			venueTypeNames.add(SPORTS_HALL);
+			venueTypeNames.add(BASKETBALL_PITCH);
 			break;
 
 		case "tennis":
-			venueTypeNames.add("tennis court");
+			venueTypeNames.add(TENNIS_COURT);
 			break;
 
 		case "jogging":
-			venueTypeNames.add("jogging starting point");
+			venueTypeNames.add(JOGGING_STARTING_POINT);
 			break;
 			
 		default:
