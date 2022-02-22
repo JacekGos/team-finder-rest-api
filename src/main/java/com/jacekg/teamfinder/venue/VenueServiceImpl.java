@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -92,10 +93,11 @@ public class VenueServiceImpl implements VenueService {
 		
 		return venue;
 	}
-
+	
+	@Transactional
 	@Override
 	public List<VenueResponse> 
-		findBySportDiscipline(String sportDisciplineName, String address) throws IOException {
+		findBySportDisciplineAndAddress(String sportDisciplineName, String address) throws IOException {
 		
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
 		
@@ -104,12 +106,14 @@ public class VenueServiceImpl implements VenueService {
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
 		
-		List<String> venueTypeNames = getVenueTypeNameBySportDiscipline(sportDisciplineName);
+		List<String> venueTypeNames = getVenueTypeNamesBySportDiscipline(sportDisciplineName);
 		
 		List<Venue> venues 
-			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, venueTypeNames);
+			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 20000, venueTypeNames);
 		
-		return null;
+		return venues.stream()
+				.map(venue -> modelMapper.map(venue, VenueResponse.class))
+				.collect(Collectors.toList());
 	}
 
 	private List<String> getVenueTypeNamesBySportDiscipline(String sportDisciplineName) {

@@ -34,9 +34,9 @@ public class VenueRestController {
 	
 	@GetMapping("/venues/{sportDiscipline}/{address}")
 	public ResponseEntity<List<VenueResponse>> 
-		findBySportDyscipline(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
+		findBySportDysciplineAndAddress(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
 		
-		return status(HttpStatus.OK).body(venueService.findBySportDiscipline(sportDiscipline, address));
+		return status(HttpStatus.OK).body(venueService.findBySportDisciplineAndAddress(sportDiscipline, address));
 	}
 }
 
