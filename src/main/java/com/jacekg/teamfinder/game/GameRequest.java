@@ -26,6 +26,7 @@ import com.jacekg.teamfinder.validation.ValidDuration;
 public class GameRequest {
 	
 	@NotNull(message = "required")
+	@NotBlank(message = "required")
 	@NotBlank(message = "name cannot be empty")
 	@Size(max = 50, message = "too long name")
 	private String name;
@@ -62,14 +63,20 @@ public class GameRequest {
 	private String description;
 
 	public void setName(String name) {
-		this.name = name.trim();
+		if (name != null) {
+			this.name = name.trim();
+		}
 	}
 
 	public void setSportDisciplineName(String sportDisciplineName) {
-		this.sportDisciplineName = sportDisciplineName.trim();
+		if (sportDisciplineName != null) {
+			this.sportDisciplineName = sportDisciplineName.trim();
+		}
 	}
 
 	public void setDescription(String description) {
-		this.description = description.trim();
+		if (description != null) {
+			this.description = description.trim();
+		}
 	}
 }

@@ -117,7 +117,7 @@ class GameRestControllerTest {
 	@Test
 	void createGame_ShouldThrow_MethodArgumentNotValidException() throws Exception {
 		
-		gameRequest.setName(null);
+		gameRequest.setAmountOfPlayers(0);
 		
 		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		

@@ -29,12 +29,14 @@ public class VenueRequest {
 	private String venueTypeName;
 	
 	public void setName(String name) {
-		
-		this.name = name.trim();
+		if (name != null) {
+			this.name = name.trim();
+		}
 	}
 	
 	public void setVenueTypeName(String venueTypeName) {
-		
-		this.venueTypeName = venueTypeName.trim();
+		if (venueTypeName != null) {
+			this.venueTypeName = venueTypeName.trim();
+		}
 	}
 }
