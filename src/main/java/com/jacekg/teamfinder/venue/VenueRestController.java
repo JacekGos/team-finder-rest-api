@@ -32,7 +32,7 @@ public class VenueRestController {
 		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
 	
-	@GetMapping("/venues/{sportDiscipline}")
+	@GetMapping("/venues/{sportDiscipline}/{address}")
 	public ResponseEntity<List<VenueResponse>> 
 		findBySportDyscipline(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
 		

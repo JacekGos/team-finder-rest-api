@@ -92,6 +92,22 @@ public class VenueServiceImpl implements VenueService {
 		return venue;
 	}
 
+//	@Override
+//	public List<VenueResponse> 
+//		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
+//		
+//		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
+//		
+//		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
+//		
+//		Point venueCoordinates = 
+//				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
+//		
+//		List<Venue> venues = venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, "Kielce");
+//		
+//		return null;
+//	}
+	
 	@Override
 	public List<VenueResponse> 
 		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
@@ -102,6 +118,11 @@ public class VenueServiceImpl implements VenueService {
 		
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
+		
+		List<Venue> venues 
+			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, "sports hall");
+		
+		logger.info("venues: " + venues.size());
 		
 		return null;
 	}

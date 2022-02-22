@@ -43,19 +43,19 @@ class VenueRepositoryTest {
 				null);
 	}
 	
-	@Disabled
-	@Test
-	void findNearWithinDistance_ShouldReturn_Venue() {
-		
-		Point centerPoint = geometryFactory.createPoint(new Coordinate(1.0, 1.0));
-		
-		venueRepository.save(venue);
-		
-		List<Venue> foundVenues = 
-				venueRepository.findNearWithinDistance(centerPoint, 10000);
-		
-		assertThat(foundVenues).isNotEmpty();
-	}
+//	@Disabled
+//	@Test
+//	void findNearWithinDistance_ShouldReturn_Venue() {
+//		
+//		Point centerPoint = geometryFactory.createPoint(new Coordinate(1.0, 1.0));
+//		
+//		venueRepository.save(venue);
+//		
+//		List<Venue> foundVenues = 
+//				venueRepository.findNearWithinDistance(centerPoint, 10000);
+//		
+//		assertThat(foundVenues).isNotEmpty();
+//	}
 	
 	@Test
 	void testFindByLocationAndVenueType() {
