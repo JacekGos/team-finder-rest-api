@@ -78,12 +78,17 @@ class GameServiceImplTest {
 	
 	private User user;
 	
+	List<Term> busyTerms;
+	
 	@BeforeEach
 	void setUp() {
 		
-		List<Term> busyTerms = new ArrayList<>();
+		busyTerms = new ArrayList<>();
+		busyTerms.add(new Term(1L, LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0))));
 		
-		venue = Optional.ofNullable(new Venue(1L, "sport venue", "address 1", null, null, new ArrayList<Term>()));
+		venue = Optional.ofNullable(new Venue(1L, "sport venue", "address 1", 
+				null, null, 
+				new ArrayList<Term>()));
 		
 		principal = new Principal() {
 			
@@ -108,7 +113,7 @@ class GameServiceImplTest {
 				"gameName",
 				"football",
 				10, 60, 25, 1,
-				LocalDate.now(),
+				LocalDate.of(2022, 1, 1),
 				10,
 				"game description"
 				);
@@ -193,6 +198,21 @@ class GameServiceImplTest {
 		});
 		
 		assertTrue(exception.getMessage().contains("no such sport discipline exists"));
+	}
+	
+	@Test
+	void save_ShouldThrow_SaveGameException_WithMessage_VenueIsNotAvailableOnThatDate() {
+		
+		when(venueRepository.findById(any(Long.class))).thenReturn(venue);
+		when(userRepository.findByUsername(anyString())).thenReturn(user);
+		when(sportDisciplineRepository.findByName(anyString())).thenReturn(sportDiscipline);
+		when(termRepository.findByVenueId(any(Long.class))).thenReturn(busyTerms);
+		
+		SaveGameException exception = assertThrows(SaveGameException.class, () -> {
+			serviceUnderTest.save(gameRequest, principal);
+		});
+		
+		assertTrue(exception.getMessage().contains("venue is not available on that date"));
 	}
 }
 

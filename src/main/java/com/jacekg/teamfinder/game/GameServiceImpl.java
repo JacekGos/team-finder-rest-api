@@ -134,7 +134,6 @@ public class GameServiceImpl implements GameService {
 		
 		List<Term> busyTerms = termRepository.findByVenueId(venue.getId());
 		
-
 		for (Term gameTerm : gameTerms) {
 			
 			if (busyTerms.stream()
