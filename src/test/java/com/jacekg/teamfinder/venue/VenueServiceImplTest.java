@@ -8,6 +8,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,6 +126,29 @@ class VenueServiceImplTest {
 		});
 		
 		assertTrue(exception.getMessage().contains("on this address is already registered"));
+	}
+	
+	@Test
+	void findBySportDisciplineAndAddress_ShouldReturn_Venues() throws IOException {
+		
+		List<Venue> venues = new ArrayList<Venue>();
+		venues.add(venue);
+		
+		List<String> venueTypeNames = new ArrayList<String>();
+		venueTypeNames.add("sports hall");
+		venueTypeNames.add("outdoor pitch");
+		
+		when(geocodingService.findLocationByAddress(anyString())).thenReturn(geocodeObject);
+		when(venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 20000, venueTypeNames))
+			.thenReturn(venues);
+		when(modelMapper.map(venue, VenueResponse.class)).thenReturn(venueResponse);
+				
+		List<VenueResponse> foundVenues 
+			= serviceUnderTest.findBySportDisciplineAndAddress("football", "address 1");
+		
+		verify(venueRepository).findByVenueTypeWithinDistance(venueCoordinates, 20000, venueTypeNames);
+		
+		assertThat(foundVenues).hasSizeGreaterThanOrEqualTo(1);
 	}
 }
 
