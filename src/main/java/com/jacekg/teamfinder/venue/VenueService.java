@@ -6,4 +6,6 @@ import java.util.List;
 public interface VenueService {
 	
 	public VenueResponse save(VenueRequest venueRequest) throws IOException;
+
+	public List<VenueResponse> findBySportDiscipline(String sportDiscipline);
 }

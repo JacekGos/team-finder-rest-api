@@ -93,4 +93,10 @@ public class VenueServiceImpl implements VenueService {
 		return venue;
 	}
 
+	@Override
+	public List<VenueResponse> findBySportDiscipline(String sportDiscipline) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
