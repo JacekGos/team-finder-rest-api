@@ -7,5 +7,5 @@ public interface VenueService {
 	
 	public VenueResponse save(VenueRequest venueRequest) throws IOException;
 
-	public List<VenueResponse> findBySportDiscipline(String sportDiscipline);
+	public List<VenueResponse> findBySportDiscipline(String sportDiscipline, String address) throws IOException;
 }

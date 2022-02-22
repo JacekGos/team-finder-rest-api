@@ -63,7 +63,6 @@ public class VenueServiceImpl implements VenueService {
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(venueRequest.getAddress());
 		
 		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
-		logger.info("location: " + location);
 		
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
@@ -94,7 +93,15 @@ public class VenueServiceImpl implements VenueService {
 	}
 
 	@Override
-	public List<VenueResponse> findBySportDiscipline(String sportDiscipline) {
+	public List<VenueResponse> 
+		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
+		
+		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
+		
+		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
+		
+		Point venueCoordinates = 
+				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
 		
 		return null;
 	}
