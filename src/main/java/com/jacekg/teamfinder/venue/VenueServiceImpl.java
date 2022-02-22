@@ -95,7 +95,7 @@ public class VenueServiceImpl implements VenueService {
 
 	@Override
 	public List<VenueResponse> 
-		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
+		findBySportDiscipline(String sportDisciplineName, String address) throws IOException {
 		
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
 		
@@ -104,7 +104,7 @@ public class VenueServiceImpl implements VenueService {
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
 		
-//		String venueTypeNameString = getVenueTypeNameBySportDiscipline(sportDiscipline);
+		List<String> venueTypeNames = getVenueTypeNameBySportDiscipline(sportDisciplineName);
 		
 		List<Venue> venues 
 			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, venueTypeNames);
@@ -112,20 +112,39 @@ public class VenueServiceImpl implements VenueService {
 		return null;
 	}
 
-//	private String getVenueTypeNameBySportDiscipline(String sportDiscipline) {
-//		
-//		String venueTypeName;
-//		
-//		switch (sportDiscipline) {
-//		case "football":
-//			venueTypeName = ""
-//			break;
-//
-//		default:
-//			break;
-//		}
-//		
-//		return null;
-//	}
+	private List<String> getVenueTypeNamesBySportDiscipline(String sportDisciplineName) {
+		
+		List<String> venueTypeNames = new ArrayList<String>();
+		
+		switch (sportDisciplineName) {
+		
+		case "football":
+			venueTypeNames.add("sports hall");
+			venueTypeNames.add("outdoor pitch");
+			break;
+		
+		case "volleyball":
+			venueTypeNames.add("sports hall");
+			break;
+			
+		case "basketball":
+			venueTypeNames.add("sports hall");
+			venueTypeNames.add("basketball pitch");
+			break;
+
+		case "tennis":
+			venueTypeNames.add("tennis court");
+			break;
+
+		case "jogging":
+			venueTypeNames.add("jogging starting point");
+			break;
+			
+		default:
+			break;
+		}
+		
+		return venueTypeNames;
+	}
 
 }
