@@ -101,5 +101,28 @@ class VenueRestControllerTest {
 		
 		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
 	}
+	
+	@Test
+	void findBySportDysciplineAndAddress_ShouldReturn_StatusOK_AndVenues() throws Exception {
+		
+		String jsonBody = objectMapper.writeValueAsString(venueRequest);
+		
+		when(venueService.save(any(VenueRequest.class))).thenReturn(venueResponse);
+		
+		String url = "/v1/venues";
+		
+		MvcResult mvcResult = mockMvc.perform(post(url)
+				.contentType(MediaType.APPLICATION_JSON)
+                .content(jsonBody))
+				.andExpect(status().isCreated()).andReturn();
+		
+		String returnedVenue = mvcResult.getResponse().getContentAsString();
+		
+		VenueResponse venueResponse = objectMapper.readValue(returnedVenue, VenueResponse.class);
+		
+		assertThat(venueResponse).hasFieldOrPropertyWithValue("name", "sport venue");
+		assertThat(venueResponse).hasFieldOrPropertyWithValue("address", "address 1");
+		assertThat(venueResponse).hasFieldOrPropertyWithValue("venueTypeName", "sports hall");
+	}
 
 }
