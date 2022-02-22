@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.venue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,22 +93,6 @@ public class VenueServiceImpl implements VenueService {
 		return venue;
 	}
 
-//	@Override
-//	public List<VenueResponse> 
-//		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
-//		
-//		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
-//		
-//		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
-//		
-//		Point venueCoordinates = 
-//				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
-//		
-//		List<Venue> venues = venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, "Kielce");
-//		
-//		return null;
-//	}
-	
 	@Override
 	public List<VenueResponse> 
 		findBySportDiscipline(String sportDiscipline, String address) throws IOException {
@@ -119,12 +104,28 @@ public class VenueServiceImpl implements VenueService {
 		Point venueCoordinates = 
 				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
 		
-		List<Venue> venues 
-			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, "sports hall");
+//		String venueTypeNameString = getVenueTypeNameBySportDiscipline(sportDiscipline);
 		
-		logger.info("venues: " + venues.size());
+		List<Venue> venues 
+			= venueRepository.findByVenueTypeWithinDistance(venueCoordinates, 10000, venueTypeNames);
 		
 		return null;
 	}
+
+//	private String getVenueTypeNameBySportDiscipline(String sportDiscipline) {
+//		
+//		String venueTypeName;
+//		
+//		switch (sportDiscipline) {
+//		case "football":
+//			venueTypeName = ""
+//			break;
+//
+//		default:
+//			break;
+//		}
+//		
+//		return null;
+//	}
 
 }
