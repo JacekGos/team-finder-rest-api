@@ -1,10 +1,16 @@
-package com.jacekg.teamfinder.venue;
+package com.jacekg.teamfinder.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.ArgumentMatchers.any;
+
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,14 +23,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jacekg.teamfinder.exceptions.ErrorResponse;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
+import com.jacekg.teamfinder.venue.VenueRequest;
+import com.jacekg.teamfinder.venue.VenueResponse;
 
-@WebMvcTest(VenueRestController.class)
+@WebMvcTest(GameRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class VenueRestControllerTest {
+class GameRestControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -33,7 +41,7 @@ class VenueRestControllerTest {
 	private ObjectMapper objectMapper;
 	
 	@MockBean
-	private VenueService venueService;
+	private GameService gameService;
 	
 	@MockBean
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -44,62 +52,69 @@ class VenueRestControllerTest {
 	@MockBean
 	private JwtRequestFilter jwtRequestFilter;
 	
-	private VenueRequest venueRequest;
+	private GameRequest gameRequest;
 	
-	private VenueResponse venueResponse;
+	private GameResponse gameResponse;
+	
+	private Principal principal;
 	
 	@BeforeEach
 	void setUp() throws Exception {
 		
-		venueRequest = new VenueRequest("sport venue", "address 1", "sports hall");
+		gameRequest = new GameRequest(
+				"gameName",
+				"football",
+				10, 60, 25, 1,
+				LocalDate.of(2022, 1, 1),
+				10,
+				"game description");
 		
-		venueResponse = new VenueResponse("sport venue", "address 1", "sports hall");
+		gameResponse = new GameResponse(
+				"gameName",
+				"football",
+				10, 60, 25,
+				"sport hall",
+				"address",
+				LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)),
+				"game description");
+		
+		principal = new Principal() {
+			
+			@Override
+			public String getName() {
+				return "admin";
+			}
+		};
 	}
-	
+
 	@Test
-	void createVenue_ShouldReturn_StatusCreated_AndVenue() throws Exception {
+	void createGame_ShouldReturn_StatusCreated_AndGame() throws Exception {
 		
-		String jsonBody = objectMapper.writeValueAsString(venueRequest);
+		String jsonBody = objectMapper.writeValueAsString(gameRequest);
 		
-		when(venueService.save(any(VenueRequest.class))).thenReturn(venueResponse);
+		when(gameService.save(any(GameRequest.class), any(Principal.class))).thenReturn(gameResponse);
 		
-		String url = "/v1/venues";
+		String url = "/v1/games";
 		
 		MvcResult mvcResult = mockMvc.perform(post(url)
 				.contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
 				.andExpect(status().isCreated()).andReturn();
 		
-		String returnedVenue = mvcResult.getResponse().getContentAsString();
+		String returnedGame = mvcResult.getResponse().getContentAsString();
 		
-		VenueResponse venueResponse = objectMapper.readValue(returnedVenue, VenueResponse.class);
+		VenueResponse venueResponse = objectMapper.readValue(returnedGame, VenueResponse.class);
 		
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("name", "sport venue");
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("address", "address 1");
 		assertThat(venueResponse).hasFieldOrPropertyWithValue("venueTypeName", "sports hall");
 	}
-	
-	@Test
-	void createVenue_ShouldThrow_MethodArgumentNotValidException() throws Exception {
-		
-		venueRequest.setAddress(null);
-		
-		String jsonBody = objectMapper.writeValueAsString(venueRequest);
-		
-		when(venueService.save(any(VenueRequest.class))).thenReturn(venueResponse);
-		
-		String url = "/v1/venues";
-		
-		MvcResult mvcResult = mockMvc.perform(post(url)
-				.contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBody))
-				.andExpect(status().isBadRequest()).andReturn();
-		
-		String responseContent = mvcResult.getResponse().getContentAsString();
-		
-		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
-		
-		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
-	}
 
 }
+
+
+
+
+
+
+
