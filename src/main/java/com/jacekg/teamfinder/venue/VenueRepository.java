@@ -8,9 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface VenueRepository extends JpaRepository<Venue, Long> {
 	
-	@Query(value="SELECT * from venue where ST_DistanceSphere(location, :location) < :distance",
+//	@Query(value="SELECT * from venue where ST_DistanceSphere(location, :location) < :distance",
+//			nativeQuery = true)
+//	List<Venue> findByVenueTypeWithinDistance(Point location, double distance);
+	
+	@Query(value="SELECT * from venue as v inner join venue_type as vt"
+			+ " on v.venue_type_id = vt.id"
+			+ " where vt.name:=venueTypeName ST_DistanceSphere(location, :location) < :distance",
 			nativeQuery = true)
-	List<Venue> findByVenueTypeWithinDistance(Point location, double distance);
+	List<Venue> findByVenueTypeWithinDistance(Point location, double distance, String venueTypeName);
 	
 	Venue findByLocationAndVenueType(Point location, VenueType venueType);
 }
