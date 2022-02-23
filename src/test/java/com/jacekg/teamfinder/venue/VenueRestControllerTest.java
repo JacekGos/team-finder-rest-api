@@ -143,7 +143,6 @@ class VenueRestControllerTest {
 		
 		String responseContent = mvcResult.getResponse().getContentAsString();
 		
-		
 		List<VenueResponse> venueResponses 
 			= objectMapper.readValue(responseContent, new TypeReference<List<VenueResponse>>() {});
 		
