@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.venue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +63,15 @@ public class Venue {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "venue_id")
 	private List<Term> busyTerms = new ArrayList<>();
+	
+	public List<LocalDateTime> mapBusyTermsToDates() {
+		
+		List<LocalDateTime> busyTermsDates = new ArrayList<LocalDateTime>();
+		
+		this.busyTerms.forEach(term -> busyTermsDates.add(term.getBusyTerm()));
+		
+		return busyTermsDates;
+	}
 	
 	public void addTerms(List<Term> gameTerms) {
 		

@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.venue;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,7 @@ public class VenueServiceImpl implements VenueService {
 		modelMapper.addMappings(new PropertyMap<Venue, VenueResponse>() {
 			protected void configure() {
 				map().setVenueTypeName(source.getVenueType().getName());
+				map().setBusyTerms(source.mapBusyTermsToDates());
 			}
 		});
 	}
