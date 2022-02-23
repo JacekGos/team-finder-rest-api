@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -150,6 +151,19 @@ public class GameServiceImpl implements GameService {
 		venueRepository.save(venue);
 		
 		return venue;
+	}
+	
+	@Transactional
+	@Override
+	public List<GameResponse> getAllGames() {
+		
+		List<Game> games = gameRepository.findAll();
+		
+		GameResponse resp = modelMapper.map(games.get(0), GameResponse.class);
+		
+		return games.stream()
+				.map(game -> modelMapper.map(game, GameResponse.class))
+				.collect(Collectors.toList());
 	}
 }
 

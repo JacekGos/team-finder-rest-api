@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 
+import io.netty.handler.codec.http.HttpMethod;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -51,7 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/v1/signin", "/v1/signup", "v1/venues/{sportDiscipline}/{address}")
+				.authorizeRequests().antMatchers("/v1/signin", "/v1/signup", "/v1/venues/{sportDiscipline}/{address}"
+						, "/v1/games")
 				.permitAll().
 				anyRequest().authenticated().and().
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

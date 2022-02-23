@@ -108,8 +108,8 @@ public class VenueServiceImpl implements VenueService {
 	
 	@Transactional
 	@Override
-	public List<VenueResponse> 
-		findBySportDisciplineAndAddress(String sportDisciplineName, String address) throws IOException {
+	public List<VenueResponse> findBySportDisciplineAndAddress
+		(String sportDisciplineName, String address) throws IOException {
 		
 		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
 		
