@@ -3,6 +3,7 @@ package com.jacekg.teamfinder.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 
-import io.netty.handler.codec.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
@@ -51,13 +51,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-
+		
+//		.antMatchers("/v1/signin", "/v1/signup", "/v1/venues/{sportDiscipline}/{address}"
+//		, "/v1/games")
+		
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/v1/signin", "/v1/signup", "/v1/venues/{sportDiscipline}/{address}"
-						, "/v1/games")
-				.permitAll().
-				anyRequest().authenticated().and().
-				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/v1/games").authenticated()
+				.antMatchers(HttpMethod.POST, 
+						"/v1/signin", "/v1/signup")
+				.permitAll()
+				.anyRequest().authenticated().and()
+				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
