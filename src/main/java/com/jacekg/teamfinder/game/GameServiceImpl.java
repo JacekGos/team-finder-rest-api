@@ -126,10 +126,10 @@ public class GameServiceImpl implements GameService {
 	private Venue updateVenueToSave(Venue venue, LocalDateTime gameDate, int duration) {
 		
 		List<Term> gameTerms = new ArrayList<>();
-		gameTerms.add(new Term(1L, gameDate));
+		gameTerms.add(new Term(null, gameDate));
 		
 		if (duration == 120) {
-			gameTerms.add(new Term(1L, gameDate.plusHours(1L)));
+			gameTerms.add(new Term(null, gameDate.plusHours(1L)));
 		}
 		
 		List<Term> busyTerms = termRepository.findByVenueId(venue.getId());

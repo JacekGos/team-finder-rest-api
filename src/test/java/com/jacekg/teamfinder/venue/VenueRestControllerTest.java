@@ -70,7 +70,7 @@ class VenueRestControllerTest {
 		
 		venueRequest = new VenueRequest("sport venue", "address 1", "sports hall");
 		
-		venueResponse = new VenueResponse("sport venue", "address 1", "sports hall");
+		venueResponse = new VenueResponse(1L, "sport venue", "address 1", "sports hall", new ArrayList<>());
 		
 		user = new User();
 		user.setId(1L);

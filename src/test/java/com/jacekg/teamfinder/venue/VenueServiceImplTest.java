@@ -8,6 +8,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +67,13 @@ class VenueServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		
+		List<LocalDateTime> busyTerms = new ArrayList<LocalDateTime>();
+		busyTerms.add(LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
+		busyTerms.add(LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(11, 0)));
+		
 		venueRequest = new VenueRequest("sport venue", "address 1", "sports hall");
 		
-		venueResponse = new VenueResponse("sport venue", "address 1", "sports hall");
+		venueResponse = new VenueResponse(1L, "sport venue", "address 1", "sports hall", busyTerms);
 
 		venueType = new VenueType(1L, "sports hall");
 		
@@ -149,6 +156,9 @@ class VenueServiceImplTest {
 		verify(venueRepository).findByVenueTypeWithinDistance(venueCoordinates, 20000, venueTypeNames);
 		
 		assertThat(foundVenues).hasSizeGreaterThanOrEqualTo(1);
+		assertThat(foundVenues.get(0).getBusyTerms()).hasSize(2);
+		assertThat(foundVenues.get(0).getBusyTerms().get(0))
+			.isEqualTo(LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
 	}
 }
 
