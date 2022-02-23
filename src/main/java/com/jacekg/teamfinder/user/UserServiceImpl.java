@@ -3,6 +3,7 @@ package com.jacekg.teamfinder.user;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -35,7 +36,8 @@ public class UserServiceImpl implements UserService {
 			}
 		});
 	}
-
+	
+	@Transactional
 	@Override
 	public UserResponse save(UserRequest userRequest) {
 
