@@ -157,11 +157,9 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public List<GameResponse> getAllGames() {
 		
-		List<Game> games = gameRepository.findAll();
+//		List<Game> games = gameRepository.findAll();
 		
-		GameResponse resp = modelMapper.map(games.get(0), GameResponse.class);
-		
-		return games.stream()
+		return gameRepository.findAll().stream()
 				.map(game -> modelMapper.map(game, GameResponse.class))
 				.collect(Collectors.toList());
 	}
