@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.ErrorResponse;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
@@ -60,8 +61,6 @@ class VenueRestControllerTest {
 	
 	private VenueResponse venueResponse;
 	
-	private Venue venue;
-	
 	private User user;
 	
 	private Point venueCoordinates;
@@ -72,8 +71,6 @@ class VenueRestControllerTest {
 		venueRequest = new VenueRequest("sport venue", "address 1", "sports hall");
 		
 		venueResponse = new VenueResponse("sport venue", "address 1", "sports hall");
-		
-		venue = new Venue(1L, "sport venue", "address 1",venueCoordinates, null, null);
 		
 		user = new User();
 		user.setId(1L);
@@ -131,7 +128,8 @@ class VenueRestControllerTest {
 	void findBySportDysciplineAndAddress_ShouldReturn_StatusOK_AndVenues() throws Exception {
 		
 		List<VenueResponse> venues = new ArrayList<VenueResponse>();
-		venues.add(venueResponse);
+		venues.add(new VenueResponse());
+		venues.add(new VenueResponse());
 		
 		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		
@@ -139,16 +137,16 @@ class VenueRestControllerTest {
 		
 		String url = "/v1/venues/{sportDiscipline}/{address}";
 		
-		MvcResult mvcResult = mockMvc.perform(get(url, "football", "address 1")
+		MvcResult mvcResult = mockMvc.perform(get(url, "football", "address")
 				.principal(testingAuthenticationToken))
 				.andExpect(status().isOk()).andReturn();
 		
 		String responseContent = mvcResult.getResponse().getContentAsString();
 		
-//		List<VenueResponse> venueResponses 
-//			= (List<VenueResponse>) objectMapper.readValue(responseContent, VenueResponse.class);
 		
-		VenueResponse venueResponses 
-			= objectMapper.readValue(responseContent, VenueResponse.class);
+		List<VenueResponse> venueResponses 
+			= objectMapper.readValue(responseContent, new TypeReference<List<VenueResponse>>() {});
+		
+		assertThat(venueResponses).hasSize(2);
 	}
 }
