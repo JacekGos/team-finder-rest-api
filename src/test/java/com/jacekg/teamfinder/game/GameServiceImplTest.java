@@ -213,6 +213,22 @@ class GameServiceImplTest {
 		
 		assertTrue(exception.getMessage().contains("venue is not available on that date"));
 	}
+	
+	@Test
+	void getAll_ShouldReturn_Games() {
+		
+		List<Game> games = new ArrayList<>();
+		games.add(game);
+		games.add(game);
+		
+		when(gameRepository.findAll()).thenReturn(games);
+		
+		List<GameResponse> gameResponses = serviceUnderTest.getAll();
+		
+		verify(gameRepository).findAll();
+		
+		assertThat(gameResponses).hasSize(2);
+	}
 }
 
 
