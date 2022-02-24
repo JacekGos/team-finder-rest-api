@@ -38,20 +38,12 @@ public class VenueRestController {
 		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
 	
-//	@GetMapping("/venues/{sportDiscipline}/{address}")
-//	public ResponseEntity<List<VenueResponse>> 
-//		findBySportDysciplineAndAddress(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
-//		
-//		return status(HttpStatus.OK)
-//				.body(venueService.findBySportDisciplineAndAddress(sportDiscipline, address));
-//	}
-	
 	@GetMapping("/venues")
 	public ResponseEntity<List<VenueResponse>> findBySportDysciplineAndAddress
-			(@RequestParam Map<String, String> venueQuery) throws IOException {
+			(@RequestParam String sportDiscipline, @RequestParam String address) throws IOException {
 		
-		return status(HttpStatus.OK).body(venueService.findBySportDisciplineAndAddress
-				(venueQuery.get("sport_discipline"), venueQuery.get("address")));
+		return status(HttpStatus.OK)
+				.body(venueService.findBySportDisciplineAndAddress(sportDiscipline, address));
 	}
 }
 

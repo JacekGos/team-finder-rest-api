@@ -135,9 +135,11 @@ class VenueRestControllerTest {
 		
 		when(venueService.findBySportDisciplineAndAddress(anyString(), anyString())).thenReturn(venues);
 		
-		String url = "/v1/venues/{sportDiscipline}/{address}";
+		String url = "/v1/venues";
 		
-		MvcResult mvcResult = mockMvc.perform(get(url, "football", "address")
+		MvcResult mvcResult = mockMvc.perform(get(url)
+				.param("address", "address 1")
+	            .param("sportDiscipline", "football")
 				.principal(testingAuthenticationToken))
 				.andExpect(status().isOk()).andReturn();
 		
