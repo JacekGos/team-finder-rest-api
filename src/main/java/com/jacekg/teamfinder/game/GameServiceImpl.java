@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -162,6 +163,12 @@ public class GameServiceImpl implements GameService {
 		return gameRepository.findAll().stream()
 				.map(game -> modelMapper.map(game, GameResponse.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
+		
+		return null;
 	}
 }
 

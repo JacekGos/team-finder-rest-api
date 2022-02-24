@@ -33,10 +33,11 @@ public class VenueRestController {
 	}
 	
 	@GetMapping("/venues/{sportDiscipline}/{address}")
-	public ResponseEntity<List<VenueResponse>> 
-		findBySportDysciplineAndAddress(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
+	public ResponseEntity<List<VenueResponse>> getAllBySportDysciplineAndAddress
+		(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
 		
-		return status(HttpStatus.OK).body(venueService.findBySportDisciplineAndAddress(sportDiscipline, address));
+		return status(HttpStatus.OK)
+				.body(venueService.getAllBySportDysciplineAndAddress(sportDiscipline, address));
 	}
 }
 

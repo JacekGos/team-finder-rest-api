@@ -125,7 +125,7 @@ class VenueRestControllerTest {
 	}
 	
 	@Test
-	void findBySportDysciplineAndAddress_ShouldReturn_StatusOK_AndVenues() throws Exception {
+	void getAllBySportDysciplineAndAddress_ShouldReturn_StatusOK_AndVenues() throws Exception {
 		
 		List<VenueResponse> venues = new ArrayList<VenueResponse>();
 		venues.add(new VenueResponse());
@@ -133,7 +133,7 @@ class VenueRestControllerTest {
 		
 		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		
-		when(venueService.findBySportDisciplineAndAddress(anyString(), anyString())).thenReturn(venues);
+		when(venueService.getAllBySportDysciplineAndAddress(anyString(), anyString())).thenReturn(venues);
 		
 		String url = "/v1/venues/{sportDiscipline}/{address}";
 		

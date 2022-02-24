@@ -136,7 +136,7 @@ class VenueServiceImplTest {
 	}
 	
 	@Test
-	void findBySportDisciplineAndAddress_ShouldReturn_Venues() throws IOException {
+	void getAllBySportDysciplineAndAddress_ShouldReturn_Venues() throws IOException {
 		
 		List<Venue> venues = new ArrayList<Venue>();
 		venues.add(venue);
@@ -151,7 +151,7 @@ class VenueServiceImplTest {
 		when(modelMapper.map(venue, VenueResponse.class)).thenReturn(venueResponse);
 				
 		List<VenueResponse> foundVenues 
-			= serviceUnderTest.findBySportDisciplineAndAddress("football", "address 1");
+			= serviceUnderTest.getAllBySportDysciplineAndAddress("football", "address 1");
 		
 		verify(venueRepository).findByVenueTypeWithinDistance(venueCoordinates, 20000, venueTypeNames);
 		
