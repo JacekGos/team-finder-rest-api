@@ -46,7 +46,7 @@ public class GameRestController {
 		return status(HttpStatus.OK).body(gameService.getAll());
 	}
 	
-	@GetMapping("/venues/{sportDiscipline}/{address}")
+	@GetMapping("/games/filter")
 	public ResponseEntity<List<GameResponse>> getAllByFilters
 		(@PathVariable Map<String, String> filterParams) throws IOException {
 		
@@ -54,3 +54,6 @@ public class GameRestController {
 				.body(gameService.getAllByFilters(filterParams));
 	}
 }
+
+
+

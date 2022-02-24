@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.jacekg.teamfinder.exceptions.SaveGameException;
@@ -167,6 +168,14 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
+		
+		Game game = new Game();
+		game.setId(1L);		
+		
+		Example<Game> gameExample = Example.of(game);
+		
+		List<Game> games = gameRepository.findAll(gameExample);
+		logger.info("game id: " + games.get(0).getId());
 		
 		return null;
 	}

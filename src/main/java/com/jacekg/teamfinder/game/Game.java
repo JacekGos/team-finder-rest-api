@@ -51,7 +51,7 @@ public class Game {
 	private int price;
 	
 	@Column(name = "duration", nullable = false)
-	private int duration;
+	private Integer duration;
 	
 	@Column(name = "amount_of_players", nullable = false)
 	private int amountOfPlayers;
