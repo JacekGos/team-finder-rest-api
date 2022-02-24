@@ -32,4 +32,8 @@ public class GameResponse {
 	private LocalDateTime date;
 	
 	private String description;
+	
+	private double longitude;
+	
+	private double lattitude;
 }

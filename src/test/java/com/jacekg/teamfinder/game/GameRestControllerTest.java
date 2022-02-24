@@ -76,7 +76,8 @@ class GameRestControllerTest {
 				"sport hall",
 				"address",
 				LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)),
-				"game description");
+				"game description",
+				0, 0);
 		
 		user = new User();
 		user.setId(1L);

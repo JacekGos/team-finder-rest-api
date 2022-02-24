@@ -60,6 +60,8 @@ public class GameServiceImpl implements GameService {
 				map().setSportDisciplineName(source.getSportDiscipline().getName());
 				map().setVenueName(source.getVenue().getName());
 				map().setVenueAddress(source.getVenue().getAddress());
+				map().setLongitude(source.getVenue().getLocation().getX());
+				map().setLattitude(source.getVenue().getLocation().getY());
 			}
 		});
 		
@@ -156,6 +158,10 @@ public class GameServiceImpl implements GameService {
 	@Transactional
 	@Override
 	public List<GameResponse> getAllGames() {
+		
+		List<Game> games = gameRepository.findAll();
+		logger.info("location X: " + games.get(3).getVenue().getLocation().getX());
+		logger.info("location Y: " + games.get(3).getVenue().getLocation().getY());
 		
 		return gameRepository.findAll().stream()
 				.map(game -> modelMapper.map(game, GameResponse.class))

@@ -124,7 +124,8 @@ class GameServiceImplTest {
 				"sport hall",
 				"address",
 				LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)),
-				"game description");
+				"game description",
+				0, 0);
 		
 		game = new Game(
 				1L,

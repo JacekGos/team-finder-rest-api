@@ -52,9 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		
-//		.antMatchers("/v1/signin", "/v1/signup", "/v1/venues/{sportDiscipline}/{address}"
-//		, "/v1/games")
-		
 		httpSecurity.csrf().disable()
 				.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/v1/games").permitAll()
