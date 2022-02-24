@@ -7,5 +7,5 @@ public interface GameService {
 	
 	public GameResponse save(GameRequest gameRequest, Principal principal);
 
-	public List<GameResponse> getAllGames();
+	public List<GameResponse> getAll();
 }

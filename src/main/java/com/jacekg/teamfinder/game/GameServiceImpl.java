@@ -157,7 +157,7 @@ public class GameServiceImpl implements GameService {
 	
 	@Transactional
 	@Override
-	public List<GameResponse> getAllGames() {
+	public List<GameResponse> getAll() {
 		
 		List<Game> games = gameRepository.findAll();
 		logger.info("location X: " + games.get(3).getVenue().getLocation().getX());

@@ -37,8 +37,8 @@ public class GameRestController {
 	}
 	
 	@GetMapping("/games")
-	public ResponseEntity<List<GameResponse>> getAllGames() {
+	public ResponseEntity<List<GameResponse>> getAll() {
 		
-		return status(HttpStatus.OK).body(gameService.getAllGames());
+		return status(HttpStatus.OK).body(gameService.getAll());
 	}
 }
