@@ -118,6 +118,7 @@ class GameServiceImplTest {
 				"game description");
 		
 		gameResponse = new GameResponse(
+				1L,
 				"gameName",
 				"football",
 				10, 60, 25,
@@ -153,6 +154,7 @@ class GameServiceImplTest {
 		
 		verify(gameRepository).save(any(Game.class));
 		
+		assertThat(savedGame).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(savedGame).hasFieldOrPropertyWithValue("name", "gameName");
 		assertThat(savedGame).hasFieldOrPropertyWithValue("sportDisciplineName", "football");
 		assertThat(savedGame).hasFieldOrPropertyWithValue("amountOfPlayers", 10);

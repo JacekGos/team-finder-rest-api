@@ -70,6 +70,7 @@ class GameRestControllerTest {
 				"game description");
 		
 		gameResponse = new GameResponse(
+				1L,
 				"gameName",
 				"football",
 				10, 60, 25,
@@ -104,6 +105,7 @@ class GameRestControllerTest {
 		
 		GameResponse gameResponse = objectMapper.readValue(returnedGame, GameResponse.class);
 		
+		assertThat(gameResponse).hasFieldOrPropertyWithValue("id", 1L);
 		assertThat(gameResponse).hasFieldOrPropertyWithValue("name", "gameName");
 		assertThat(gameResponse).hasFieldOrPropertyWithValue("sportDisciplineName", "football");
 		assertThat(gameResponse).hasFieldOrPropertyWithValue("amountOfPlayers", 10);

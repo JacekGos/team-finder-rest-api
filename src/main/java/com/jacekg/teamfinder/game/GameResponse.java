@@ -15,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class GameResponse {
 	
+	private long id;
+	
 	private String name;
 	
 	private String sportDisciplineName;
