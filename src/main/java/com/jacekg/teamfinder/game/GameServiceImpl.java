@@ -170,7 +170,7 @@ public class GameServiceImpl implements GameService {
 	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
 		
 		Game game = new Game();
-		game.setId(1L);		
+		game.setId(8L);		
 		
 		Example<Game> gameExample = Example.of(game);
 		
