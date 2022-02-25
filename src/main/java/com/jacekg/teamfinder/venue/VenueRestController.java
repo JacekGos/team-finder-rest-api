@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class VenueRestController {
 		return status(HttpStatus.CREATED).body(venueService.save(venueRequest));
 	}
 	
-	@GetMapping("/venues/{sportDiscipline}/{address}")
-	public ResponseEntity<List<VenueResponse>> getAllBySportDysciplineAndAddress
-		(@PathVariable String sportDiscipline, @PathVariable String address) throws IOException {
+	@GetMapping("/venues")
+	public ResponseEntity<List<VenueResponse>> findBySportDysciplineAndAddress
+			(@RequestParam String sportDiscipline, @RequestParam String address) throws IOException {
 		
 		return status(HttpStatus.OK)
 				.body(venueService.getAllBySportDysciplineAndAddress(sportDiscipline, address));
