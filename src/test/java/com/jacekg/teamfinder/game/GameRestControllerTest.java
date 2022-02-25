@@ -3,7 +3,9 @@ package com.jacekg.teamfinder.game;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,6 +13,8 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,11 +28,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.ErrorResponse;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 import com.jacekg.teamfinder.user.User;
+import com.jacekg.teamfinder.venue.VenueResponse;
 
 @WebMvcTest(GameRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -141,6 +147,31 @@ class GameRestControllerTest {
 		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
 		
 		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
+	}
+	
+	@Test
+	void getAll_ShouldReturn_StatusOK_AndGames() throws Exception {
+		
+		List<GameResponse> games = new ArrayList<GameResponse>();
+		games.add(new GameResponse());
+		games.add(new GameResponse());
+		
+		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
+		
+		when(gameService.getAll()).thenReturn(games);
+		
+		String url = "/v1/games";
+		
+		MvcResult mvcResult = mockMvc.perform(get(url)
+				.principal(testingAuthenticationToken))
+				.andExpect(status().isOk()).andReturn();
+		
+		String responseContent = mvcResult.getResponse().getContentAsString();
+		
+		List<GameResponse> gameResponses 
+			= objectMapper.readValue(responseContent, new TypeReference<List<GameResponse>>() {});
+		
+		assertThat(gameResponses).hasSize(2);
 	}
 
 }
