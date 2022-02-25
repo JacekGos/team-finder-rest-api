@@ -43,7 +43,7 @@ public class VenueRestController {
 			(@RequestParam String sportDiscipline, @RequestParam String address) throws IOException {
 		
 		return status(HttpStatus.OK)
-				.body(venueService.findBySportDisciplineAndAddress(sportDiscipline, address));
+				.body(venueService.getAllBySportDysciplineAndAddress(sportDiscipline, address));
 	}
 }
 
