@@ -172,7 +172,7 @@ public class GameServiceImpl implements GameService {
 	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
 		
 		List<Game> games = gameRepository.findAll(gameSpecification.getUsers(filterParams));
-		logger.info("game id: " + games.get(0).getId());
+		logger.info("game id: " + games.size());
 		
 		return null;
 	}

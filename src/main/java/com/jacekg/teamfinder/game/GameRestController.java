@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.ResponseEntity.status;
@@ -23,6 +24,7 @@ import org.springframework.http.HttpStatus;
 
 import com.jacekg.teamfinder.user.UserResponse;
 import com.jacekg.teamfinder.venue.VenueResponse;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import lombok.AllArgsConstructor;
 
@@ -32,7 +34,9 @@ import lombok.AllArgsConstructor;
 public class GameRestController {
 
 	private GameService gameService;
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(GameRestController.class);
+	
 	@PostMapping("/games")
 	public ResponseEntity<GameResponse> createGame
 		(@Valid @RequestBody GameRequest gameRequest, Principal principal) {
@@ -48,7 +52,9 @@ public class GameRestController {
 	
 	@GetMapping("/games/filter")
 	public ResponseEntity<List<GameResponse>> getAllByFilters
-		(@PathVariable Map<String, String> filterParams) throws IOException {
+		(@RequestParam Map<String, String> filterParams) throws IOException {
+		
+		logger.info("address: " + filterParams.get("address"));
 		
 		return status(HttpStatus.OK)
 				.body(gameService.getAllByFilters(filterParams));
