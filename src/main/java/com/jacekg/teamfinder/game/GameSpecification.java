@@ -56,18 +56,27 @@ public class GameSpecification {
 				root.fetch("venue", JoinType.LEFT);
 				root.fetch("sportDiscipline", JoinType.LEFT);
 				
-				if (filterParams.get("address") != null && !filterParams.get("address").isEmpty()) {
+				if (!filterParams.get("address").equals(null) && !filterParams.get("address").isEmpty()) {
 					
 					predicates.add(criteriaBuilder.like(
 							root.get("venue").get("address"), 
 							"%" + filterParams.get("address") + "%"));
 					
-				} if (!filterParams.get("sportDiscipline").equals(null)) {
+				} if (!filterParams.get("sportDiscipline").equals(null) && !filterParams.get("sportDiscipline").isEmpty()) {
 					
 					predicates.add(criteriaBuilder.like(
 							root.get("sportDiscipline").get("name"), 
 							filterParams.get("sportDiscipline")));
+					
+				} if (!filterParams.get("priceMin").equals(null) && !filterParams.get("priceMin").isEmpty()
+						&& !filterParams.get("priceMax").equals(null) && !filterParams.get("priceMax").isEmpty()) {
+					
+					Integer priceMin = Integer.parseInt(filterParams.get("priceMin"));
+					Integer priceMax = Integer.parseInt(filterParams.get("priceMax"));
+					
+					predicates.add(criteriaBuilder.between(root.get("price"), priceMin, priceMax));
 				}
+				
 
 				query.orderBy(criteriaBuilder.desc(root.get("id")));
 
