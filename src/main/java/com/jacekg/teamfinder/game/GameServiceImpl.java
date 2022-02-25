@@ -50,6 +50,8 @@ public class GameServiceImpl implements GameService {
 	
 	private SportDisciplineRepository sportDisciplineRepository;
 	
+	private GameSpecification gameSpecification;
+	
 	private ModelMapper modelMapper;
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
@@ -169,12 +171,7 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
 		
-		Game game = new Game();
-		game.setId(8L);		
-		
-		Example<Game> gameExample = Example.of(game);
-		
-		List<Game> games = gameRepository.findAll(gameExample);
+		List<Game> games = gameRepository.findAll(gameSpecification.getUsers(filterParams));
 		logger.info("game id: " + games.get(0).getId());
 		
 		return null;

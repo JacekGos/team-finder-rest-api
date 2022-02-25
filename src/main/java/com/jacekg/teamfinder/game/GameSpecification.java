@@ -14,8 +14,6 @@ public class GameSpecification {
 	
 	 public Specification<Game> getUsers(Map<String, String> filterParams) {
 		 	
-		 	filterParams.get("address");
-		 
 	        return (root, query, criteriaBuilder) -> {
 	        	
 	            List<Predicate> predicates = new ArrayList<>();
