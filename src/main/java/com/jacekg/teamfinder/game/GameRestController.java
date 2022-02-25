@@ -2,7 +2,6 @@ package com.jacekg.teamfinder.game;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +20,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-
-import com.jacekg.teamfinder.user.UserResponse;
-import com.jacekg.teamfinder.venue.VenueResponse;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 import lombok.AllArgsConstructor;
 
@@ -53,8 +48,6 @@ public class GameRestController {
 	@GetMapping("/games/filter")
 	public ResponseEntity<List<GameResponse>> getAllByFilters
 		(@RequestParam Map<String, String> filterParams) throws IOException {
-		
-		logger.info("address: " + filterParams.get("address"));
 		
 		return status(HttpStatus.OK)
 				.body(gameService.getAllByFilters(filterParams));

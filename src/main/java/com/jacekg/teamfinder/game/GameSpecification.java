@@ -50,23 +50,23 @@ public class GameSpecification {
 
 			List<Predicate> predicates = new ArrayList<>();
 			
-			
-
 			@Override
 			public Predicate toPredicate(Root<Game> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				
-				logger.info("address: " + filterParams.get("address"));
 
 				root.fetch("venue", JoinType.LEFT);
-
-				if (!filterParams.get("address").equals(null)) {
-					
+				root.fetch("sportDiscipline", JoinType.LEFT);
+				
+				if (filterParams.get("address") != null && !filterParams.get("address").isEmpty()) {
 					
 					predicates.add(criteriaBuilder.like(
 							root.get("venue").get("address"), 
 							"%" + filterParams.get("address") + "%"));
 					
-					logger.info("address is not null");
+				} if (!filterParams.get("sportDiscipline").equals(null)) {
+					
+					predicates.add(criteriaBuilder.like(
+							root.get("sportDiscipline").get("name"), 
+							filterParams.get("sportDiscipline")));
 				}
 
 				query.orderBy(criteriaBuilder.desc(root.get("id")));
