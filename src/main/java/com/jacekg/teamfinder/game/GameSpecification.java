@@ -35,6 +35,8 @@ public class GameSpecification {
 				root.fetch("venue", JoinType.LEFT);
 				root.fetch("sportDiscipline", JoinType.LEFT);
 				
+				logger.info("before filters: " + filterParams.get("address").isBlank());
+				
 				if (!filterParams.get("address").equals(null) && !filterParams.get("address").isEmpty()) {
 					
 					predicates.add(criteriaBuilder.like(
@@ -70,8 +72,15 @@ public class GameSpecification {
 					int playersMax = Integer.parseInt(filterParams.get("playersMax"));
 					
 					predicates.add(criteriaBuilder.between(root.get("amountOfPlayers"), playersMin, playersMax));
+				
+				} if (!filterParams.get("duration").equals(null) && !filterParams.get("duration").isEmpty()) {
 					
+					int duration = Integer.parseInt(filterParams.get("duration"));
+					
+					predicates.add(criteriaBuilder.equal(root.get("duration"), duration));
+				
 				}
+				
 				
 				
 				query.orderBy(criteriaBuilder.desc(root.get("id")));
