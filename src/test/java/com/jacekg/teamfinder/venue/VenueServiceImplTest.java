@@ -162,7 +162,7 @@ class VenueServiceImplTest {
 	}
 	
 	@Test
-	void getAllIdsBySportDysciplineAndAddress_ShouldReturn_Venues() throws IOException {
+	void getAllIdsBySportDysciplineAndAddress_ShouldReturn_VenuesId() throws IOException {
 		
 		List<Long> venuesId = new ArrayList<>();
 		venuesId.add(1L);
