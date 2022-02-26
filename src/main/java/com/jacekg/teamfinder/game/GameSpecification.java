@@ -50,27 +50,30 @@ public class GameSpecification {
 				} if (!filterParams.get("priceMin").equals(null) && !filterParams.get("priceMin").isEmpty()
 						&& !filterParams.get("priceMax").equals(null) && !filterParams.get("priceMax").isEmpty()) {
 					
-					Integer priceMin = Integer.parseInt(filterParams.get("priceMin"));
-					Integer priceMax = Integer.parseInt(filterParams.get("priceMax"));
+					int priceMin = Integer.parseInt(filterParams.get("priceMin"));
+					int priceMax = Integer.parseInt(filterParams.get("priceMax"));
 					
 					predicates.add(criteriaBuilder.between(root.get("price"), priceMin, priceMax));
 					
 				} if (!filterParams.get("startDate").equals(null) && !filterParams.get("startDate").isEmpty()
 						&& !filterParams.get("endDate").equals(null) && !filterParams.get("endDate").isEmpty()) {
 					
-					DateTimeFormatter dateTimeFormatter 
-						= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-					 
 					LocalDateTime startDate = LocalDateTime.parse(filterParams.get("startDate") + "T00:00");
 					LocalDateTime endDate = LocalDateTime.parse(filterParams.get("endDate") + "T00:00");
 					
-					logger.info("startdate: " + startDate);
-					logger.info("enddate: " + endDate);
-					
 					predicates.add(criteriaBuilder.between(root.get("date"), startDate, endDate));
+					
+				} if (!filterParams.get("playersMin").equals(null) && !filterParams.get("playersMin").isEmpty()
+						&& !filterParams.get("playersMax").equals(null) && !filterParams.get("playersMax").isEmpty()) {
+					
+					int playersMin = Integer.parseInt(filterParams.get("playersMin"));
+					int playersMax = Integer.parseInt(filterParams.get("playersMax"));
+					
+					predicates.add(criteriaBuilder.between(root.get("amountOfPlayers"), playersMin, playersMax));
+					
 				}
 				
-
+				
 				query.orderBy(criteriaBuilder.desc(root.get("id")));
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
