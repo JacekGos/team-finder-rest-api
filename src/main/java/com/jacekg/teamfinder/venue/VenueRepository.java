@@ -18,11 +18,11 @@ public interface VenueRepository extends JpaRepository<Venue, Long> {
 			nativeQuery = true)
 	List<Venue> findByVenueTypeWithinDistance(Point location, double distance, List<String> venueTypeNames);
 	
-	@Query(value="SELECT id from venue as v inner join venue_type as vt"
+	@Query(value="SELECT v.id from venue as v inner join venue_type as vt"
 			+ " on v.venue_type_id = vt.id"
 			+ " where vt.name in :venueTypeNames and ST_DistanceSphere(location, :location) < :distance",
 			nativeQuery = true)
-	List<Integer> getIdsByVenueTypeWithinDistance(Point location, double distance, List<String> venueTypeNames);
+	List<Long> getIdsByVenueTypeWithinDistance(Point location, double distance, List<String> venueTypeNames);
 	
 	Venue findByLocationAndVenueType(Point location, VenueType venueType);
 }

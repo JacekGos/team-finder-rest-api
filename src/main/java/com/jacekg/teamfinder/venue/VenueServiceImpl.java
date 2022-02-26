@@ -125,6 +125,23 @@ public class VenueServiceImpl implements VenueService {
 				.map(venue -> modelMapper.map(venue, VenueResponse.class))
 				.collect(Collectors.toList());
 	}
+	
+	@Transactional
+	@Override
+	public List<Long> getAllIdsBySportDysciplineAndAddress
+		(String sportDisciplineName, String address, Double range) throws IOException {
+		
+		GeocodeObject geocodeObject = geocodingService.findLocationByAddress(address);
+		
+		GeocodeLocation location = geocodeObject.getGeometry().getGeocodeLocation();
+		
+		Point venueCoordinates = 
+				geometryFactory.createPoint(new Coordinate(location.getLongitude(), location.getLatitude()));
+		
+		List<String> venueTypeNames = getVenueTypeNamesBySportDiscipline(sportDisciplineName);
+		
+		return venueRepository.getIdsByVenueTypeWithinDistance(venueCoordinates, range, venueTypeNames);
+	}
 
 	private List<String> getVenueTypeNamesBySportDiscipline(String sportDisciplineName) {
 		
@@ -160,5 +177,4 @@ public class VenueServiceImpl implements VenueService {
 		
 		return venueTypeNames;
 	}
-
 }

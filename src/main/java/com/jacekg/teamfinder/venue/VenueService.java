@@ -7,5 +7,9 @@ public interface VenueService {
 	
 	public VenueResponse save(VenueRequest venueRequest) throws IOException;
 
-	public List<VenueResponse> getAllBySportDysciplineAndAddress(String sportDisciplineName, String address) throws IOException;
+	public List<VenueResponse> getAllBySportDysciplineAndAddress
+		(String sportDisciplineName, String address) throws IOException;
+	
+	public List<Long> getAllIdsBySportDysciplineAndAddress
+		(String sportDisciplineName, String address, Double range) throws IOException;
 }

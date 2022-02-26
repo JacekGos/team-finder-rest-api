@@ -1,5 +1,6 @@
 package com.jacekg.teamfinder.game;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import com.jacekg.teamfinder.venue.VenueRepository;
+import com.jacekg.teamfinder.venue.VenueService;
 
 import lombok.AllArgsConstructor;
 
@@ -26,7 +28,7 @@ import lombok.AllArgsConstructor;
 @Component
 public class GameSpecification {
 	
-	private VenueRepository venueRepository;
+	private VenueService venueService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 	
@@ -109,13 +111,22 @@ public class GameSpecification {
 				root.fetch("venue", JoinType.LEFT);
 				root.fetch("sportDiscipline", JoinType.LEFT);
 				
-				logger.info("before filters: " + filterParams.get("address").isBlank());
-				
-				if (!filterParams.get("address").equals(null) && !filterParams.get("address").isEmpty()) {
+				if (!filterParams.get("address").equals(null) && !filterParams.get("address").isEmpty()
+						&& !filterParams.get("sportDiscipline").equals(null) && !filterParams.get("sportDiscipline").isEmpty()) {
 					
-					List<Long> venuesId = new ArrayList<>();
-					venuesId.add(85L);
-					venuesId.add(86L);
+					List<Long> venuesId = null;
+					
+					try {
+						venuesId = venueService.getAllIdsBySportDysciplineAndAddress(
+								filterParams.get("sportDiscipline"),
+								filterParams.get("address"), 
+								Double.parseDouble(filterParams.get("range")));
+						
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 
 					predicates.add(criteriaBuilder.in(root.get("venue").get("id")).value(venuesId));
 					
