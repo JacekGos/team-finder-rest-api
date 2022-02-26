@@ -63,7 +63,7 @@ public class GameSpecification {
 					LocalDateTime startDate = LocalDateTime.parse(filterParams.get("startDate") + "T00:00");
 					LocalDateTime endDate = LocalDateTime.parse(filterParams.get("endDate") + "T00:00");
 					
-					predicates.add(criteriaBuilder.between(root.get("date"), startDate, endDate));
+					predicates.add(criteriaBuilder.between(root.get("date"), startDate, endDate.plusDays(1)));
 					
 				} if (!filterParams.get("playersMin").equals(null) && !filterParams.get("playersMin").isEmpty()
 						&& !filterParams.get("playersMax").equals(null) && !filterParams.get("playersMax").isEmpty()) {
@@ -80,8 +80,6 @@ public class GameSpecification {
 					predicates.add(criteriaBuilder.equal(root.get("duration"), duration));
 				
 				}
-				
-				
 				
 				query.orderBy(criteriaBuilder.desc(root.get("id")));
 
