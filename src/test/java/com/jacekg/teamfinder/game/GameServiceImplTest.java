@@ -8,12 +8,18 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -27,9 +33,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.jacekg.teamfinder.exceptions.SaveGameException;
-import com.jacekg.teamfinder.exceptions.SaveVenueException;
 import com.jacekg.teamfinder.role.Role;
 import com.jacekg.teamfinder.sport_discipline.SportDiscipline;
 import com.jacekg.teamfinder.sport_discipline.SportDisciplineRepository;
@@ -62,6 +68,9 @@ class GameServiceImplTest {
 	private SportDisciplineRepository sportDisciplineRepository;
 	
 	@Mock
+	private GameSpecification gameSpecification;
+	
+	@Mock
 	private ModelMapper modelMapper;
 	
 	private GameRequest gameRequest;
@@ -78,7 +87,9 @@ class GameServiceImplTest {
 	
 	private User user;
 	
-	List<Term> busyTerms;
+	private List<Term> busyTerms;
+	
+	private Specification<Game> specification; 
 	
 	@BeforeEach
 	void setUp() {
@@ -138,6 +149,15 @@ class GameServiceImplTest {
 				null,
 				sportDiscipline,
 				null);
+		
+		specification = new Specification<Game>() {
+
+			@Override
+			public Predicate toPredicate(Root<Game> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
 	}
 	
 	@Test
@@ -230,6 +250,27 @@ class GameServiceImplTest {
 		verify(gameRepository).findAll();
 		
 		assertThat(gameResponses).hasSize(2);
+	}
+	
+	@Test
+	void getAllByFilters_ShouldReturn_Games() {
+		
+		List<Game> games = new ArrayList<>();
+		games.add(game);
+		games.add(game);
+		
+		Map<String, String> filterParams = new HashMap<>();
+		
+		when(gameSpecification.getGames(filterParams)).thenReturn(specification);
+		when(gameRepository.findAll(specification)).thenReturn(games);
+		when(modelMapper.map(game, GameResponse.class)).thenReturn(gameResponse);
+		
+		List<GameResponse> gameResponses = serviceUnderTest.getAllByFilters(filterParams);
+		
+		verify(gameRepository).findAll(specification);
+		
+		assertThat(gameResponses).hasSize(2);
+		assertThat(gameResponses.get(0).getId()).isEqualTo(1L);
 	}
 }
 

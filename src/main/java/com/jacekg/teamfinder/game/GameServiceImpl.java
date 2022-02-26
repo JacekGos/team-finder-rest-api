@@ -61,6 +61,7 @@ public class GameServiceImpl implements GameService {
 		
 		modelMapper.addMappings(new PropertyMap<Game, GameResponse>() {
 			protected void configure() {
+				
 				map().setSportDisciplineName(source.getSportDiscipline().getName());
 				map().setVenueName(source.getVenue().getName());
 				map().setVenueAddress(source.getVenue().getAddress());
@@ -171,7 +172,7 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public List<GameResponse> getAllByFilters(Map<String, String> filterParams) {
 		
-		return gameRepository.findAll(gameSpecification.getUsers(filterParams)).stream()
+		return gameRepository.findAll(gameSpecification.getGames(filterParams)).stream()
 				.map(game -> modelMapper.map(game, GameResponse.class))
 				.collect(Collectors.toList());
 	}

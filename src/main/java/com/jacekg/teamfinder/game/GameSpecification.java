@@ -32,7 +32,7 @@ public class GameSpecification {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 	
-	public Specification<Game> getUsers(Map<String, String> filterParams) {
+	public Specification<Game> getGames(Map<String, String> filterParams) {
 
 		return new Specification<Game>() {
 
