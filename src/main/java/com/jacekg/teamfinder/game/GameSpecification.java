@@ -1,5 +1,8 @@
 package com.jacekg.teamfinder.game;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,31 +20,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GameSpecification {
-	
-//	public Specification<Game> getUsers(Map<String, String> filterParams) {
-//
-//	        return (root, query, criteriaBuilder) -> {
-//	        	
-//	        	
-//	        	
-//	            List<Predicate> predicates = new ArrayList<>();
-//	            if (filterParams.get("address") != null && !filterParams.get("address").isEmpty()) {
-//	            	
-//	                predicates.add(criteriaBuilder.like(root.get("address"), filterParams.get("address")));
-//	            }
-////	            if (request.getName() != null && !request.getName().isEmpty()) {
-////	                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("fullName")),
-////	                        "%" + request.getName().toLowerCase() + "%"));
-////	            }
-////	            if (request.getGender() != null && !request.getGender().isEmpty()) {
-////	                predicates.add(criteriaBuilder.equal(root.get("gender"), request.getGender()));
-////	            }
-//	            
-//	            query.orderBy(criteriaBuilder.desc(root.get("id")));
-//	            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-//	        };
-//	    }
-	
+		
 	private static final Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
 
 	public Specification<Game> getUsers(Map<String, String> filterParams) {
@@ -75,6 +54,20 @@ public class GameSpecification {
 					Integer priceMax = Integer.parseInt(filterParams.get("priceMax"));
 					
 					predicates.add(criteriaBuilder.between(root.get("price"), priceMin, priceMax));
+					
+				} if (!filterParams.get("startDate").equals(null) && !filterParams.get("startDate").isEmpty()
+						&& !filterParams.get("endDate").equals(null) && !filterParams.get("endDate").isEmpty()) {
+					
+					DateTimeFormatter dateTimeFormatter 
+						= DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+					 
+					LocalDateTime startDate = LocalDateTime.parse(filterParams.get("startDate") + "T00:00");
+					LocalDateTime endDate = LocalDateTime.parse(filterParams.get("endDate") + "T00:00");
+					
+					logger.info("startdate: " + startDate);
+					logger.info("enddate: " + endDate);
+					
+					predicates.add(criteriaBuilder.between(root.get("date"), startDate, endDate));
 				}
 				
 
