@@ -160,6 +160,30 @@ class VenueServiceImplTest {
 		assertThat(foundVenues.get(0).getBusyTerms().get(0))
 			.isEqualTo(LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(10, 0)));
 	}
+	
+	@Test
+	void getAllIdsBySportDysciplineAndAddress_ShouldReturn_Venues() throws IOException {
+		
+		List<Long> venuesId = new ArrayList<>();
+		venuesId.add(1L);
+		venuesId.add(2L);
+
+		List<String> venueTypeNames = new ArrayList<String>();
+		venueTypeNames.add("sports hall");
+		venueTypeNames.add("outdoor pitch");
+		
+		when(geocodingService.findLocationByAddress(anyString())).thenReturn(geocodeObject);
+		when(venueRepository.getIdsByVenueTypeWithinDistance(venueCoordinates, 10000, venueTypeNames))
+			.thenReturn(venuesId);
+				
+		List<Long> foundVenuesId 
+			= serviceUnderTest.getAllIdsBySportDysciplineAndAddress("football", "address 1", 10000.0);
+		
+		verify(venueRepository).getIdsByVenueTypeWithinDistance(venueCoordinates, 10000d, venueTypeNames);
+		
+		assertThat(foundVenuesId).hasSize(2);
+		assertThat(foundVenuesId.get(0)).isEqualTo(1L);
+	}
 }
 
 
