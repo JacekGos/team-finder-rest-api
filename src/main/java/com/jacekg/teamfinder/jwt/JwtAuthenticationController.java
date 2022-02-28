@@ -26,7 +26,8 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
-
+	
+	@CrossOrigin(origins = "http://localhost:4000")
 	@PostMapping("/v1/signin")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
