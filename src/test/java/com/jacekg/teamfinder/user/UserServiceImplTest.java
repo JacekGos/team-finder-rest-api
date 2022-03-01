@@ -3,10 +3,12 @@ package com.jacekg.teamfinder.user;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -44,6 +46,8 @@ class UserServiceImplTest {
 	
 	private User user;
 	
+	private Optional<User> optionalUser;
+	
 	private UserRequest userRequest;
 	
 	private UserResponse userResponse;
@@ -61,6 +65,8 @@ class UserServiceImplTest {
 				null,
 				null);
 		
+		optionalUser = Optional.of(user);
+		
 		userRequest = new UserRequest(
 				10L,
 				"username",
@@ -75,23 +81,6 @@ class UserServiceImplTest {
 				"ROLE_USER");
 	}
 
-	@Test
-	@Disabled
-	void save_ShouldReturn_UserWithAdminRole() {
-		
-		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
-		when(modelMapper.map(userRequest, User.class)).thenReturn(user);
-		when(userRepository.findByUsername(Mockito.anyString())).thenReturn(Mockito.any(User.class));
-		when(userRepository.save(new User())).thenReturn(user);
-		
-		UserResponse savedUser = serviceUnderTest.save(userRequest);
-		
-		verify(userRepository).save(Mockito.any(User.class));
-		
-		assertThat(savedUser).isNotNull();
-		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");
-	}
-	
 	@Test
 	void save_ShouldReturn_UserWithUserRole() {
 		
@@ -120,16 +109,23 @@ class UserServiceImplTest {
 		});
 	}
 	
-	@Disabled
 	@Test
-	void testFindByUsername() {
-		fail("Not yet implemented");
-	}
-	
-	@Disabled
-	@Test
-	void testFindByUserId() {
-		fail("Not yet implemented");
+	void updateRole_ShouldReturn_UserWithAdminRole() {
+		
+		user.setRoles(Arrays.asList
+				(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_USER")));
+		
+		when(userRepository.findById(any(Long.class))).thenReturn(optionalUser);
+		when(roleRepository.findByName("ROLE_ADMIN")).thenReturn(any(Role.class));
+		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
+		
+		UserResponse savedUser = serviceUnderTest.updateRole(10L);
+		
+		verify(userRepository).findById(any(Long.class));
+		verify(roleRepository).findByName(anyString());
+		
+		assertThat(savedUser).isNotNull();
+		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");
 	}
 
 }
