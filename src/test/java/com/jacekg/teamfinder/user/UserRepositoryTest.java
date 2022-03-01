@@ -59,27 +59,4 @@ class UserRepositoryTest {
 		
 		assertThat(returnedUser).isNull();
 	}
-
-	@Test
-	void findByUserId_ShouldReturn_Valid_User() {
-		
-		Long userID = 1L;
-		
-		userRepository.save(user);
-		
-		User returnedUser = userRepository.findByUserId(userID);
-		
-		assertEquals(1L, returnedUser.getId());
-		assertEquals("ROLE_ADMIN", returnedUser.getRoleName());
-	}
-	
-	@Test
-	void findByUserId_ShouldReturn_Null() {
-		
-		Long userID = 1L;
-		
-		User returnedUser = userRepository.findByUserId(userID);
-		
-		assertThat(returnedUser).isNull();
-	}
 }
