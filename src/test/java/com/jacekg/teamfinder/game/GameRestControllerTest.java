@@ -182,16 +182,17 @@ class GameRestControllerTest {
 		games.add(new GameResponse());
 		games.add(new GameResponse());
 		
-//		Map<String, String> filterParams = new HashMap<>();
-//		filterParams.put("", null)
+		Map<String, String> filterParams = new HashMap<>();
+		filterParams.put("address", "address");
 		
 		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		
-//		when(gameService.getAllByFilters()).thenReturn();
+		when(gameService.getAllByFilters(filterParams)).thenReturn(games);
 		
-		String url = "/v1/games";
+		String url = "/v1/games/filter";
 		
 		MvcResult mvcResult = mockMvc.perform(get(url)
+				.param(filterParams.get("address"), "address")
 				.principal(testingAuthenticationToken))
 				.andExpect(status().isOk()).andReturn();
 		
