@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.user;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,7 +85,7 @@ class UserServiceImplTest {
 	@Test
 	void save_ShouldReturn_UserWithUserRole() {
 		
-		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+		user.setRoles(Arrays.asList(new Role(1L, "ROLE_USER")));
 		
 		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
 		when(modelMapper.map(userRequest, User.class)).thenReturn(user);
@@ -113,16 +114,19 @@ class UserServiceImplTest {
 	void updateRole_ShouldReturn_UserWithAdminRole() {
 		
 		user.setRoles(Arrays.asList
-				(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_USER")));
+				(new Role(1L, "ROLE_USER"), new Role(1L, "ROLE_ADMIN")));
+		
+		userResponse.setRole("ROLE_ADMIN");
 		
 		when(userRepository.findById(any(Long.class))).thenReturn(optionalUser);
-		when(roleRepository.findByName("ROLE_ADMIN")).thenReturn(any(Role.class));
+		when(roleRepository.findByName("ROLE_USER")).thenReturn(new Role(1L, "ROLE_USER"));
+		when(roleRepository.findByName("ROLE_ADMIN")).thenReturn(new Role(1L, "ROLE_ADMIN"));
 		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
 		
 		UserResponse savedUser = serviceUnderTest.updateRole(10L);
 		
 		verify(userRepository).findById(any(Long.class));
-		verify(roleRepository).findByName(anyString());
+		verify(roleRepository, times(2)).findByName(anyString());
 		
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");

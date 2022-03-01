@@ -84,6 +84,9 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> {
 					throw new UserNotValidException("User with id: " + userId + " doesn't exists");});
 		
+		logger.info("user2: " + user);
+		logger.info("role1: " + user.getRoleName());
+		
 		user.setRoles(Arrays.asList
 				(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_ADMIN")));
 		
