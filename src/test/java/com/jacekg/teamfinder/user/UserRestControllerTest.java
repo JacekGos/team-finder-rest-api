@@ -3,7 +3,9 @@ package com.jacekg.teamfinder.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,32 +70,6 @@ class UserRestControllerTest {
 	}
 	
 	@Test
-	@Disabled
-	void createUser_ShouldReturn_StatusCreated_And_UserWithAdminRole() throws Exception {
-	
-		String jsonBody = objectMapper.writeValueAsString(userRequest);
-
-		when(userService.save(any(UserRequest.class))).thenReturn(userResponse);
-		
-		String url = "/v1/signup";
-		
-		MvcResult mvcResult = mockMvc.perform(post(url)
-				.contentType(MediaType.APPLICATION_JSON)
-                .content(jsonBody))
-				.andExpect(status().isCreated()).andReturn();
-		
-		String returnedUser = mvcResult.getResponse().getContentAsString();
-		
-		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);
-		
-		assertThat(userResponse).isNotNull();
-		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
-		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
-	}
-	
-	@Test
 	void createUser_ShouldReturn_StatusCreated_And_UserWithUserRole() throws Exception {
 		
 		String jsonBody = objectMapper.writeValueAsString(userRequest);
@@ -142,5 +118,30 @@ class UserRestControllerTest {
 		
 		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "validation error");
 	}
+	
+	@Test
+	void setUserRole_ShouldReturn_StatusOk_And_UserWithAdminRole() throws Exception {
+		
+		userResponse.setRole("ROLE_ADMIN");
+		
+		when(userService.updateRole(any(Long.class))).thenReturn(userResponse);
+		
+		String url = "/v1/user/role";
+		
+		MvcResult mvcResult = mockMvc.perform(put(url + "/{userId}", 10L))
+				.andExpect(status().isOk())
+				.andReturn();
+		
+		String returnedUser = mvcResult.getResponse().getContentAsString();
+		
+		UserResponse userResponse = objectMapper.readValue(returnedUser, UserResponse.class);
+		
+		assertThat(userResponse).isNotNull();
+		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
+	}
+	
 
 }
