@@ -69,15 +69,16 @@ public class UserServiceImpl implements UserService {
 		user.setNonExpired(true);
 		user.setCredentialsNonExpired(true);
 		user.setNonLocked(true);
-
-		if (userRequest.getRole().equals("USER")) {
-			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-		} else if (userRequest.getRole().equals("ADMIN")) {
-			user.setRoles(
-					Arrays.asList(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_ADMIN")));
-		} else {
-			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-		}
+		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+		
+//		if (userRequest.getRole().equals("USER")) {
+//			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+//		} else if (userRequest.getRole().equals("ADMIN")) {
+//			user.setRoles(
+//					Arrays.asList(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_ADMIN")));
+//		} else {
+//			user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+//		}
 
 		return user;
 	}

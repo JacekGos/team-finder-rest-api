@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,17 +58,17 @@ class UserRestControllerTest {
 				"username",
 				"password",
 				"password",
-				"email@email.com",
-				"ADMIN"); 
+				"email@email.com"); 
 		
 		userResponse = new UserResponse(
 				10L,
 				"username",
 				"email",
-				"ROLE_ADMIN");
+				"ROLE_USER");
 	}
 	
 	@Test
+	@Disabled
 	void createUser_ShouldReturn_StatusCreated_And_UserWithAdminRole() throws Exception {
 	
 		String jsonBody = objectMapper.writeValueAsString(userRequest);
@@ -89,13 +90,11 @@ class UserRestControllerTest {
 		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
 		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
 		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
 	}
 	
 	@Test
 	void createUser_ShouldReturn_StatusCreated_And_UserWithUserRole() throws Exception {
-		
-		userResponse.setRole("ROLE_USER");
 		
 		String jsonBody = objectMapper.writeValueAsString(userRequest);
 
@@ -107,7 +106,6 @@ class UserRestControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody))
 				.andExpect(status().isCreated()).andReturn();
-		
 		
 		String returnedUser = mvcResult.getResponse().getContentAsString();
 		

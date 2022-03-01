@@ -43,5 +43,5 @@ public class UserRequest {
 	@Size(min = 1, max = 50, message = "too long email address")
 	private String email;
 
-	private String role;
+//	private String role;
 }
