@@ -13,7 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -158,6 +160,34 @@ class GameRestControllerTest {
 		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
 		
 		when(gameService.getAll()).thenReturn(games);
+		
+		String url = "/v1/games";
+		
+		MvcResult mvcResult = mockMvc.perform(get(url)
+				.principal(testingAuthenticationToken))
+				.andExpect(status().isOk()).andReturn();
+		
+		String responseContent = mvcResult.getResponse().getContentAsString();
+		
+		List<GameResponse> gameResponses 
+			= objectMapper.readValue(responseContent, new TypeReference<List<GameResponse>>() {});
+		
+		assertThat(gameResponses).hasSize(2);
+	}
+	
+	@Test
+	void getAllByFilters_ShouldReturn_StatusOK_AndGames() throws Exception {
+		
+		List<GameResponse> games = new ArrayList<GameResponse>();
+		games.add(new GameResponse());
+		games.add(new GameResponse());
+		
+//		Map<String, String> filterParams = new HashMap<>();
+//		filterParams.put("", null)
+		
+		TestingAuthenticationToken testingAuthenticationToken = new TestingAuthenticationToken(user,null);
+		
+//		when(gameService.getAllByFilters()).thenReturn();
 		
 		String url = "/v1/games";
 		

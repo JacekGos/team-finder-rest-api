@@ -131,5 +131,13 @@ class UserServiceImplTest {
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");
 	}
+	
+	@Test
+	void updateRole_WhenUserIdDoesntExists_ShouldThrow_UserNotValidException() {
+		
+		assertThrows(UserNotValidException.class, () -> {
+			serviceUnderTest.updateRole(1L);
+		});
+	}
 
 }

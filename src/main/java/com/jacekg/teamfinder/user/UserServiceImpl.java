@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
 		
 		User user = Optional.ofNullable(foundUser)
 				.get()
-				.orElseThrow(() -> {
-					throw new UserNotValidException("User with id: " + userId + " doesn't exists");});
+				.orElseThrow(() -> 
+					{throw new UserNotValidException("User with id: " + userId + " doesn't exists");});
 		
 		logger.info("user2: " + user);
 		logger.info("role1: " + user.getRoleName());

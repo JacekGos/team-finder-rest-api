@@ -142,6 +142,4 @@ class UserRestControllerTest {
 		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
 		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
 	}
-	
-
 }
