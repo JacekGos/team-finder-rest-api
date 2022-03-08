@@ -1,5 +1,6 @@
 package com.jacekg.teamfinder.user;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -89,6 +90,17 @@ public class UserServiceImpl implements UserService {
 		
 		user.setRoles(Arrays.asList
 				(roleRepository.findByName("ROLE_USER"), roleRepository.findByName("ROLE_ADMIN")));
+		
+		return modelMapper.map(user, UserResponse.class);
+	}
+
+	@Override
+	public UserResponse getUserData(Principal principal) {
+		
+		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
+		User user = Optional.ofNullable(foundUser)
+				.get()
+				.orElseThrow(() -> {throw new SaveGameException("No such user exists");});
 		
 		return modelMapper.map(user, UserResponse.class);
 	}

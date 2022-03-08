@@ -91,18 +91,18 @@ public class GameServiceImpl implements GameService {
 		Optional<Venue> foundVenue = venueRepository.findById(gameRequest.getVenueId());
 		Venue venue = Optional.ofNullable(foundVenue)
 			.get()
-			.orElseThrow(() -> {throw new SaveGameException("no venue with such id exists");});
+			.orElseThrow(() -> {throw new SaveGameException("No venue with such id exists");});
 		
 		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
 		User creator = Optional.ofNullable(foundUser)
 				.get()
-				.orElseThrow(() -> {throw new SaveGameException("no such user exists");});
+				.orElseThrow(() -> {throw new SaveGameException("No such user exists");});
 		
 		Optional<SportDiscipline> foundSportDiscipline 
 			= Optional.ofNullable(sportDisciplineRepository.findByName(gameRequest.getSportDisciplineName()));
 		SportDiscipline sportDiscipline = Optional.ofNullable(foundSportDiscipline)
 				.get()
-				.orElseThrow(() -> {throw new SaveGameException("no such sport discipline exists");});
+				.orElseThrow(() -> {throw new SaveGameException("No such sport discipline exists");});
 		
 		LocalDateTime gameDate;
 		
