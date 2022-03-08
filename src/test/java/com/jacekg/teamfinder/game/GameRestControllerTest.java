@@ -35,7 +35,6 @@ import com.jacekg.teamfinder.exceptions.ErrorResponse;
 import com.jacekg.teamfinder.jwt.JwtAuthenticationEntryPoint;
 import com.jacekg.teamfinder.jwt.JwtRequestFilter;
 import com.jacekg.teamfinder.user.User;
-import com.jacekg.teamfinder.venue.VenueResponse;
 
 @WebMvcTest(GameRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
