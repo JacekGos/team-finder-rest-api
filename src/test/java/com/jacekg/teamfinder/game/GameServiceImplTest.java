@@ -193,7 +193,7 @@ class GameServiceImplTest {
 			serviceUnderTest.save(gameRequest, principal);
 		});
 		
-		assertTrue(exception.getMessage().contains("no venue with such id exists"));
+		assertTrue(exception.getMessage().contains("No venue with such id exists"));
 	}
 	
 	@Test
@@ -205,7 +205,7 @@ class GameServiceImplTest {
 			serviceUnderTest.save(gameRequest, principal);
 		});
 		
-		assertTrue(exception.getMessage().contains("no such user exists"));
+		assertTrue(exception.getMessage().contains("No such user exists"));
 	}
 	
 	@Test
@@ -218,7 +218,7 @@ class GameServiceImplTest {
 			serviceUnderTest.save(gameRequest, principal);
 		});
 		
-		assertTrue(exception.getMessage().contains("no such sport discipline exists"));
+		assertTrue(exception.getMessage().contains("No such sport discipline exists"));
 	}
 	
 	@Test
@@ -233,7 +233,7 @@ class GameServiceImplTest {
 			serviceUnderTest.save(gameRequest, principal);
 		});
 		
-		assertTrue(exception.getMessage().contains("venue is not available on that date"));
+		assertTrue(exception.getMessage().contains("Venue is not available on that date"));
 	}
 	
 	@Test

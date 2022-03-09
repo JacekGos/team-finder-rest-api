@@ -149,7 +149,7 @@ public class GameServiceImpl implements GameService {
 					.findAny()
 					.orElse(null) != null) {
 
-				throw new SaveGameException("venue is not available on that date");
+				throw new SaveGameException("Venue is not available on that date");
 			}
 		}
 		

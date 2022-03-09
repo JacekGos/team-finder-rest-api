@@ -8,6 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -139,5 +140,23 @@ class UserServiceImplTest {
 			serviceUnderTest.updateRole(1L);
 		});
 	}
+	
+	@Test
+	void getUserData_ShouldReturn_User() {
+		
+		when(userRepository.findByUsername(anyString())).thenReturn(user);
+		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
+		
+		UserResponse savedUser = serviceUnderTest.getUserData(any(Principal.class));
+		
+		verify(userRepository).findByUsername(anyString());
+		
+		assertThat(userResponse).isNotNull();
+		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
+	}
+
 
 }
