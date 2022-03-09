@@ -154,7 +154,6 @@ class GameServiceImplTest {
 
 			@Override
 			public Predicate toPredicate(Root<Game> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};

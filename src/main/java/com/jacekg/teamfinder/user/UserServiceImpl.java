@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
 		User user = Optional.ofNullable(foundUser)
 				.get()
-				.orElseThrow(() -> {throw new SaveGameException("No such user exists");});
+				.orElseThrow(() -> {throw new UserNotValidException("No such user exists");});
 		
 		return modelMapper.map(user, UserResponse.class);
 	}

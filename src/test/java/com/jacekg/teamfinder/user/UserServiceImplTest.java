@@ -13,13 +13,11 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,6 +52,8 @@ class UserServiceImplTest {
 	
 	private UserResponse userResponse;
 	
+	private Principal principal;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		
@@ -81,6 +81,14 @@ class UserServiceImplTest {
 				"username",
 				"email",
 				"ROLE_USER");
+		
+		principal = new Principal() {
+
+			@Override
+			public String getName() {
+				return "user";
+			}
+		};
 	}
 
 	@Test
@@ -130,7 +138,10 @@ class UserServiceImplTest {
 		verify(roleRepository, times(2)).findByName(anyString());
 		
 		assertThat(savedUser).isNotNull();
-		assertThat(savedUser.getRole()).isEqualTo("ROLE_ADMIN");
+		assertThat(savedUser).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(savedUser).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(savedUser).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(savedUser).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
 	}
 	
 	@Test
@@ -147,16 +158,23 @@ class UserServiceImplTest {
 		when(userRepository.findByUsername(anyString())).thenReturn(user);
 		when(modelMapper.map(user, UserResponse.class)).thenReturn(userResponse);
 		
-		UserResponse savedUser = serviceUnderTest.getUserData(any(Principal.class));
+		UserResponse savedUser = serviceUnderTest.getUserData(principal);
 		
 		verify(userRepository).findByUsername(anyString());
 		
-		assertThat(userResponse).isNotNull();
-		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
-		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
+		assertThat(savedUser).isNotNull();
+		assertThat(savedUser).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(savedUser).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(savedUser).hasFieldOrPropertyWithValue("email", "email");
+		assertThat(savedUser).hasFieldOrPropertyWithValue("role", "ROLE_USER");
 	}
-
+	
+	@Test
+	void getUserData_WhenUsernameDoesntExists_ShouldThrow_UserNotValidException() {
+		
+		assertThrows(UserNotValidException.class, () -> {
+			serviceUnderTest.getUserData(principal);
+		});
+	}
 
 }
