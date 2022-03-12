@@ -188,6 +188,6 @@ class UserRestControllerTest {
 		assertThat(userResponse).hasFieldOrPropertyWithValue("id", 10L);
 		assertThat(userResponse).hasFieldOrPropertyWithValue("username", "username");
 		assertThat(userResponse).hasFieldOrPropertyWithValue("email", "email");
-		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_ADMIN");
+		assertThat(userResponse).hasFieldOrPropertyWithValue("role", "ROLE_USER");
 	}
 }
