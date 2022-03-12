@@ -9,4 +9,6 @@ public interface UserService {
 	public UserResponse updateRole(Long userId);
 
 	public UserResponse getUserData(Principal principal);
+	
+	public User getUserData(String username);
 }

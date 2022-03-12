@@ -104,4 +104,15 @@ public class UserServiceImpl implements UserService {
 		
 		return modelMapper.map(user, UserResponse.class);
 	}
+
+	@Override
+	public User getUserData(String username) {
+		
+		Optional<User> foundUser = Optional.ofNullable(userRepository.findByUsername(username));
+		User user = Optional.ofNullable(foundUser)
+				.get()
+				.orElseThrow(() -> {throw new UserNotValidException("No such user exists");});
+		
+		return user;
+	}
 }

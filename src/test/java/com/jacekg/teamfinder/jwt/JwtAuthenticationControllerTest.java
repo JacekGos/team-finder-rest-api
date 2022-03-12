@@ -35,6 +35,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.ErrorResponse;
+import com.jacekg.teamfinder.user.UserService;
 
 @WebMvcTest(JwtAuthenticationController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -60,6 +61,9 @@ class JwtAuthenticationControllerTest {
 
 	@MockBean
 	private JwtRequestFilter jwtRequestFilter;
+	
+	@MockBean
+	private UserService userService;
 	
 	private JwtRequest jwtRequest;
 	
@@ -124,7 +128,7 @@ class JwtAuthenticationControllerTest {
 		
 		ErrorResponse errorResponse = objectMapper.readValue(responseContent, ErrorResponse.class);
 		
-		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "INVALID_CREDENTIALS");
+		assertThat(errorResponse).hasFieldOrPropertyWithValue("message", "Invalid username or password");
 	}
 
 }
