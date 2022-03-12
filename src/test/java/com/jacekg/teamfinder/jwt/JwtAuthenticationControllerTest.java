@@ -1,6 +1,7 @@
 package com.jacekg.teamfinder.jwt;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -8,15 +9,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,13 +29,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jacekg.teamfinder.exceptions.ErrorResponse;
+import com.jacekg.teamfinder.role.Role;
+import com.jacekg.teamfinder.user.User;
 import com.jacekg.teamfinder.user.UserService;
 
 @WebMvcTest(JwtAuthenticationController.class)
@@ -69,6 +70,10 @@ class JwtAuthenticationControllerTest {
 	
 	private UserDetails userDetails;
 	
+	private User user;
+	
+	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationControllerTest.class);
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		
@@ -85,6 +90,16 @@ class JwtAuthenticationControllerTest {
 				true, 
 				true, 
 				roles);
+		
+		user = new User(
+				10L,
+				"username",
+				"password",
+				"email",
+				true, true, true, true,
+				Arrays.asList(new Role(1L, "ROLE_USER"), new Role(2L, "ROLE_ADMIN")),
+				null,
+				null);
 	}
 
 	@Test
@@ -94,6 +109,7 @@ class JwtAuthenticationControllerTest {
 		
 		when(userDetailsService.loadUserByUsername(any(String.class))).thenReturn(userDetails);
 		when(jwtTokenUtil.generateToken(userDetails)).thenReturn("abc123");
+		when(userService.getUserData(anyString())).thenReturn(user);
 		
 		String url = "/v1/signin";
 		
@@ -102,11 +118,17 @@ class JwtAuthenticationControllerTest {
                 .content(jsonBody))
 				.andExpect(status().isOk()).andReturn();
 		
+		
 		String returnedResponse = mvcResult.getResponse().getContentAsString();
+		logger.info("jwt response:" + returnedResponse);
 		
 		JwtResponse jwtResponse = objectMapper.readValue(returnedResponse, JwtResponse.class);
+		logger.info("test ");
 		
 		assertThat(jwtResponse).hasFieldOrPropertyWithValue("jwttoken", "abc123");
+		assertThat(jwtResponse).hasFieldOrPropertyWithValue("id", 10L);
+		assertThat(jwtResponse).hasFieldOrPropertyWithValue("username", "username");
+		assertThat(jwtResponse).hasFieldOrPropertyWithValue("email", "email");
 	}
 	
 	@Test

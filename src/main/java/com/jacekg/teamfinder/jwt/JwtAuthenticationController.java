@@ -53,13 +53,13 @@ public class JwtAuthenticationController {
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		
 		User user = userService.getUserData(authenticationRequest.getUsername());
-		
-		logger.info("user data:" + user.getUsername());
 
-		return ResponseEntity.ok(new JwtResponse(token, user));
+		return ResponseEntity.ok(new JwtResponse(
+				token, user.getId(), user.getUsername(), user.getEmail()));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
+		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 		} catch (DisabledException e) {
