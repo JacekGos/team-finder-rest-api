@@ -4,10 +4,10 @@
 <h2 align="left">General info</h2>
 Project currently under development.<br><br>
 
+Web application created in cooperation with two developers: Frontend and Backend.
+
 A web application, the purpose of which is to search for sports events in the area<br>
 and to create teams in various sports disciplines.<br>
-
-Web application created in cooperation with two developers: Frontend and Backend.
 
 Frontend created in technologies:
 - React
