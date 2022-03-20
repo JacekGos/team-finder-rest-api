@@ -24,7 +24,7 @@ https://github.com/SzymonGos/teamFinder_client_side
 - Advanced game search filter, based on detailed game parameters, such as sport discipline,<br>
   range from given address, price, date, number of players, duration
 - Creating a user account for more advanced features
-- Crating new games using venue reservation system
+- Creating new games using venue reservation system
 - Joining existing games
 
 <h3 align="left">Technologies:</h3>
