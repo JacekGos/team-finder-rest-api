@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jacekg.teamfinder.validation.ValidDuration;
 
 @Getter
@@ -52,7 +53,7 @@ public class GameRequest {
 	@Min(value = 0, message = "min value 0")
 	private long venueId;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	@NotNull(message = "required")
 	private LocalDate date;
 	
